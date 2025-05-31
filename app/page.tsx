@@ -14,10 +14,10 @@ export default function Home() {
     <main className="gradient-background">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.02] pointer-events-none" />
-      
+
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/20 dark:to-black/20 pointer-events-none" />
-      
+
       <div className="relative z-10">
         <Navbar />
 
@@ -30,9 +30,12 @@ export default function Home() {
               MCP Linker
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-2xl mx-auto">
-              Add MCP servers to Claude Desktop, Cursor, Windsurf, VS Code, Cline,
-              neovim, and more — in <span className="font-semibold text-blue-600 dark:text-blue-400">two clicks</span>. 
-              Cross-platform. Tauri GUI. Server management included.
+              Add MCP servers to Claude Desktop, Cursor, Windsurf, VS Code,
+              Cline, neovim, and more — in{" "}
+              <span className="font-semibold text-blue-600 dark:text-blue-400">
+                two clicks
+              </span>
+              . Cross-platform. Tauri GUI. Server management included.
             </p>
             <div className="flex justify-center gap-2 mt-6">
               <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm font-medium rounded-full">

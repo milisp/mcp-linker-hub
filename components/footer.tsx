@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-
 export function Footer() {
   return (
     <footer className="bg-gray-800 text-white py-12 text-center">
