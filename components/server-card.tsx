@@ -1,106 +1,71 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import Image from "next/image"
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Star, Download, PenToolIcon as Tool, Heart } from "lucide-react"
-import { useSupabase } from "@/components/supabase-provider"
-import { useToast } from "@/components/ui/use-toast"
+import { Download, Star } from "lucide-react";
+import Link from "next/link";
 
-interface ServerCardProps {
-  server: {
-    id: string
-    name: string
-    author: string
-    description: string
-    tags: string[]
-    githubStars: number
-    downloads: number
-    toolCount: number
-    imageUrl: string
-  }
-}
+import { ServerCardProps } from "@/app/types";
 
 export function ServerCard({ server }: ServerCardProps) {
-  const { session } = useSupabase()
-  const { toast } = useToast()
-  const [isFavorite, setIsFavorite] = useState(false)
-
-  const toggleFavorite = () => {
-    if (!session) {
-      toast({
-        title: "Authentication required",
-        description: "Please log in to save favorites",
-        variant: "destructive",
-      })
-      return
-    }
-
-    setIsFavorite(!isFavorite)
-    toast({
-      title: isFavorite ? "Removed from favorites" : "Added to favorites",
-      description: `${server.name} has been ${isFavorite ? "removed from" : "added to"} your favorites`,
-    })
-  }
-
+  // Server card component
+  // Displays individual server information
   return (
-    <Card className="overflow-hidden backdrop-blur-sm bg-background/60 border-muted hover:border-primary/50 transition-all duration-300 hover:shadow-md hover:shadow-primary/5">
-      <CardContent className="p-6">
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <div className="relative h-10 w-10 rounded-md overflow-hidden bg-muted">
-              <Image src={server.imageUrl || "/placeholder.svg"} alt={server.name} fill className="object-cover" />
-            </div>
-            <div>
-              <Link href={`/server/${server.id}`} className="font-medium text-lg hover:underline">
-                {server.name}
-              </Link>
-              <p className="text-sm text-muted-foreground">by {server.author}</p>
-            </div>
-          </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            className={`rounded-full ${isFavorite ? "text-red-500" : "text-muted-foreground"}`}
-            onClick={toggleFavorite}
-          >
-            <Heart className={`h-5 w-5 ${isFavorite ? "fill-current" : ""}`} />
-            <span className="sr-only">Favorite</span>
-          </Button>
+    <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 flex flex-col">
+      <div className="flex justify-between items-start mb-4">
+        <div>
+          <h3 className="text-xl font-bold text-gray-800 mb-1">
+            {server.name}
+          </h3>
+          <p className="text-sm text-gray-500">by {server.author}</p>
         </div>
-        <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{server.description}</p>
-        <div className="flex flex-wrap gap-2 mb-4">
+        <div className="flex space-x-3 text-sm text-gray-600 items-center">
+          <span className="flex items-center">
+            <Star className="w-4 h-4 mr-1 text-yellow-500" />{" "}
+            {server.githubStars}
+          </span>
+          <span className="flex items-center">
+            <Download className="w-4 h-4 mr-1 text-blue-500" />{" "}
+            {server.downloads}
+          </span>
+        </div>
+      </div>
+      <p className="text-gray-600 mb-4 text-sm leading-relaxed flex-grow">
+        {server.description}
+      </p>
+      <div className="mb-4">
+        <div className="flex flex-wrap gap-2">
           {server.tags.map((tag) => (
-            <Badge key={tag} variant="secondary" className="text-xs">
+            <span
+              key={tag}
+              className="bg-gray-100 text-gray-700 px-2 py-1 rounded-md text-xs font-medium"
+            >
               {tag}
-            </Badge>
+            </span>
           ))}
         </div>
-      </CardContent>
-      <CardFooter className="px-6 py-4 bg-muted/30 flex items-center justify-between text-sm">
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1">
-            <Star className="h-4 w-4 text-yellow-500" />
-            <span>{server.githubStars.toLocaleString()}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <Download className="h-4 w-4" />
-            <span>{server.downloads.toLocaleString()}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <Tool className="h-4 w-4" />
-            <span>{server.toolCount} tools</span>
-          </div>
+      </div>
+      <div className="flex flex-col sm:flex-row gap-2 justify-between items-center mt-auto pt-4 border-t border-gray-100">
+        <div className="flex gap-2">
+          <a
+            href={server.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700 transition-colors"
+          >
+            Install
+          </a>
+          <Link
+            href={`/servers/${server.id}`}
+            className="hover:text-foreground transition-colors"
+          >
+            <button className="px-4 py-2 rounded-lg text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors">
+              View Details
+            </button>
+          </Link>
         </div>
-        <Link href={`/server/${server.id}`}>
-          <Button size="sm" variant="outline">
-            View Details
-          </Button>
-        </Link>
-      </CardFooter>
-    </Card>
-  )
+        <div className="text-xs text-gray-500 mt-2 sm:mt-0">
+          {server.tools.length} tools
+        </div>
+      </div>
+    </div>
+  );
 }

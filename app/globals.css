@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.gradient-background {
+  @apply bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 min-h-screen;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -59,7 +63,11 @@
 }
 
 .bg-grid-pattern {
-  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-image: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.1) 1px,
+    transparent 1px
+  );
   background-size: 20px 20px;
 }
 

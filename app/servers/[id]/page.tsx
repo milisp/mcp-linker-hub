@@ -1,11 +1,11 @@
-import { Navbar } from "@/components/navbar"
-import { Footer } from "@/components/footer"
-import { ServerDetails } from "@/components/server-details"
+import { Navbar } from "@/components/navbar";
+import { Footer } from "@/components/footer";
+import { ServerDetails } from "@/components/server-details";
 
 interface ServerPageProps {
   params: {
-    id: string
-  }
+    id: string;
+  };
 }
 
 export default function ServerPage({ params }: ServerPageProps) {
@@ -54,13 +54,19 @@ export default function ServerPage({ params }: ServerPageProps) {
       { name: "run_query", description: "Execute a SQL query" },
       { name: "create_branch", description: "Create a new branch" },
       { name: "list_branches", description: "List all branches in a project" },
-      { name: "merge_branch", description: "Merge a branch into the main branch" },
+      {
+        name: "merge_branch",
+        description: "Merge a branch into the main branch",
+      },
       { name: "delete_branch", description: "Delete a branch" },
       { name: "create_database", description: "Create a new database" },
-      { name: "list_databases", description: "List all databases in a project" },
+      {
+        name: "list_databases",
+        description: "List all databases in a project",
+      },
       { name: "delete_database", description: "Delete a database" },
     ],
-  }
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-background via-background to-background/80">
@@ -71,5 +77,5 @@ export default function ServerPage({ params }: ServerPageProps) {
         <Footer />
       </div>
     </div>
-  )
+  );
 }

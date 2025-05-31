@@ -1,80 +1,88 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { useToast } from "@/components/ui/use-toast"
-import { useSupabase } from "@/components/supabase-provider"
-import { Navbar } from "@/components/navbar"
-import { Footer } from "@/components/footer"
-import { Badge } from "@/components/ui/badge"
-import { X } from "lucide-react"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { useToast } from "@/components/ui/use-toast";
+import { useSupabase } from "@/components/supabase-provider";
+import { Navbar } from "@/components/navbar";
+import { Footer } from "@/components/footer";
+import { Badge } from "@/components/ui/badge";
+import { X } from "lucide-react";
 
 export default function SubmitServerPage() {
-  const [name, setName] = useState("")
-  const [description, setDescription] = useState("")
-  const [githubUrl, setGithubUrl] = useState("")
-  const [tag, setTag] = useState("")
-  const [tags, setTags] = useState<string[]>([])
-  const [isLoading, setIsLoading] = useState(false)
-  const { session } = useSupabase()
-  const { toast } = useToast()
-  const router = useRouter()
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [githubUrl, setGithubUrl] = useState("");
+  const [tag, setTag] = useState("");
+  const [tags, setTags] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const { session } = useSupabase();
+  const { toast } = useToast();
+  const router = useRouter();
 
   const addTag = () => {
     if (tag && !tags.includes(tag)) {
-      setTags([...tags, tag])
-      setTag("")
+      setTags([...tags, tag]);
+      setTag("");
     }
-  }
+  };
 
   const removeTag = (tagToRemove: string) => {
-    setTags(tags.filter((t) => t !== tagToRemove))
-  }
+    setTags(tags.filter((t) => t !== tagToRemove));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!session) {
       toast({
         title: "Authentication required",
         description: "Please log in to submit a server",
         variant: "destructive",
-      })
-      router.push("/login")
-      return
+      });
+      router.push("/login");
+      return;
     }
 
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
       // Here you would submit the server to your Supabase database
       // For now, we'll just simulate a successful submission
 
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       toast({
         title: "Server submitted",
         description: "Your MCP server has been submitted for review.",
-      })
+      });
 
-      router.push("/")
+      router.push("/");
     } catch (error: any) {
       toast({
         title: "Submission failed",
-        description: error.message || "Failed to submit server. Please try again.",
+        description:
+          error.message || "Failed to submit server. Please try again.",
         variant: "destructive",
-      })
+      });
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-background via-background to-background/80">
@@ -85,8 +93,12 @@ export default function SubmitServerPage() {
           <div className="max-w-2xl mx-auto">
             <Card className="backdrop-blur-sm bg-background/60 border-muted">
               <CardHeader className="space-y-1">
-                <CardTitle className="text-2xl font-bold">Submit MCP Server</CardTitle>
-                <CardDescription>Share your MCP server with the community</CardDescription>
+                <CardTitle className="text-2xl font-bold">
+                  Submit MCP Server
+                </CardTitle>
+                <CardDescription>
+                  Share your MCP server with the community
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -137,7 +149,11 @@ export default function SubmitServerPage() {
                     {tags.length > 0 && (
                       <div className="flex flex-wrap gap-2 mt-2">
                         {tags.map((t) => (
-                          <Badge key={t} variant="secondary" className="flex items-center gap-1">
+                          <Badge
+                            key={t}
+                            variant="secondary"
+                            className="flex items-center gap-1"
+                          >
                             {t}
                             <button
                               type="button"
@@ -166,5 +182,5 @@ export default function SubmitServerPage() {
         <Footer />
       </div>
     </div>
-  )
+  );
 }

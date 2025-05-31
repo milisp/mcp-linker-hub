@@ -1,41 +1,39 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { Database, FileText, Globe, Code, Server, Package } from "lucide-react"
+interface CatProps {
+  currentCategory: string;
+  setCurrentCategory: (value: string) => void;
+}
 
-const categories = [
-  { id: "all", name: "All", icon: <Package className="h-4 w-4" /> },
-  { id: "database", name: "Database", icon: <Database className="h-4 w-4" /> },
-  { id: "filesystem", name: "File System", icon: <FileText className="h-4 w-4" /> },
-  { id: "api", name: "API", icon: <Globe className="h-4 w-4" /> },
-  { id: "code", name: "Code", icon: <Code className="h-4 w-4" /> },
-  { id: "server", name: "Server", icon: <Server className="h-4 w-4" /> },
-]
-
-export function CategoryNav() {
-  const [activeCategory, setActiveCategory] = useState("all")
+export function CategoryNav({ currentCategory, setCurrentCategory }: CatProps) {
+  // Categories section component
+  // Allows filtering by category
+  const categories = [
+    { key: "all", name: "All" },
+    { key: "filesystem", name: "File System" },
+    { key: "database", name: "Database" },
+    { key: "api", name: "API Integration" },
+    { key: "devtools", name: "Dev Tools" },
+    { key: "system", name: "System" },
+    { key: "ai", name: "AI/ML" },
+  ];
 
   return (
-    <div className="container py-4">
-      <ScrollArea className="w-full whitespace-nowrap">
-        <div className="flex w-max space-x-2 p-1">
-          {categories.map((category) => (
-            <Button
-              key={category.id}
-              variant={activeCategory === category.id ? "default" : "outline"}
-              size="sm"
-              className="flex items-center gap-2"
-              onClick={() => setActiveCategory(category.id)}
+    <section className="py-8 text-center">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-wrap justify-center gap-4">
+          {categories.map((cat) => (
+            <button
+              key={cat.key}
+              onClick={() => setCurrentCategory(cat.key)}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border border-white/20 backdrop-blur-md
+                                ${currentCategory === cat.key ? "bg-white/40 text-white scale-105" : "bg-white/20 text-white hover:bg-white/30"}`}
             >
-              {category.icon}
-              {category.name}
-            </Button>
+              {cat.name}
+            </button>
           ))}
         </div>
-        <ScrollBar orientation="horizontal" />
-      </ScrollArea>
-    </div>
-  )
+      </div>
+    </section>
+  );
 }
