@@ -46,7 +46,7 @@ export function ServerCard({ server }: ServerCardProps) {
       <div className="flex flex-col sm:flex-row gap-2 justify-between items-center mt-auto pt-4 border-t border-gray-100">
         <div className="flex gap-2">
           <a
-            href={server.github}
+            href={server.source}
             target="_blank"
             rel="noopener noreferrer"
             className="px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700 transition-colors"

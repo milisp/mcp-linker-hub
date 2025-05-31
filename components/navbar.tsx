@@ -4,6 +4,7 @@ import { ModeToggle } from "@/components/mode-toggle";
 import { useSupabase } from "@/components/supabase-provider";
 import { Button } from "@/components/ui/button";
 import { UserNav } from "@/components/user-nav";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { Frame, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -48,6 +49,7 @@ const NavLink = ({
 
 export function Navbar() {
   const { session } = useSupabase();
+  const isMobile = useIsMobile();
   const [isOpen, setIsOpen] = useState(false);
 
   const links = [
@@ -76,7 +78,6 @@ export function Navbar() {
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6 text-sm">
             {links.map((link) => (
               <NavLink key={link.href} {...link} />
@@ -91,7 +92,6 @@ export function Navbar() {
             )}
           </div>
 
-          {/* Mobile Toggle Button */}
           <div className="flex md:hidden items-center gap-2">
             <ModeToggle />
             {session && <UserNav />}
@@ -110,9 +110,8 @@ export function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Navigation */}
-        {isOpen && (
-          <nav className="md:hidden border-t border-white/10 py-4 flex flex-col gap-2">
+        {isMobile && isOpen && (
+          <nav className="border-t border-white/10 py-4 flex flex-col gap-2">
             {links.map((link) => (
               <NavLink
                 key={link.href}
