@@ -1,14 +1,15 @@
 "use client";
 
-import { ModeToggle } from "@/components/mode-toggle";
-import { useSupabase } from "@/components/supabase-provider";
 import { Button } from "@/components/ui/button";
-import { UserNav } from "@/components/user-nav";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Frame, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { ModeToggle } from "../common/mode-toggle";
+import { useSupabase } from "../providers/supabase-provider";
+import { UserNav } from "./user-nav";
 
 const NavLink = ({
   href,
@@ -72,7 +73,7 @@ export function Navbar() {
             className="flex items-center gap-2"
             aria-label="MCP Linker Home"
           >
-            <Frame className="h-6 w-6" />
+            <Image src="/icon.png" alt="Logo" width={24} height={24} />
             <span className="font-bold text-xl hidden sm:inline-block">
               MCP Linker
             </span>

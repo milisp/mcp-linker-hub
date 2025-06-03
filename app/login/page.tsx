@@ -2,12 +2,8 @@
 
 import type React from "react";
 
-import { useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useSupabase } from "@/components/providers/supabase-provider";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Card,
   CardContent,
@@ -16,9 +12,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useToast } from "@/components/ui/use-toast";
-import { useSupabase } from "@/components/supabase-provider";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
 import { Github } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { FcGoogle } from "react-icons/fc";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -50,9 +51,30 @@ export default function LoginPage() {
       router.push("/");
       router.refresh();
     } catch (error: any) {
+      let errorMessage = "Failed to log in. Please try again.";
+      let errorTitle = "Login failed";
+
+      // Handle specific error cases
+      if (error.message?.includes("Email not confirmed")) {
+        errorTitle = "Email verification required";
+        errorMessage =
+          "Please check your email and click the verification link before logging in.";
+      } else if (error.message?.includes("Invalid login credentials")) {
+        errorMessage =
+          "Invalid email or password. Please check your credentials and try again.";
+      } else if (error.message?.includes("Too many requests")) {
+        errorMessage =
+          "Too many login attempts. Please wait a moment before trying again.";
+      } else if (error.status === 400) {
+        // Generic 400 error - could be unverified email or other issues
+        errorTitle = "Account verification required";
+        errorMessage =
+          "Your account may need verification. Please check your email for verification instructions, or contact support if you continue having issues.";
+      }
+
       toast({
-        title: "Login failed",
-        description: error.message || "Failed to log in. Please try again.",
+        title: errorTitle,
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
@@ -60,7 +82,7 @@ export default function LoginPage() {
     }
   };
 
-  const handleGithubLogin = async () => {
+  const handleOAuthLogin = async (provider: string) => {
     setIsLoading(true);
 
     try {
@@ -100,11 +122,20 @@ export default function LoginPage() {
               <Button
                 variant="outline"
                 className="w-full"
-                onClick={handleGithubLogin}
+                onClick={() => handleOAuthLogin("github")}
                 disabled={isLoading}
               >
-                <Github className="mr-2 h-4 w-4" />
+                <Github className="mr-2 h-5 w-5" />
                 Continue with GitHub
+              </Button>
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => handleOAuthLogin("google")}
+                disabled={isLoading}
+              >
+                <FcGoogle className="mr-2 h-5 w-5" />
+                Continue with Google
               </Button>
             </div>
             <div className="relative">

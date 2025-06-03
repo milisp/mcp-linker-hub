@@ -1,11 +1,9 @@
 "use client";
 
 import type { ServerGridType } from "@/app/types";
-import { ServerCard } from "@/components/server-card";
+import { ServerCard } from "./server-card";
 
 export function ServerGrid({ servers }: ServerGridType) {
-  // Server grid component
-  // Renders a list of ServerCard components
   if (!servers.length) {
     return (
       <p className="text-center text-gray-500 py-10">

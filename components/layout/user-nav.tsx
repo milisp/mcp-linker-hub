@@ -11,9 +11,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useSupabase } from "@/components/supabase-provider";
+import { Heart, LogOut, Settings, Star, User } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { User, Settings, LogOut, Heart, Star } from "lucide-react";
+import { useSupabase } from "../providers/supabase-provider";
 
 export function UserNav() {
   const { session, supabase } = useSupabase();

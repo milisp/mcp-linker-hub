@@ -10,6 +10,7 @@ import type { Session } from "@supabase/supabase-js";
 type SupabaseContext = {
   supabase: SupabaseClient;
   session: Session | null;
+  getAccessToken: () => string | null;
 };
 
 const Context = createContext<SupabaseContext | undefined>(undefined);
@@ -34,8 +35,12 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
     };
   }, [supabase]);
 
+  const getAccessToken = () => {
+    return session?.access_token || null;
+  };
+
   return (
-    <Context.Provider value={{ supabase, session }}>
+    <Context.Provider value={{ supabase, session, getAccessToken }}>
       {children}
     </Context.Provider>
   );

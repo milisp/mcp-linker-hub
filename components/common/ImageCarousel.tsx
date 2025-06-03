@@ -114,9 +114,6 @@ export default function ImageCarousel() {
           <p className="text-gray-600 dark:text-gray-300 font-medium">
             {images[index].alt}
           </p>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            {index + 1} / {images.length}
-          </p>
         </div>
       </div>
     </section>

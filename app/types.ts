@@ -1,24 +1,14 @@
-export interface ServerInfo {
-  id: string;
+// Tool interface for server tools
+export interface Tool {
   name: string;
-  author: string;
   description: string;
-  category: string;
-  tags: string[];
-  githubStars: number;
-  downloads: number;
-  tools: string[];
-  source: string;
-}
-
-export interface ServerGridType {
-  servers: ServerInfo[];
 }
 
 // API response types to match backend schema
 export interface ServerResponse {
   id: string;
-  name?: string;
+  name: string;
+  qualifiedName: string;
   description?: string;
   source: string;
   developer: string;
@@ -27,10 +17,19 @@ export interface ServerResponse {
   githubStars: number;
   downloads: number;
   views: number;
-  isFavorited?: boolean;
-  categoryId?: number;
+  isFavorited: boolean;
+  cat?: string;
   tags?: string[];
-  tools?: string[];
+  tools?: Tool[];
+  createdAt: string;
+  updatedAt: string;
+  imageUrl?: string;
+  documentation?: string;
+  toolCount?: number;
+}
+
+export interface ServerGridType {
+  servers: ServerResponse[];
 }
 
 export interface ServerListResponse {
@@ -41,5 +40,4 @@ export interface ServerListResponse {
   hasPrev?: boolean;
   total?: number;
   servers: ServerResponse[];
-  cacheHit?: boolean;
 }

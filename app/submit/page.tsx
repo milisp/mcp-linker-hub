@@ -1,186 +1,222 @@
 "use client";
 
-import type React from "react";
-
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { FlexibleMcpServersSchema } from "@/app/schema";
+import { useSupabase } from "@/components/providers/supabase-provider";
+import { BasicInfoSection } from "@/components/submit/BasicInfoSection";
+import { MCPConfigSection } from "@/components/submit/MCPConfigSection";
+import { ProjectInfoSection } from "@/components/submit/ProjectInfoSection";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { useToast } from "@/components/ui/use-toast";
-import { useSupabase } from "@/components/supabase-provider";
-import { Navbar } from "@/components/navbar";
-import { Footer } from "@/components/footer";
-import { Badge } from "@/components/ui/badge";
-import { X } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Form } from "@/components/ui/form";
+import { Separator } from "@/components/ui/separator";
+import { useToast } from "@/hooks/use-toast";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { CATEGORIES, type CategoryName } from "./type";
 
-export default function SubmitServerPage() {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [githubUrl, setGithubUrl] = useState("");
-  const [tag, setTag] = useState("");
-  const [tags, setTags] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const { session } = useSupabase();
+// Form validation schema
+const SubmitFormSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  developer: z.string().min(1, "Developer is required"),
+  description: z.string().min(10, "Description must be at least 10 characters"),
+  tags: z.array(z.string()).min(1, "At least one tag is required"),
+  category: z.enum(
+    CATEGORIES.filter((cat) => cat !== "All") as [
+      CategoryName,
+      ...CategoryName[],
+    ],
+  ),
+  projectUrl: z.string().url().optional().or(z.literal("")),
+  logoUrl: z.string().url().optional().or(z.literal("")),
+  mcpServers: FlexibleMcpServersSchema,
+});
+
+type SubmitFormData = z.infer<typeof SubmitFormSchema>;
+
+const FORM_STORAGE_KEY = "mcp-submit-form-data";
+
+export default function SubmitPage() {
   const { toast } = useToast();
-  const router = useRouter();
-
-  const addTag = () => {
-    if (tag && !tags.includes(tag)) {
-      setTags([...tags, tag]);
-      setTag("");
-    }
+  const { session } = useSupabase();
+  const defaultValues: SubmitFormData = {
+    name: "",
+    developer: "",
+    description: "",
+    tags: [],
+    category: "Utility",
+    projectUrl: "",
+    logoUrl: "",
+    mcpServers: {},
   };
 
-  const removeTag = (tagToRemove: string) => {
-    setTags(tags.filter((t) => t !== tagToRemove));
-  };
+  const form = useForm<SubmitFormData>({
+    resolver: zodResolver(SubmitFormSchema),
+    defaultValues,
+  });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!session) {
-      toast({
-        title: "Authentication required",
-        description: "Please log in to submit a server",
-        variant: "destructive",
-      });
-      router.push("/login");
-      return;
-    }
-
-    setIsLoading(true);
-
+  // Load saved form data on component mount
+  useEffect(() => {
     try {
-      // Here you would submit the server to your Supabase database
-      // For now, we'll just simulate a successful submission
+      const savedData = localStorage.getItem(FORM_STORAGE_KEY);
+      if (savedData) {
+        const parsedData = JSON.parse(savedData);
+        form.reset(parsedData);
+      }
+    } catch (error) {
+      console.error("Error loading saved form data:", error);
+    }
+  }, [form]);
 
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+  // Save form data to localStorage whenever form changes
+  useEffect(() => {
+    const subscription = form.watch((data) => {
+      try {
+        localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(data));
+      } catch (error) {
+        console.error("Error saving form data:", error);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [form]);
 
-      toast({
-        title: "Server submitted",
-        description: "Your MCP server has been submitted for review.",
+  const buildConfigs = (mcpServers: Record<string, any>) => {
+    const result = [];
+
+    if (mcpServers.stdio) {
+      result.push({
+        type: "stdio",
+        command: mcpServers.stdio.command,
+        args: mcpServers.stdio.args || [],
+        env: mcpServers.stdio.env || {},
+      });
+    }
+
+    if (mcpServers.sse) {
+      result.push({
+        type: "sse",
+        url: mcpServers.sse.url,
+      });
+    }
+
+    return result;
+  };
+
+  const onSubmit = async (data: SubmitFormData) => {
+    try {
+      if (!session?.access_token) {
+        toast({
+          title: "Authentication required",
+          description: "Please log in to submit a server",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      console.log("Submitting:", data);
+
+      const requestData = {
+        name: data.name,
+        description: data.description,
+        developer: data.developer,
+        source: data.projectUrl || "",
+        logo_url: data.logoUrl || null,
+        cat: data.category,
+        tags: data.tags,
+        configs: buildConfigs(data.mcpServers),
+      };
+
+      await axios.post(`http://localhost:8000/api/v1/servers/`, requestData, {
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+          "Content-Type": "application/json",
+        },
       });
 
-      router.push("/");
-    } catch (error: any) {
+      toast({
+        title: "Submit successful",
+        description: "Your MCP server has been submitted successfully!",
+      });
+
+      // Clear saved data after successful submission
+      localStorage.removeItem(FORM_STORAGE_KEY);
+
+      // Reset form
+      form.reset(defaultValues);
+    } catch (error) {
+      console.error("Submission error:", error);
       toast({
         title: "Submission failed",
         description:
-          error.message || "Failed to submit server. Please try again.",
+          error instanceof Error
+            ? error.message
+            : "An error occurred during submission",
         variant: "destructive",
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 
+  const handleReset = () => {
+    form.reset(defaultValues);
+    localStorage.removeItem(FORM_STORAGE_KEY);
+  };
+
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-background via-background to-background/80">
-      <div className="absolute inset-0 bg-grid-pattern opacity-[0.02] pointer-events-none" />
-      <div className="relative z-10">
-        <Navbar />
-        <div className="container py-12">
-          <div className="max-w-2xl mx-auto">
-            <Card className="backdrop-blur-sm bg-background/60 border-muted">
-              <CardHeader className="space-y-1">
-                <CardTitle className="text-2xl font-bold">
-                  Submit MCP Server
-                </CardTitle>
-                <CardDescription>
-                  Share your MCP server with the community
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Server Name</Label>
-                    <Input
-                      id="name"
-                      placeholder="e.g., My Database MCP Server"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="description">Description</Label>
-                    <Textarea
-                      id="description"
-                      placeholder="Describe what your MCP server does and how it helps users..."
-                      value={description}
-                      onChange={(e) => setDescription(e.target.value)}
-                      required
-                      className="min-h-[100px]"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="github">GitHub Repository URL</Label>
-                    <Input
-                      id="github"
-                      placeholder="https://github.com/username/repo"
-                      value={githubUrl}
-                      onChange={(e) => setGithubUrl(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="tags">Tags</Label>
-                    <div className="flex gap-2">
-                      <Input
-                        id="tags"
-                        placeholder="e.g., database, postgres"
-                        value={tag}
-                        onChange={(e) => setTag(e.target.value)}
-                      />
-                      <Button type="button" onClick={addTag} variant="outline">
-                        Add
-                      </Button>
-                    </div>
-                    {tags.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mt-2">
-                        {tags.map((t) => (
-                          <Badge
-                            key={t}
-                            variant="secondary"
-                            className="flex items-center gap-1"
-                          >
-                            {t}
-                            <button
-                              type="button"
-                              onClick={() => removeTag(t)}
-                              className="rounded-full hover:bg-muted p-0.5"
-                            >
-                              <X className="h-3 w-3" />
-                              <span className="sr-only">Remove {t} tag</span>
-                            </button>
-                          </Badge>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? "Submitting..." : "Submit Server"}
-                  </Button>
-                </form>
-              </CardContent>
-              <CardFooter className="flex justify-center text-sm text-muted-foreground">
-                <p>All submissions are reviewed before being published.</p>
-              </CardFooter>
-            </Card>
-          </div>
-        </div>
-        <Footer />
+    <div className="container mx-auto py-8 px-4 max-w-4xl">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold">Submit MCP Server</h1>
+        <p className="text-muted-foreground mt-2">
+          Share your MCP server with the community
+        </p>
       </div>
+
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          {/* Basic Information */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Basic Information</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <BasicInfoSection form={form} />
+            </CardContent>
+          </Card>
+
+          {/* Project Information */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Project Information</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ProjectInfoSection form={form} />
+            </CardContent>
+          </Card>
+
+          {/* MCP Configuration */}
+          <Card>
+            <CardHeader>
+              <CardTitle>MCP Configuration</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <MCPConfigSection form={form} />
+            </CardContent>
+          </Card>
+
+          <Separator />
+
+          {/* Submit Button */}
+          <div className="flex justify-end space-x-4">
+            <Button type="button" variant="outline" onClick={handleReset}>
+              Reset
+            </Button>
+            <Button type="submit" disabled={form.formState.isSubmitting}>
+              {form.formState.isSubmitting ? "Submitting..." : "Submit Server"}
+            </Button>
+          </div>
+        </form>
+      </Form>
     </div>
   );
 }

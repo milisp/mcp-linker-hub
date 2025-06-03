@@ -13,9 +13,14 @@ export function NewsList() {
         <div className="space-y-3">
           {[
             {
+              date: "2025-06-02",
+              content:
+                "Show `git clone` button when the server config's `args` contains the word path`",
+              isNew: true,
+            },
+            {
               date: "2025-05-29",
               content: "Sync favorite servers to the cloud.",
-              isNew: true,
             },
             {
               date: "2025-05-22",
