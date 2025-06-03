@@ -60,7 +60,7 @@ export function Navbar() {
       label: "Download",
       external: true,
     },
-    { href: "/docs", label: "Docs" },
+    { href: "https://api.mcp-linker.store/api/docs", label: "Docs" },
     { href: "/submit", label: "Submit" },
   ];
 

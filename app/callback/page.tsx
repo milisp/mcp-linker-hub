@@ -1,10 +1,9 @@
-// app/callback/page.tsx
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 
-export default function CallbackPage() {
+function CallbackContent() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -19,5 +18,13 @@ export default function CallbackPage() {
     <div style={{ maxWidth: 600, margin: '100px auto', padding: 16 }}>
       login success, you can close this page now.
     </div>
+  );
+}
+
+export default function CallbackPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <CallbackContent />
+    </Suspense>
   );
 }

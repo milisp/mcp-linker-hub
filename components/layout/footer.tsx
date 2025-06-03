@@ -1,6 +1,18 @@
 import Link from "next/link";
 
 export function Footer() {
+  const doc_url = 'https://api.mcp-linker.store/api/docs'
+
+  function get_url(link: string) {
+    if (link === 'Contact') {
+      return 'https://github.com/milisp/mcp-linker/issues'
+    } else if (link === 'API' || link === 'Docs') {
+      return doc_url
+    } else {
+      return `/${link.toLowerCase()}`
+    }
+  }
+
   return (
     <footer className="bg-gray-800 text-white py-12 text-center">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -8,7 +20,7 @@ export function Footer() {
           {["Docs", "API", "Contact", "Privacy"].map((link) => (
             <Link
               key={link}
-              href={`/${link.toLowerCase()}`}
+              href={get_url(link)}
               className="hover:text-foreground transition-colors"
             >
               {link}
