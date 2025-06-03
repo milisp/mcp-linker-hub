@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Auth Callback</title>
+    <script>
+      window.onload = function () {
+        const searchParams = window.location.search;
+        const deepLinkUrl = `mcp-linker://auth/callback${searchParams}`;
+        window.location.href = deepLinkUrl;
+      };
+    </script>
+  </head>
+  <body>
+    <div style="max-width: 600px; margin: 100px auto; padding: 16px">
+      login success, you can close this page now.
+    </div>
+  </body>
+</html>
