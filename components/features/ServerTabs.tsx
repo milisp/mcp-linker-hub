@@ -5,7 +5,16 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import axios from "axios";
 import ReactMarkdown from "react-markdown";
+import rehypeRaw from 'rehype-raw';
 import useSWR from "swr";
+
+function MarkdownRenderer({ content }: { content: string }) {
+  return (
+    <ReactMarkdown rehypePlugins={[rehypeRaw]}>
+      {content}
+    </ReactMarkdown>
+  )
+}
 
 export function ServerTabs({ server }: { server: ServerResponse }) {
   // Define a fetcher function
@@ -76,7 +85,7 @@ export function ServerTabs({ server }: { server: ServerResponse }) {
         value="about"
         className="mt-4 prose dark:prose-invert max-w-none"
       >
-        <ReactMarkdown>{content}</ReactMarkdown>
+        <MarkdownRenderer content={content} />
       </TabsContent>
 
       <TabsContent value="tools" className="mt-4">

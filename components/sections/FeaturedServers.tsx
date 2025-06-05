@@ -10,6 +10,7 @@ export default function FeaturedServers() {
   const [servers, setServers] = useState<ServerResponse[]>([]);
   const [loading, setLoading] = useState(true);
 
+
   useEffect(() => {
     fetchRecommendedServer()
       .then(setServers)

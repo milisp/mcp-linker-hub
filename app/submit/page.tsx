@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
+import { API_V1_URL } from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useEffect } from "react";
@@ -84,21 +85,15 @@ export default function SubmitPage() {
 
   const buildConfigs = (mcpServers: Record<string, any>) => {
     const result = [];
-
-    if (mcpServers.stdio) {
-      result.push({
-        type: "stdio",
-        command: mcpServers.stdio.command,
-        args: mcpServers.stdio.args || [],
-        env: mcpServers.stdio.env || {},
-      });
-    }
-
-    if (mcpServers.sse) {
-      result.push({
-        type: "sse",
-        url: mcpServers.sse.url,
-      });
+    for (const [serverName, config] of Object.entries(mcpServers)) {
+      console.log("Server Name:", serverName);
+      console.log("Config:", config);
+      if ('command' in config) {
+        config.type = 'stdio'
+      } else {
+        config.type = 'sse'
+      }
+      result.push(config);
     }
 
     return result;
@@ -115,7 +110,6 @@ export default function SubmitPage() {
         return;
       }
 
-      console.log("Submitting:", data);
 
       const requestData = {
         name: data.name,
@@ -127,8 +121,9 @@ export default function SubmitPage() {
         tags: data.tags,
         configs: buildConfigs(data.mcpServers),
       };
+      console.log("Submitting:", requestData);
 
-      await axios.post(`http://localhost:8000/api/v1/servers/`, requestData, {
+      await axios.post(`${API_V1_URL}/servers/`, requestData, {
         headers: {
           Authorization: `Bearer ${session.access_token}`,
           "Content-Type": "application/json",
