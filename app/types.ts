@@ -41,3 +41,5 @@ export interface ServerListResponse {
   total?: number;
   servers: ServerResponse[];
 }
+
+export type AuthType = "google" | "github" | "discord";

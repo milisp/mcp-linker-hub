@@ -10,7 +10,6 @@ export default function FeaturedServers() {
   const [servers, setServers] = useState<ServerResponse[]>([]);
   const [loading, setLoading] = useState(true);
 
-
   useEffect(() => {
     fetchRecommendedServer()
       .then(setServers)
@@ -27,7 +26,7 @@ export default function FeaturedServers() {
       </section>
     );
   }
-  
+
   return (
     <section className="px-6 py-12 max-w-6xl mx-auto">
       <h2 className="text-3xl font-bold mb-6 text-center">

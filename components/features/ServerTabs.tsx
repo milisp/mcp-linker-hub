@@ -5,15 +5,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import axios from "axios";
 import ReactMarkdown from "react-markdown";
-import rehypeRaw from 'rehype-raw';
+import rehypeRaw from "rehype-raw";
 import useSWR from "swr";
 
 function MarkdownRenderer({ content }: { content: string }) {
-  return (
-    <ReactMarkdown rehypePlugins={[rehypeRaw]}>
-      {content}
-    </ReactMarkdown>
-  )
+  return <ReactMarkdown rehypePlugins={[rehypeRaw]}>{content}</ReactMarkdown>;
 }
 
 export function ServerTabs({ server }: { server: ServerResponse }) {

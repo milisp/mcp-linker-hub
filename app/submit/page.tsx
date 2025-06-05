@@ -1,6 +1,5 @@
 "use client";
 
-import { FlexibleMcpServersSchema } from "@/app/schema";
 import { useSupabase } from "@/components/providers/supabase-provider";
 import { BasicInfoSection } from "@/components/submit/BasicInfoSection";
 import { MCPConfigSection } from "@/components/submit/MCPConfigSection";
@@ -11,6 +10,7 @@ import { Form } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { API_V1_URL } from "@/lib/api";
+import { FlexibleMcpServersSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useEffect } from "react";
@@ -88,10 +88,10 @@ export default function SubmitPage() {
     for (const [serverName, config] of Object.entries(mcpServers)) {
       console.log("Server Name:", serverName);
       console.log("Config:", config);
-      if ('command' in config) {
-        config.type = 'stdio'
+      if ("command" in config) {
+        config.type = "stdio";
       } else {
-        config.type = 'sse'
+        config.type = "sse";
       }
       result.push(config);
     }
@@ -109,7 +109,6 @@ export default function SubmitPage() {
         });
         return;
       }
-
 
       const requestData = {
         name: data.name,

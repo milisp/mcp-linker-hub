@@ -4,31 +4,100 @@ import { ServerResponse } from "@/app/types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { userApi } from "@/lib/api/user-api";
 import { Check, Copy, Heart } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSupabase } from "../providers/supabase-provider";
 
+interface isFavType {
+  isFavorited: string;
+}
 export function ServerHeader({ server }: { server: ServerResponse }) {
   const { toast } = useToast();
-  const { session } = useSupabase();
+  const { getAccessToken, supabase } = useSupabase();
   const [isFavorite, setIsFavorite] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const toggleFavorite = () => {
-    if (!session) {
-      toast({
-        title: "Authentication required",
-        description: "Please log in to save favorites",
-        variant: "destructive",
-      });
-      return;
+  async function handle403Error(
+    error: any,
+    retryCallback: () => Promise<void>,
+  ) {
+    if (error.status === 403) {
+      const {
+        data: { session: newSession },
+        error: refreshError,
+      } = await supabase.auth.refreshSession();
+      if (newSession) {
+        await retryCallback();
+      } else {
+        console.error("Session refresh failed:", refreshError);
+        toast({
+          title: "Session expired",
+          description: "Please login again",
+          variant: "destructive",
+        });
+      }
     }
-    setIsFavorite(!isFavorite);
-    toast({
-      title: isFavorite ? "Removed from favorites" : "Added to favorites",
-      description: `${server.name} has been ${isFavorite ? "removed from" : "added to"} your favorites`,
-    });
+  }
+
+  useEffect(() => {
+    async function getFav() {
+      try {
+        const accessToken = await getAccessToken();
+        if (!accessToken) {
+          console.log("No access token available");
+          return;
+        }
+
+        const response = await userApi.checkFavorite(server.id, accessToken);
+        console.log("is fav", response);
+        setIsFavorite(Boolean(response.isFavorited));
+      } catch (error: any) {
+        console.error("Favorite check failed:", error);
+        await handle403Error(error, getFav);
+      }
+    }
+    getFav();
+  }, [getAccessToken, server.id, supabase.auth, toast]);
+
+  const toggleFavorite = async () => {
+    setIsLoading(true);
+    try {
+      const accessToken = await getAccessToken();
+      if (!accessToken) {
+        toast({
+          title: "Authentication required",
+          description: "Please log in to save favorites",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      if (isFavorite) {
+        const resp = await userApi.removeFavorite(server.id, accessToken);
+        console.log("rm fav", resp);
+        setIsFavorite(resp.isFavorited);
+        toast({
+          title: "Removed from favorites",
+          description: `${server.name} has been removed from your favorites`,
+        });
+      } else {
+        const resp = await userApi.addFavorite(server.id, accessToken);
+        console.log("add fav", resp);
+        setIsFavorite(resp.isFavorited);
+        toast({
+          title: "Added to favorites",
+          description: `${server.name} has been added to your favorites`,
+        });
+      }
+    } catch (error: any) {
+      console.error("Toggle favorite failed:", error);
+      await handle403Error(error, toggleFavorite);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const copyServerUrl = () => {

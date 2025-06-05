@@ -2,8 +2,9 @@
 
 import type React from "react";
 
+import { OAuthButtons, handleOAuthLogin } from "@/components/auth";
+import { EmailPasswordForm } from "@/components/auth/email-password-form";
 import { useSupabase } from "@/components/providers/supabase-provider";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -12,14 +13,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { Github } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { FcGoogle } from "react-icons/fc";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -82,31 +79,6 @@ export default function LoginPage() {
     }
   };
 
-  const handleOAuthLogin = async (provider: string) => {
-    setIsLoading(true);
-
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "github",
-        options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
-        },
-      });
-
-      if (error) {
-        throw error;
-      }
-    } catch (error: any) {
-      toast({
-        title: "Login failed",
-        description:
-          error.message || "Failed to log in with GitHub. Please try again.",
-        variant: "destructive",
-      });
-      setIsLoading(false);
-    }
-  };
-
   return (
     <div className="container flex h-screen w-screen flex-col items-center justify-center">
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
@@ -118,70 +90,19 @@ export default function LoginPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={() => handleOAuthLogin("github")}
-                disabled={isLoading}
-              >
-                <Github className="mr-2 h-5 w-5" />
-                Continue with GitHub
-              </Button>
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={() => handleOAuthLogin("google")}
-                disabled={isLoading}
-              >
-                <FcGoogle className="mr-2 h-5 w-5" />
-                Continue with Google
-              </Button>
-            </div>
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">
-                  Or continue with
-                </span>
-              </div>
-            </div>
-            <form onSubmit={handleEmailLogin} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="name@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="password">Password</Label>
-                  <Link
-                    href="/forgot-password"
-                    className="text-xs text-muted-foreground hover:text-primary"
-                  >
-                    Forgot password?
-                  </Link>
-                </div>
-                <Input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </div>
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Logging in..." : "Login"}
-              </Button>
-            </form>
+            <OAuthButtons
+              onLogin={(provider) => handleOAuthLogin(provider, setIsLoading)}
+              isLoading={isLoading}
+            />
+            <EmailPasswordForm
+              email={email}
+              setEmail={setEmail}
+              password={password}
+              setPassword={setPassword}
+              isLoading={isLoading}
+              onSubmit={handleEmailLogin}
+              type="login"
+            />
           </CardContent>
           <CardFooter className="flex flex-col">
             <div className="text-center text-sm text-muted-foreground">

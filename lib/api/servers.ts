@@ -13,41 +13,43 @@ interface FetchServersParams {
   needTotal?: boolean;
 }
 
+function buildServerQueryParams(params: Record<string, any>) {
+  const searchParams = new URLSearchParams();
+  for (const [key, value] of Object.entries(params)) {
+    if (value !== undefined && value !== null) {
+      searchParams.set(key, String(value));
+    }
+  }
+  return searchParams.toString();
+}
+
 export async function fetchServers(
   params: FetchServersParams = {},
 ): Promise<ServerListResponse> {
   const {
     page = 1,
     pageSize = 20,
-    cat,
-    search,
-    developer,
     sort = "github_stars",
     direction = "desc",
     includeRelations = true,
     needTotal = false,
+    ...rest
   } = params;
 
-  const searchParams = new URLSearchParams({
-    page: page.toString(),
-    page_size: pageSize.toString(),
+  const queryString = buildServerQueryParams({
+    page,
+    page_size: pageSize,
     sort,
     direction,
-    include_relations: includeRelations.toString(),
-    need_total: needTotal.toString(),
+    include_relations: includeRelations,
+    need_total: needTotal,
+    ...rest,
   });
 
-  if (cat) searchParams.set("cat", cat);
-  if (search && search.trim()) searchParams.set("search", search.trim());
-  if (developer && developer.trim())
-    searchParams.set("developer", developer.trim());
-
-  const url = `${API_V1_URL}/servers/?${searchParams}`;
-  const data = await handleApiRequest<ServerListResponse>(url, {
-    next: { revalidate: 300 }, // Cache for 5 minutes
+  const url = `${API_V1_URL}/servers/?${queryString}`;
+  return await handleApiRequest<ServerListResponse>(url, {
+    next: { revalidate: 300 },
   });
-
-  return data;
 }
 
 export async function fetchMinimalServers(
@@ -62,20 +64,21 @@ export async function fetchMinimalServers(
   const {
     page = 1,
     pageSize = 30,
-    cat,
     sort = "github_stars",
     direction = "desc",
+    ...rest
   } = params;
 
-  const searchParams = new URLSearchParams();
-  searchParams.set("page", page.toString());
-  searchParams.set("page_size", pageSize.toString());
-  searchParams.set("sort", sort);
-  searchParams.set("direction", direction);
-  if (cat) searchParams.set("cat", cat);
+  const queryString = buildServerQueryParams({
+    page,
+    page_size: pageSize,
+    sort,
+    direction,
+    ...rest,
+  });
 
-  const url = `${API_V1_URL}/servers/minimal?${searchParams}`;
-  return handleApiRequest(url, {
-    next: { revalidate: 600 }, // Cache for 10 minutes
+  const url = `${API_V1_URL}/servers/minimal?${queryString}`;
+  return await handleApiRequest(url, {
+    next: { revalidate: 600 },
   });
 }

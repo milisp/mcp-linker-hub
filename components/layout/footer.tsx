@@ -1,15 +1,15 @@
 import Link from "next/link";
 
 export function Footer() {
-  const doc_url = 'https://api.mcp-linker.store/api/docs'
+  const doc_url = "https://api.mcp-linker.store/api/docs";
 
   function get_url(link: string) {
-    if (link === 'Contact') {
-      return 'https://github.com/milisp/mcp-linker/issues'
-    } else if (link === 'API' || link === 'Docs') {
-      return doc_url
+    if (link === "Contact") {
+      return "https://github.com/milisp/mcp-linker/issues";
+    } else if (link === "API" || link === "Docs") {
+      return doc_url;
     } else {
-      return `/${link.toLowerCase()}`
+      return `/${link.toLowerCase()}`;
     }
   }
 

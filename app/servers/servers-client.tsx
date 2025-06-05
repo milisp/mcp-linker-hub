@@ -10,7 +10,7 @@ interface ServersClientProps {
   initialData: ServerListResponse;
 }
 
-const MainContent = ({
+export const MainContent = ({
   servers,
   isLoading,
 }: ServerGridType & { isLoading: boolean }) => {

@@ -11,8 +11,13 @@ export default async function ServerPage({ params }: PageProps) {
   // Await params before accessing its properties
   const resolvedParams = await params;
   const qualifiedName = resolvedParams.qualified_name.join("/");
-
-  const server = await fetchServer(qualifiedName);
+  let server;
+  try {
+    server = await fetchServer(qualifiedName);
+  } catch (err) {
+    console.error(err);
+    return <div>Failed to load server: {(err as Error).message}</div>;
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-background via-background to-background/80">

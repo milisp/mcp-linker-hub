@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useSearchParams } from 'next/navigation';
-import { Suspense, useEffect } from 'react';
+import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect } from "react";
 
 function CallbackContent() {
   const searchParams = useSearchParams();
@@ -15,7 +15,7 @@ function CallbackContent() {
   }, [searchParams]);
 
   return (
-    <div style={{ maxWidth: 600, margin: '100px auto', padding: 16 }}>
+    <div style={{ maxWidth: 600, margin: "100px auto", padding: 16 }}>
       login success, you can close this page now.
     </div>
   );
