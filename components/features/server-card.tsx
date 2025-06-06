@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Download, Star } from "lucide-react";
 import Link from "next/link";
 
-import { ServerResponse } from "@/app/types";
+import { ServerResponse } from "@/types";
 
 interface ServerCardProps {
   server: ServerResponse;

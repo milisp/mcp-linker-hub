@@ -1,5 +1,5 @@
 import { fetchServers } from "@/lib/api/servers";
-import type { ServerListResponse } from "../types";
+import type { ServerListResponse } from "../../types";
 import { ServersClient } from "./servers-client";
 
 async function getInitialServers(): Promise<ServerListResponse> {

@@ -1,9 +1,9 @@
-import { ServerListResponse, ServerResponse } from "@/app/types";
+import { ServerDetail, ServerListResponse, ServerResponse } from "@/types";
 import { api } from ".";
 
-export function fetchServer(qualified_name: string): Promise<ServerResponse> {
+export function fetchServer(qualified_name: string): Promise<ServerDetail> {
   const url = `/servers/@${qualified_name}`;
-  return api.get<ServerResponse>(url, {
+  return api.get<ServerDetail>(url, {
     next: { revalidate: 600 }, // Cache for 10 minutes
   });
 }

@@ -10,6 +10,7 @@ export interface ServerResponse {
   name: string;
   qualifiedName: string;
   description?: string;
+  logoUrl?: string;
   source: string;
   developer: string;
   isOfficial: boolean;
@@ -40,6 +41,36 @@ export interface ServerListResponse {
   hasPrev?: boolean;
   total?: number;
   servers: ServerResponse[];
+}
+
+export interface SseConfig {
+  url: string;
+  type: string;
+}
+
+export interface StdioConfig {
+  command: string;
+  args?: string;
+  env: Record<string, string>;
+}
+
+export type ServerConfig = SseConfig | StdioConfig
+
+// Config item structure that matches the API response
+export interface ConfigItem {
+  command: string;
+  args: string[];
+}
+
+// Server configuration structure that matches the API response
+export interface ServerConfigGroup {
+  id: string;
+  serverId: string;
+  configItems: ConfigItem[];
+}
+
+export interface ServerDetail extends ServerResponse {
+  serverConfigs: ServerConfigGroup[];
 }
 
 export type AuthType = "google" | "github" | "discord";

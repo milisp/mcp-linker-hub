@@ -1,5 +1,5 @@
-import { ServerResponse } from "@/app/types";
 import { Card, CardContent } from "@/components/ui/card";
+import { ServerResponse } from "@/types";
 import { formatDistanceToNow } from "date-fns";
 import { Download, Star, PenToolIcon as ToolIcon } from "lucide-react";
 import { RelatedServers } from "./related-servers";

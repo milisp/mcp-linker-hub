@@ -1,7 +1,7 @@
 "use client";
 
-import { ServerResponse } from "@/app/types";
 import { Button } from "@/components/ui/button";
+import { ServerResponse } from "@/types";
 import { Download, ExternalLink, Github } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";

@@ -1,4 +1,4 @@
-import type { ServerListResponse } from "@/app/types";
+import type { ServerListResponse } from "@/types";
 import { API_V1_URL, handleApiRequest } from ".";
 
 interface FetchServersParams {

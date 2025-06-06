@@ -1,6 +1,6 @@
 "use client";
 
-import type { ServerGridType } from "@/app/types";
+import type { ServerGridType } from "@/types";
 import { ServerCard } from "./server-card";
 
 export function ServerGrid({ servers }: ServerGridType) {

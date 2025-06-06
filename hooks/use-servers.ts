@@ -1,7 +1,7 @@
-import type { ServerListResponse } from "@/app/types";
 import { useToast } from "@/hooks/use-toast";
 import { ApiError } from "@/lib/api";
 import { fetchServers } from "@/lib/api/servers";
+import type { ServerListResponse } from "@/types";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
 

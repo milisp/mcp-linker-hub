@@ -5,7 +5,7 @@ import { ServerGrid } from "@/components/features";
 import { useSupabase } from "@/components/providers/supabase-provider";
 import { api } from "@/lib/api";
 import { useEffect, useState } from "react";
-import type { ServerListResponse, ServerResponse } from "../types";
+import type { ServerListResponse, ServerResponse } from "../../types";
 
 export default function MyServers() {
   const { session } = useSupabase();
@@ -16,6 +16,7 @@ export default function MyServers() {
   useEffect(() => {
     const fetchMyServers = async () => {
       try {
+        console.log(session?.access_token);
         const data = await api.get<ServerListResponse>(
           "/servers/my",
           undefined,

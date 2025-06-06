@@ -4,7 +4,7 @@ import { ErrorFallback, ServerGridSkeleton } from "@/components/common";
 import { CategoryNav, ServerGrid } from "@/components/features";
 import { HeroSection } from "@/components/sections";
 import { useServers, useServersFilters } from "@/hooks";
-import type { ServerGridType, ServerListResponse } from "../types";
+import type { ServerGridType, ServerListResponse } from "../../types";
 
 interface ServersClientProps {
   initialData: ServerListResponse;

@@ -1,7 +1,7 @@
 "use client";
 
-import { ServerResponse } from "@/app/types";
 import { fetchRecommendedServer } from "@/lib/api/server";
+import { ServerResponse } from "@/types";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ServerGrid } from "../features";
