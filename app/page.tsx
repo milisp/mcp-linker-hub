@@ -29,7 +29,8 @@ export default function Home() {
               <span className="font-semibold text-blue-600 dark:text-blue-400">
                 two clicks
               </span>
-              . Cross-platform. Tauri GUI. Server management included. Say goodbye to <strong>copy-paste</strong>, <strong>git clone</strong>
+              . Cross-platform. Tauri GUI. Server management included. Say
+              goodbye to <strong>copy-paste</strong>, <strong>git clone</strong>
             </p>
 
             {/* Main CTA Buttons */}

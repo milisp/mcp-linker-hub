@@ -18,13 +18,17 @@ export function ServerDetails({ server }: { server: ServerDetail }) {
           <MetricsCard server={server} />
           {server.serverConfigs && server.serverConfigs.length > 0 && (
             <div className="bg-card rounded-lg border p-4">
-              <h3 className="text-lg font-semibold mb-3">Server Configurations</h3>
+              <h3 className="text-lg font-semibold mb-3">
+                Server Configurations
+              </h3>
               {server.serverConfigs.map((config) => (
                 <div key={config.id} className="mb-4 last:mb-0">
                   <div className="space-y-2">
                     {config.configItems.map((item, index) => (
                       <div key={index} className="bg-muted rounded p-2">
-                        <pre>{JSON.stringify({ [server.name]: item }, null, 2)}</pre>
+                        <pre>
+                          {JSON.stringify({ [server.name]: item }, null, 2)}
+                        </pre>
                       </div>
                     ))}
                   </div>

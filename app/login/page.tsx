@@ -47,6 +47,22 @@ export default function LoginPage() {
 
       router.push("/");
       router.refresh();
+      // Fetch user data after successful login
+      const { data: userData, error: userError } =
+        await supabase.auth.getUser();
+
+      if (userError) {
+        throw userError;
+      }
+
+      if (userData.user && !userData.user.user_metadata.username) {
+        toast({
+          title: "Profile incomplete",
+          description: "Please complete your profile information.",
+          variant: "default",
+        });
+        router.push("/complete-profile");
+      }
     } catch (error: any) {
       let errorMessage = "Failed to log in. Please try again.";
       let errorTitle = "Login failed";

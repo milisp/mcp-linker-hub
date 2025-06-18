@@ -62,6 +62,8 @@ export function Navbar() {
     },
     { href: "https://api.mcp-linker.store/api/docs", label: "Docs" },
     { href: "/submit", label: "Submit" },
+    { href: "/teams", label: "Team" },
+    { href: "/tiers", label: "Price" },
   ];
 
   return (
