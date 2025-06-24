@@ -23,7 +23,7 @@ export function Faq() {
             Is there a free trial for paid plans?
           </h3>
           <p className="text-slate-600 dark:text-slate-400">
-            Yes, both Professional and Team plans come with a 14-day free trial.
+            Yes, both Professional and Team plans come with a 7-day free trial.
             No credit card required to start.
           </p>
         </div>

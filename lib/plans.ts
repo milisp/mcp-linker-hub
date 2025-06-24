@@ -30,7 +30,7 @@ export const SUBSCRIPTION_PLANS = [
       "Advanced analytics",
     ],
     popular: true,
-    ctaText: "Start 7 days Free Trial",
+    ctaText: "Start 7-day Free Trial",
     ctaVariant: "default" as const,
   },
   {
@@ -50,7 +50,7 @@ export const SUBSCRIPTION_PLANS = [
       "Advanced security features",
     ],
     popular: false,
-    ctaText: "Contact Sales",
-    ctaVariant: "outline" as const,
+    ctaText: "Start 7-day Free Trial",
+    ctaVariant: "default" as const,
   },
 ];

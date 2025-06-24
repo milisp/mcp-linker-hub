@@ -118,6 +118,11 @@ export default function TiersPage() {
                     </Button>
                   </a>
                 ) : (
+                  <a
+                    href="https://buy.polar.sh/polar_cl_Kp5TMFDbWfloIl45KlGuOHULyUJ24E8WXjf1b0C3O9D"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                   <Button
                     className="w-full"
                     variant={tier.ctaVariant}
@@ -125,6 +130,7 @@ export default function TiersPage() {
                   >
                     {tier.ctaText}
                   </Button>
+                  </a>
                 )}
               </CardContent>
             </Card>
