@@ -46,8 +46,8 @@ export default function LoginPage() {
       const { data, error } = await supabase.auth.updateUser({
         data: { user_name: username },
       });
-      await api.patch("/users/me",{ username });
-      
+      await api.patch("/users/me", { username });
+
       if (error) {
         throw error;
       }

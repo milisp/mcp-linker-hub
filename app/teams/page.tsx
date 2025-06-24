@@ -31,9 +31,7 @@ export default function Teams() {
   const fetchMyTeams = async () => {
     try {
       setIsLoading(true);
-      const data = await api.get<TeamListResponse>(
-        "/teams/my_teams",
-      );
+      const data = await api.get<TeamListResponse>("/teams/my_teams");
       setTeams(data.teams);
     } catch (error) {
       console.error("Failed to fetch teams:", error);
@@ -66,13 +64,10 @@ export default function Teams() {
         params.append("description", formData.description.trim());
       }
 
-      await api.post<TeamResponse>(
-        `/teams/`,
-        {
-          name: formData.name.trim(),
-          description: formData.description.trim() || undefined,
-        },
-      );
+      await api.post<TeamResponse>(`/teams/`, {
+        name: formData.name.trim(),
+        description: formData.description.trim() || undefined,
+      });
 
       toast({
         title: "Success",
@@ -139,9 +134,7 @@ export default function Teams() {
 
   const handleDeleteTeam = async (teamId: string) => {
     try {
-      await api.delete(
-        `/teams/${teamId}`,
-      );
+      await api.delete(`/teams/${teamId}`);
 
       toast({
         title: "Success",

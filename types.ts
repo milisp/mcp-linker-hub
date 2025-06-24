@@ -54,7 +54,7 @@ export interface StdioConfig {
   env: Record<string, string>;
 }
 
-export type ServerConfig = SseConfig | StdioConfig
+export type ServerConfig = SseConfig | StdioConfig;
 
 // Config item structure that matches the API response
 export interface ConfigItem {
@@ -100,7 +100,7 @@ export type TeamFormData = {
 };
 
 // Team member types
-export type TeamMemberRole = 'owner' | 'admin' | 'member' | 'viewer';
+export type TeamMemberRole = "owner" | "admin" | "member" | "viewer";
 
 export type TeamMember = {
   id: string;
@@ -131,4 +131,4 @@ export type TeamMembershipResponse = {
 export type AddTeamMemberData = {
   email: string;
   role: TeamMemberRole;
-}; 
+};

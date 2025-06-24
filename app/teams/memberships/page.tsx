@@ -3,7 +3,13 @@
 import { useSupabase } from "@/components/providers/supabase-provider";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useAuthedApi } from "@/hooks/useAuthedApi";
 import { TeamMemberRole, TeamMembershipResponse } from "@/types";
@@ -13,7 +19,9 @@ import { useEffect, useState } from "react";
 export default function MyMemberships() {
   const api = useAuthedApi();
   const { session } = useSupabase();
-  const [memberships, setMemberships] = useState<TeamMembershipResponse['memberships']>([]);
+  const [memberships, setMemberships] = useState<
+    TeamMembershipResponse["memberships"]
+  >([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
@@ -21,7 +29,7 @@ export default function MyMemberships() {
     try {
       setIsLoading(true);
       const data = await api.get<TeamMembershipResponse>(
-        "/teams/my_memberships"
+        "/teams/my_memberships",
       );
       setMemberships(data.memberships);
     } catch (error) {
@@ -39,14 +47,14 @@ export default function MyMemberships() {
 
   const getRoleBadgeVariant = (role: TeamMemberRole) => {
     switch (role) {
-      case 'owner':
-        return 'default';
-      case 'admin':
-        return 'secondary';
-      case 'member':
-        return 'outline';
+      case "owner":
+        return "default";
+      case "admin":
+        return "secondary";
+      case "member":
+        return "outline";
       default:
-        return 'outline';
+        return "outline";
     }
   };
 
@@ -79,7 +87,9 @@ export default function MyMemberships() {
             <Card key={m.team.id} className="mb-4">
               <CardHeader>
                 <CardTitle>{m.team.name}</CardTitle>
-                <CardDescription>{m.team.description ?? "No description"}</CardDescription>
+                <CardDescription>
+                  {m.team.description ?? "No description"}
+                </CardDescription>
               </CardHeader>
               <CardContent className="flex items-center justify-between">
                 <Badge variant={getRoleBadgeVariant(m.role)}>{m.role}</Badge>

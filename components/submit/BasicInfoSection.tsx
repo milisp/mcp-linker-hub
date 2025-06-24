@@ -1,3 +1,4 @@
+import { CATEGORIES } from "@/app/servers/submit/type";
 import {
   FormControl,
   FormField,
@@ -16,7 +17,6 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import React from "react";
 import { UseFormReturn } from "react-hook-form";
-import { CATEGORIES } from "../../app/submit/type";
 
 interface BasicInfoSectionProps {
   form: UseFormReturn<any>;

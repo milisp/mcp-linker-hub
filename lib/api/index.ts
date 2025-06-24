@@ -4,7 +4,6 @@ export * from "./servers";
 export const API_V1_URL =
   (process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000") + "/api/v1";
 
-
 export class ApiError extends Error {
   constructor(
     message: string,
@@ -55,15 +54,19 @@ export async function handleApiRequest<T>(
 }
 
 function createApiMethod(method: string) {
-  return async function<T>(
+  return async function <T>(
     url: string,
     dataOrOptions?: any,
-    maybeOptions?: Omit<RequestInit, 'method' | 'body'>,
-    access_token?: string
+    maybeOptions?: Omit<RequestInit, "method" | "body">,
+    access_token?: string,
   ): Promise<T> {
-    const hasBody = ['POST', 'PUT', 'PATCH'].includes(method);
+    const hasBody = ["POST", "PUT", "PATCH"].includes(method);
     const options = hasBody
-      ? { ...maybeOptions, method, body: dataOrOptions ? JSON.stringify(dataOrOptions) : undefined }
+      ? {
+          ...maybeOptions,
+          method,
+          body: dataOrOptions ? JSON.stringify(dataOrOptions) : undefined,
+        }
       : { ...dataOrOptions, method };
 
     return handleApiRequest<T>(`${API_V1_URL}${url}`, options, access_token);
@@ -71,9 +74,9 @@ function createApiMethod(method: string) {
 }
 
 export const api = {
-  get: createApiMethod('GET'),
-  post: createApiMethod('POST'),
-  put: createApiMethod('PUT'),
-  patch: createApiMethod('PATCH'),
-  delete: createApiMethod('DELETE'),
+  get: createApiMethod("GET"),
+  post: createApiMethod("POST"),
+  put: createApiMethod("PUT"),
+  patch: createApiMethod("PATCH"),
+  delete: createApiMethod("DELETE"),
 };

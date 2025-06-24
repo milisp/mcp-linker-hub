@@ -21,7 +21,7 @@ export async function fetchOfficialServer(): Promise<ServerResponse[]> {
   const response = await api.get<ServerListResponse>(url, {
     next: { revalidate: 600 }, // Cache for 10 minutes
   });
-  console.log(response)
+  console.log(response);
   return response.servers;
 }
 
@@ -31,7 +31,10 @@ export async function createServer(serverData: any): Promise<ServerResponse> {
   return api.post<ServerResponse>(url, serverData);
 }
 
-export async function updateServer(serverId: string, serverData: any): Promise<ServerResponse> {
+export async function updateServer(
+  serverId: string,
+  serverData: any,
+): Promise<ServerResponse> {
   const url = `/servers/${serverId}`;
   return api.put<ServerResponse>(url, serverData);
 }

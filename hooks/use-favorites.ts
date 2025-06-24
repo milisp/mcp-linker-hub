@@ -13,17 +13,18 @@ const favoriteStatusKey = (serverId: string) => `favorite-status-${serverId}`;
 // Custom SWR hook for favorites list
 export function useFavorites() {
   const { session } = useSupabase();
-  
+
   const { data, error, isLoading } = useSWR(
     session?.access_token ? [FAVORITES_KEY, session.access_token] : null,
-    ([_, token]) => api.get<ServerResponse[]>("/servers/favorites/", undefined, {}, token),
+    ([_, token]) =>
+      api.get<ServerResponse[]>("/servers/favorites/", undefined, {}, token),
     {
       onSuccess: (data) => {
         // Sync with Zustand store
         const { setFavorites } = useFavoriteStore.getState();
         setFavorites(data);
       },
-    }
+    },
   );
 
   return {
@@ -36,14 +37,14 @@ export function useFavorites() {
 // Custom SWR hook for checking favorite status
 export function useFavoriteStatus(serverId: string) {
   const { getAccessToken } = useSupabase();
-  
+
   const { data, error, isLoading } = useSWR(
     serverId ? [favoriteStatusKey(serverId), serverId] : null,
     async ([_, id]) => {
       const token = await getAccessToken();
       if (!token) return { isFavorited: false };
       return userApi.checkFavorite(id, token);
-    }
+    },
   );
 
   return {
@@ -59,7 +60,10 @@ export function useFavoriteMutations() {
   const { toast } = useToast();
   const { addFavorite, removeFavorite } = useFavoriteStore();
 
-  const toggleFavorite = async (server: ServerResponse, currentStatus: boolean) => {
+  const toggleFavorite = async (
+    server: ServerResponse,
+    currentStatus: boolean,
+  ) => {
     try {
       const token = await getAccessToken();
       if (!token) {
@@ -74,45 +78,45 @@ export function useFavoriteMutations() {
       // Use the same key format as in useFavoriteStatus (array key)
       const statusKey = [favoriteStatusKey(server.id), server.id];
       const newStatus = !currentStatus;
-      
+
       // Optimistic update
       mutate(statusKey, { isFavorited: newStatus }, false);
-      
+
       if (currentStatus) {
         // Remove from favorites
         const result = await userApi.removeFavorite(server.id, token);
         removeFavorite(server.id);
-        
+
         toast({
           title: "Removed from favorites",
           description: `${server.name} has been removed from your favorites`,
         });
-        
+
         // Update cache with server response
         mutate(statusKey, { isFavorited: result.isFavorited }, false);
         mutate([FAVORITES_KEY, token]); // Revalidate favorites list
-        
+
         return result.isFavorited;
       } else {
         // Add to favorites
         const result = await userApi.addFavorite(server.id, token);
         addFavorite(server);
-        
+
         toast({
           title: "Added to favorites",
           description: `${server.name} has been added to your favorites`,
         });
-        
+
         // Update cache with server response
         mutate(statusKey, { isFavorited: result.isFavorited }, false);
         mutate([FAVORITES_KEY, token]); // Revalidate favorites list
-        
+
         return result.isFavorited;
       }
     } catch (error) {
       // Revert optimistic update on error
       mutate([favoriteStatusKey(server.id), server.id]);
-      
+
       toast({
         title: "Error",
         description: "Failed to update favorite status",

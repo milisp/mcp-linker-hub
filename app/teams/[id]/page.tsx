@@ -28,9 +28,7 @@ export default function TeamMembers({
   const fetchTeamMembers = async () => {
     try {
       setIsLoading(true);
-      const data = await api.get<TeamMembersResponse>(
-        `/teams/${id}/members`,
-      );
+      const data = await api.get<TeamMembersResponse>(`/teams/${id}/members`);
       setMembers(data as unknown as TeamMember[]);
     } catch (error) {
       console.error("Failed to fetch team members:", error);
@@ -66,8 +64,9 @@ export default function TeamMembers({
       // Convert role to uppercase for API
       const roleUppercase = newMemberData.role.toUpperCase();
 
-      await api.post(`/teams/${id}/members?user_id_to_add=${userData.id}&role=${roleUppercase}`,
-         payload,
+      await api.post(
+        `/teams/${id}/members?user_id_to_add=${userData.id}&role=${roleUppercase}`,
+        payload,
       );
 
       toast({
@@ -93,9 +92,7 @@ export default function TeamMembers({
     newRole: TeamMemberRole,
   ) => {
     try {
-      await api.put(`/teams/${id}/members/${memberId}`,
-        { role: newRole },
-      );
+      await api.put(`/teams/${id}/members/${memberId}`, { role: newRole });
 
       toast({
         title: "Success",
@@ -115,9 +112,7 @@ export default function TeamMembers({
 
   const handleRemoveMember = async (memberId: string) => {
     try {
-      await api.delete(
-        `/teams/${id}/members/${memberId}`,
-      );
+      await api.delete(`/teams/${id}/members/${memberId}`);
 
       toast({
         title: "Success",
