@@ -15,7 +15,7 @@ export function NewsList() {
             {
               date: "2025-06-04",
               content:
-                "Sync server configs between Claude and other clients. Enable or disable servers.",
+                "Sync server configs between MCP clients. Enable or disable servers.",
               isNew: true,
             },
             {

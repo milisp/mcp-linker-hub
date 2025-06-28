@@ -61,7 +61,7 @@ export default function LoginPage() {
           description: "Please complete your profile information.",
           variant: "default",
         });
-        router.push("/complete-profile");
+        router.push("/account/complete-profile");
       }
     } catch (error: any) {
       let errorMessage = "Failed to log in. Please try again.";
@@ -124,7 +124,7 @@ export default function LoginPage() {
             <div className="text-center text-sm text-muted-foreground">
               Don&apos;t have an account?{" "}
               <Link
-                href="/signup"
+                href="/account/signup"
                 className="text-primary underline-offset-4 hover:underline"
               >
                 Sign up

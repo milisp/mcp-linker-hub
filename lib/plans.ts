@@ -22,6 +22,7 @@ export const SUBSCRIPTION_PLANS = [
     icon: "💼",
     description: "Enhanced features for professional developers",
     features: [
+      "Everything in free plan",
       "Cloud encrypted backup",
       "Multi-device synchronization",
       "Configuration template library",
@@ -40,6 +41,7 @@ export const SUBSCRIPTION_PLANS = [
     icon: "👥",
     description: "Collaboration tools for development teams",
     features: [
+      "Everything in Pro plan",
       "Team configuration sharing",
       "Permission management",
       "Usage statistics & insights",

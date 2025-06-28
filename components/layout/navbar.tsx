@@ -61,8 +61,7 @@ export function Navbar() {
       external: true,
     },
     { href: "https://api.mcp-linker.store/api/docs", label: "Docs" },
-    { href: "/submit", label: "Submit" },
-    { href: "/teams", label: "Team" },
+    { href: "/servers/submit", label: "Submit" },
     { href: "/pricing", label: "Pricing" },
   ];
 
@@ -90,7 +89,7 @@ export function Navbar() {
               <UserNav />
             ) : (
               <Button variant="ghost" size="sm" asChild>
-                <Link href="/login">Log in</Link>
+                <Link href="/account/login">Log in</Link>
               </Button>
             )}
           </div>
@@ -130,7 +129,7 @@ export function Navbar() {
                 className="justify-start"
                 asChild
               >
-                <Link href="/login" onClick={() => setIsOpen(false)}>
+                <Link href="/account/login" onClick={() => setIsOpen(false)}>
                   Log in
                 </Link>
               </Button>

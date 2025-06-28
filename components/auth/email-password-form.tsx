@@ -45,7 +45,7 @@ export function EmailPasswordForm({
           <Label htmlFor="password">Password</Label>
           {isLogin && (
             <Link
-              href="/forgot-password"
+              href="/account/forgot-password"
               className="text-xs text-muted-foreground hover:text-primary"
             >
               Forgot password?

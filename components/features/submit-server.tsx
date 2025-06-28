@@ -19,7 +19,7 @@ export function SubmitSection() {
           className="px-8 py-3 rounded-lg text-lg font-medium bg-white dark:bg-gray-800 text-indigo-600 dark:text-indigo-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors shadow-md hover:shadow-lg"
           asChild
         >
-          <Link href="/submit">Submit Your Server</Link>
+          <Link href="/servers/submit">Submit Your Server</Link>
         </Button>
       </div>
     </section>

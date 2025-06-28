@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Heart, LogOut, Settings, Star, User } from "lucide-react";
+import { Heart, LogOut, Settings, Star, User, Users } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useSupabase } from "../providers/supabase-provider";
 
@@ -28,6 +28,35 @@ export function UserNav() {
 
   const user = session.user;
   const initials = user.email ? user.email.substring(0, 2).toUpperCase() : "U";
+
+  // Define menu items to avoid repetition
+  const menuItems = [
+    {
+      label: "Profile",
+      icon: User,
+      path: "/account/profile",
+    },
+    {
+      label: "Favorites",
+      icon: Heart,
+      path: "/favorites",
+    },
+    {
+      label: "My Servers",
+      icon: Star,
+      path: "/my-servers",
+    },
+    {
+      label: "Team",
+      icon: Users,
+      path: "/teams",
+    },
+    {
+      label: "Settings",
+      icon: Settings,
+      path: "/settings",
+    },
+  ];
 
   return (
     <DropdownMenu>
@@ -55,22 +84,13 @@ export function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem onClick={() => router.push("/profile")}>
-            <User className="mr-2 h-4 w-4" />
-            <span>Profile</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => router.push("/favorites")}>
-            <Heart className="mr-2 h-4 w-4" />
-            <span>Favorites</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => router.push("/my-servers")}>
-            <Star className="mr-2 h-4 w-4" />
-            <span>My Servers</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => router.push("/settings")}>
-            <Settings className="mr-2 h-4 w-4" />
-            <span>Settings</span>
-          </DropdownMenuItem>
+          {/* Render menu items dynamically */}
+          {menuItems.map(({ label, icon: Icon, path }) => (
+            <DropdownMenuItem key={label} onClick={() => router.push(path)}>
+              <Icon className="mr-2 h-4 w-4" />
+              <span>{label}</span>
+            </DropdownMenuItem>
+          ))}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignOut}>

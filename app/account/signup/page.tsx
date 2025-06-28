@@ -52,9 +52,9 @@ export default function SignupPage() {
             description: "Please complete your profile information.",
             variant: "default",
           });
-          router.push("/complete-profile");
+          router.push("/account/complete-profile");
         } else {
-          router.push("/login");
+          router.push("/account/login");
         }
       } else {
         // Session is null, meaning email verification is required
@@ -62,7 +62,7 @@ export default function SignupPage() {
           title: "Verification email sent",
           description: "Please check your email to verify your account.",
         });
-        router.push("/login");
+        router.push("/account/login");
       }
     } catch (error: any) {
       toast({
@@ -99,7 +99,7 @@ export default function SignupPage() {
           <div className="text-center text-sm text-muted-foreground mt-4">
             Already have an account?{" "}
             <Link
-              href="/login"
+              href="/account/login"
               className="text-primary underline-offset-4 hover:underline"
             >
               Login

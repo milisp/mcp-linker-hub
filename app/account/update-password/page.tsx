@@ -43,7 +43,7 @@ export default function UpdatePasswordPage() {
       });
       // Optionally redirect to login page after a short delay
       setTimeout(() => {
-        router.push("/login");
+        router.push("/account/login");
       }, 2000);
     } catch (error: any) {
       toast({
