@@ -13,7 +13,7 @@ export function ProjectHeroSection() {
     <span className="font-semibold text-blue-600 dark:text-blue-400">
       two clicks
     </span>
-    . Cross-platform. Tauri GUI. Server management included. Say
+    . Cross-platform. Tauri GUI. Team sync & server management included. Say
     goodbye to <strong>copy-paste</strong>, <strong>git clone</strong>
   </p>
 
@@ -82,6 +82,9 @@ export function ProjectHeroSection() {
     </span>
     <span className="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-sm font-medium rounded-full">
       No Skills Required
+    </span>
+    <span className="px-3 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 text-sm font-medium rounded-full">
+      Team Sync & Manage
     </span>
   </div>
 </div>

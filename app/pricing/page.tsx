@@ -25,6 +25,11 @@ export default function TiersPage() {
       className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800"
     >
       <div className="container mx-auto px-4 py-16">
+        <div className="mb-6 text-center">
+          <span className="inline-block rounded-full bg-yellow-100 text-yellow-800 text-sm px-4 py-1 font-medium">
+            🚀 Early Access Pricing — Lock in now before official launch
+          </span>
+        </div>
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-slate-50 mb-4">
@@ -65,12 +70,23 @@ export default function TiersPage() {
                   <span className="text-4xl font-bold text-slate-900 dark:text-slate-50">
                     {tier.price}
                   </span>
+                  {tier.originalPrice && (
+                    <div className="text-sm text-slate-500 dark:text-slate-400 line-through">
+                      {tier.originalPrice}
+                      {tier.period}
+                    </div>
+                  )}
                   {tier.period && (
                     <span className="text-slate-600 dark:text-slate-400 ml-1">
                       {tier.period}
                     </span>
                   )}
                 </div>
+                {tier.earlyAccess && (
+                  <span className="block text-xs text-yellow-600 dark:text-yellow-400 mt-1">
+                    Early Access Price
+                  </span>
+                )}
               </CardHeader>
 
               <CardContent className="pt-0">

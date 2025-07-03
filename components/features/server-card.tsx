@@ -55,7 +55,7 @@ export function ServerCard({ server }: ServerCardProps) {
               window.location.href = `mcp-linker://servers/${server.id}`;
             }}
           >
-            Install
+            Add
           </Button>
           <Link
             href={`/servers/${server.qualifiedName}`}

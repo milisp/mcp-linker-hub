@@ -28,14 +28,27 @@ export function ServerLinks({ server }: { server: ServerResponse }) {
     return () => clearInterval(interval);
   }, []);
 
+  const urlParams = new URLSearchParams(window.location.search);
+  const autoSubmitParam = urlParams.get("autoSubmit") === "true" ? "?autoSubmit=true" : "";
+  const protocolUrl = `mcp-linker://servers/${server.qualifiedName}${autoSubmitParam}`;
+
+  // Auto trigger deeplink if autoSubmit=true in URL
+  useEffect(() => {
+    if (urlParams.get("autoSubmit") === "true" && !isInstalling) {
+      setIsInstalling(true); // Set installing state to prevent multiple triggers
+      handleInstall();
+      setIsInstalling(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only run on mount
+
   const handleInstall = () => {
-    const protocolUrl = `mcp-linker://servers/${server.id}`;
-    const releaseUrl = `${server.source}/releases/latest`;
+    const releaseUrl = `https://github.com/milisp/mcp-linker/releases/latest`;
 
     const timeout = setTimeout(() => {
       // If user didn't switch apps, assume not installed
       window.open(releaseUrl, "_blank");
-    }, 1500);
+    }, 2500);
 
     // Try to open the protocol URL
     const iframe = document.createElement("iframe");
@@ -84,11 +97,11 @@ export function ServerLinks({ server }: { server: ServerResponse }) {
           </>
         ) : (
           <>
-            <Download className="h-4 w-4 animate-float" /> Install to{" "}
+            <Download className="h-4 w-4 animate-float" /> Add to{" "}
             {platforms[currentPlatformIndex]}
           </>
         )}
-      </Button>
+      </Button> {protocolUrl}
       {server.documentation && (
         <Link
           href={server.documentation}
