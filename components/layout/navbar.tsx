@@ -2,11 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Menu, X } from "lucide-react";
+import { Github, Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ModeToggle } from "../common/mode-toggle";
 import { useSupabase } from "../providers/supabase-provider";
 import { UserNav } from "./user-nav";
@@ -52,6 +52,7 @@ export function Navbar() {
   const { session } = useSupabase();
   const isMobile = useIsMobile();
   const [isOpen, setIsOpen] = useState(false);
+  const [starCount, setStarCount] = useState<number | null>(null);
 
   const links = [
     { href: "/servers", label: "Servers" },
@@ -64,6 +65,17 @@ export function Navbar() {
     { href: "/servers/submit", label: "Submit" },
     { href: "/pricing", label: "Pricing" },
   ];
+
+  useEffect(() => {
+    fetch("https://api.github.com/repos/milisp/mcp-linker")
+      .then((res) => res.json())
+      .then((data) => {
+        if (typeof data.stargazers_count === "number") {
+          setStarCount(data.stargazers_count);
+        }
+      })
+      .catch(() => setStarCount(null));
+  }, []);
 
   return (
     <header className="bg-white/10 backdrop-blur-md border-b border-white/10 sticky top-0 z-50">
@@ -93,6 +105,28 @@ export function Navbar() {
               </Button>
             )}
           </div>
+          <Button
+            asChild
+            variant="outline"
+            size="sm"
+          >
+            <a
+              href="https://github.com/milisp/mcp-linker"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Star us on GitHub"
+            >
+              <Github className="w-4 h-4" />
+              Star
+              {starCount !== null ? (
+                <span className="ml-1 px-1 py-0.5 bg-slate-100 dark:bg-slate-800 rounded text-xs font-mono">
+                  {starCount.toLocaleString()}
+                </span>
+              ) : (
+                <span className="ml-1 text-xs text-muted-foreground">...</span>
+              )}
+            </a>
+          </Button>
 
           <div className="flex md:hidden items-center gap-2">
             <ModeToggle />
@@ -134,6 +168,7 @@ export function Navbar() {
                 </Link>
               </Button>
             )}
+            {session && <ModeToggle />}
           </nav>
         )}
       </div>

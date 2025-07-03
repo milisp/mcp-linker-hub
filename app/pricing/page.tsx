@@ -139,20 +139,28 @@ export default function TiersPage() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                  <Button
-                    className="w-full"
-                    variant={tier.ctaVariant}
-                    size="lg"
-                  >
-                    {tier.ctaText}
-                  </Button>
+                    <Button
+                      className="w-full"
+                      variant={tier.ctaVariant}
+                      size="lg"
+                    >
+                      {tier.ctaText}
+                    </Button>
                   </a>
                 )}
               </CardContent>
             </Card>
           ))}
         </div>
-
+        {/* Contact Section */}
+        <section className="mt-12 text-center">
+          <p className="text-lg font-medium">Need something more custom?</p>
+          <Button variant="outline" size="lg" className="mt-2" asChild>
+            <a href="mailto:milisp@proton.me?subject=Enterprise Plan Inquiry">
+              Contact Us for Enterprise
+            </a>
+          </Button>
+        </section>
         <Faq />
         <CTA />
       </div>

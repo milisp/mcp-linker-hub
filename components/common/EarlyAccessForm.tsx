@@ -34,7 +34,9 @@ export function EarlyAccessForm({ onSuccess }: EarlyAccessFormProps) {
   }
 
   if (success) {
-    return <div className="text-green-600">Thank you for joining early access!</div>;
+    return (
+      <div className="text-green-600">Thank you for joining early access!</div>
+    );
   }
 
   return (
@@ -47,10 +49,14 @@ export function EarlyAccessForm({ onSuccess }: EarlyAccessFormProps) {
         placeholder="Enter your email"
         className="border rounded px-3 py-2"
       />
-      <button type="submit" disabled={loading} className="bg-blue-600 text-white rounded px-3 py-2">
+      <button
+        type="submit"
+        disabled={loading}
+        className="bg-blue-600 text-white rounded px-3 py-2"
+      >
         {loading ? "Submitting..." : "Join Early Access"}
       </button>
       {error && <div className="text-red-600 text-sm">{error}</div>}
     </form>
   );
-} 
+}

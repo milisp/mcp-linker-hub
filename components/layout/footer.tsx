@@ -1,3 +1,4 @@
+import { Mail } from "lucide-react";
 import Link from "next/link";
 
 export function Footer() {
@@ -17,7 +18,7 @@ export function Footer() {
     <footer className="bg-gray-800 text-white py-12 text-center">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-center space-x-6 mb-6">
-          {["Docs", "API", "Contact", "Privacy"].map((link) => (
+          {["Docs", "API", "Privacy"].map((link) => (
             <Link
               key={link}
               href={get_url(link)}
@@ -26,6 +27,14 @@ export function Footer() {
               {link}
             </Link>
           ))}
+          <a
+            href="mailto:milisp@proton.me"
+            className="flex items-center space-x-1 hover:text-blue-400 transition-colors"
+            title="Email us"
+          >
+            <Mail className="w-4 h-4" />
+            <span className="underline">Contact</span>
+          </a>
         </div>
         <p className="text-gray-500">
           &copy; {new Date().getFullYear()} MCP Linker Hub. Built for the AI

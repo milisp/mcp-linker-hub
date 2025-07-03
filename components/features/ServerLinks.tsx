@@ -29,7 +29,8 @@ export function ServerLinks({ server }: { server: ServerResponse }) {
   }, []);
 
   const urlParams = new URLSearchParams(window.location.search);
-  const autoSubmitParam = urlParams.get("autoSubmit") === "true" ? "?autoSubmit=true" : "";
+  const autoSubmitParam =
+    urlParams.get("autoSubmit") === "true" ? "?autoSubmit=true" : "";
   const protocolUrl = `mcp-linker://servers/${server.qualifiedName}${autoSubmitParam}`;
 
   // Auto trigger deeplink if autoSubmit=true in URL
@@ -101,7 +102,8 @@ export function ServerLinks({ server }: { server: ServerResponse }) {
             {platforms[currentPlatformIndex]}
           </>
         )}
-      </Button> {protocolUrl}
+      </Button>{" "}
+      {protocolUrl}
       {server.documentation && (
         <Link
           href={server.documentation}

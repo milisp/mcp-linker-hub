@@ -60,5 +60,5 @@ export const SUBSCRIPTION_PLANS = [
     popular: false,
     ctaText: "Start 7-day Free Trial",
     ctaVariant: "default" as const,
-  },
+  }
 ];
