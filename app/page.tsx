@@ -23,29 +23,40 @@ export default function Home() {
         {/* Hero Section - Project Introduction */}
         <ProjectHeroSection />
 
-        <div className="my-8 flex justify-center flex-col items-center gap-6">
-          <EarlyAccessForm />
-          <div className="flex items-center gap-4">
-            <div className="h-px bg-gray-300 dark:bg-gray-600 w-12"></div>
-            <span className="text-sm text-gray-500 dark:text-gray-400">or</span>
-            <div className="h-px bg-gray-300 dark:bg-gray-600 w-12"></div>
-          </div>
-          <div className="flex gap-2 items-center">
+        {/* Main CTA Section - Focus on Pro/Team */}
+        <div className="my-12 flex justify-center flex-col items-center gap-8">
+          {/* Primary CTA - Pro/Team Trial */}
+          <div className="text-center">
+            <h2 className="text-xl font-semibold mb-4">
+              Ready to unlock advanced features?
+            </h2>
             <a
               href="/pricing"
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-200 hover:scale-105"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-lg font-medium hover:shadow-lg transition-all duration-200 hover:scale-105 text-lg"
             >
               <span>🚀</span>
               Start 7-Day Pro or Team Trial
             </a>
-            or
-            <a
-              href="https://github.com/milisp/mcp-linker/releases"
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-200 hover:scale-105"
-            >
-              <span>🚀</span>
-              Download and try - No Credit Card Needed
-            </a>
+            <p className="text-sm text-gray-500 mt-2">
+              No credit card required
+            </p>
+          </div>
+
+          {/* Secondary Options */}
+          <div className="flex items-center gap-4 mt-4">
+            <div className="h-px bg-gray-300 dark:bg-gray-600 w-16"></div>
+            <span className="text-sm text-gray-500 dark:text-gray-400">or</span>
+            <div className="h-px bg-gray-300 dark:bg-gray-600 w-16"></div>
+          </div>
+
+          <div className="flex gap-4 items-center flex-wrap justify-center">
+            {/* Move Early Access to bottom with clear explanation */}
+            <div className="text-center">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                Want to be notified about new features?
+              </p>
+              <EarlyAccessForm />
+            </div>
           </div>
         </div>
 

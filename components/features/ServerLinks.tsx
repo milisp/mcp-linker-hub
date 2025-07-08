@@ -4,10 +4,16 @@ import { Button } from "@/components/ui/button";
 import { ServerResponse } from "@/types";
 import { Download, ExternalLink, Github } from "lucide-react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export function ServerLinks({ server }: { server: ServerResponse }) {
   const [isInstalling, setIsInstalling] = useState(false);
+
+  const searchParams = useSearchParams();
+  const autoSubmitParam =
+    searchParams.get("autoSubmit") === "true" ? "?autoSubmit=true" : "";
+  const protocolUrl = `mcp-linker://servers/${server.qualifiedName}${autoSubmitParam}`;
 
   const platforms = [
     "Claude Desktop",
@@ -28,14 +34,9 @@ export function ServerLinks({ server }: { server: ServerResponse }) {
     return () => clearInterval(interval);
   }, []);
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const autoSubmitParam =
-    urlParams.get("autoSubmit") === "true" ? "?autoSubmit=true" : "";
-  const protocolUrl = `mcp-linker://servers/${server.qualifiedName}${autoSubmitParam}`;
-
   // Auto trigger deeplink if autoSubmit=true in URL
   useEffect(() => {
-    if (urlParams.get("autoSubmit") === "true" && !isInstalling) {
+    if (searchParams.get("autoSubmit") === "true" && !isInstalling) {
       setIsInstalling(true); // Set installing state to prevent multiple triggers
       handleInstall();
       setIsInstalling(false);
@@ -49,13 +50,15 @@ export function ServerLinks({ server }: { server: ServerResponse }) {
     const timeout = setTimeout(() => {
       // If user didn't switch apps, assume not installed
       window.open(releaseUrl, "_blank");
-    }, 2500);
+    }, 3000);
 
     // Try to open the protocol URL
     const iframe = document.createElement("iframe");
     iframe.style.display = "none";
     iframe.src = protocolUrl;
     document.body.appendChild(iframe);
+
+    console.log(protocolUrl);
 
     // Clean up
     window.addEventListener(

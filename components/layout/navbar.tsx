@@ -105,11 +105,7 @@ export function Navbar() {
               </Button>
             )}
           </div>
-          <Button
-            asChild
-            variant="outline"
-            size="sm"
-          >
+          <Button asChild variant="outline" size="sm">
             <a
               href="https://github.com/milisp/mcp-linker"
               target="_blank"

@@ -35,28 +35,38 @@ export function EarlyAccessForm({ onSuccess }: EarlyAccessFormProps) {
 
   if (success) {
     return (
-      <div className="text-green-600">Thank you for joining early access!</div>
+      <div className="text-green-600 text-center">
+        <div className="text-lg">✅ You're on the list!</div>
+        <div className="text-sm mt-1">
+          We'll notify you when new features are available
+        </div>
+      </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2 max-w-sm">
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-        placeholder="Enter your email"
-        className="border rounded px-3 py-2"
-      />
-      <button
-        type="submit"
-        disabled={loading}
-        className="bg-blue-600 text-white rounded px-3 py-2"
-      >
-        {loading ? "Submitting..." : "Join Early Access"}
-      </button>
-      {error && <div className="text-red-600 text-sm">{error}</div>}
-    </form>
+    <div className="text-center">
+      <form onSubmit={handleSubmit} className="flex gap-2 max-w-sm mx-auto">
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          placeholder="Enter your email"
+          className="border rounded px-3 py-2 flex-1"
+        />
+        <button
+          type="submit"
+          disabled={loading}
+          className="bg-gray-600 text-white rounded px-4 py-2 hover:bg-gray-700 transition-colors"
+        >
+          {loading ? "..." : "Notify Me"}
+        </button>
+      </form>
+      <p className="text-xs text-gray-500 mt-2">
+        Get notified about new features and updates (not for Pro/Team trials)
+      </p>
+      {error && <div className="text-red-600 text-sm mt-2">{error}</div>}
+    </div>
   );
 }
