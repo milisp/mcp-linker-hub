@@ -1,9 +1,9 @@
 import {
-  EarlyAccessForm,
   ImageCarousel,
-  QuickStartGuide,
+  QuickStartGuide
 } from "@/components/common";
 import { NewsList } from "@/components/common/NewsList";
+import { EarlyAccessFeedBackForm } from "@/components/EarlyAccessFeedback";
 import { SubmitSection } from "@/components/features/submit-server";
 import { FeaturedServers } from "@/components/sections";
 import { FeaturesSection } from "@/components/sections/FeaturesSection";
@@ -22,9 +22,10 @@ export default function Home() {
       <div className="relative z-10">
         {/* Hero Section - Project Introduction */}
         <ProjectHeroSection />
+        <ImageCarousel />
 
         {/* Main CTA Section - Focus on Pro/Team */}
-        <div className="my-12 flex justify-center flex-col items-center gap-8">
+        <div className="flex justify-center flex-col items-center gap-8">
           {/* Primary CTA - Pro/Team Trial */}
           <div className="text-center">
             <h2 className="text-xl font-semibold mb-4">
@@ -37,30 +38,22 @@ export default function Home() {
               <span>🚀</span>
               Start 7-Day Pro or Team Trial
             </a>
-            <p className="text-sm text-gray-500 mt-2">
+            <p className="text-sm text-black-500 mt-2">
               No credit card required
             </p>
           </div>
 
-          {/* Secondary Options */}
-          <div className="flex items-center gap-4 mt-4">
-            <div className="h-px bg-gray-300 dark:bg-gray-600 w-16"></div>
-            <span className="text-sm text-gray-500 dark:text-gray-400">or</span>
-            <div className="h-px bg-gray-300 dark:bg-gray-600 w-16"></div>
-          </div>
-
-          <div className="flex gap-4 items-center flex-wrap justify-center">
-            {/* Move Early Access to bottom with clear explanation */}
-            <div className="text-center">
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                Want to be notified about new features?
-              </p>
-              <EarlyAccessForm />
-            </div>
-          </div>
+          <div className="w-full max-w-md bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-md">
+          <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-2 text-center">
+            💡 Tell us what you need
+          </h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 text-center">
+            What’s stopping you from trying Pro or Team now? What features do you want?
+          </p>
+          <EarlyAccessFeedBackForm />
+        </div>
         </div>
 
-        <ImageCarousel />
 
         <WhyMCPLinkerSection />
         <NewsList />

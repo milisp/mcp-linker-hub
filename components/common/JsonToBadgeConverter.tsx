@@ -6,7 +6,9 @@ interface JsonToBadgeConverterProps {
   autoSubmitParam: string;
 }
 
-export default function JsonToBadgeConverter({ autoSubmitParam }: JsonToBadgeConverterProps) {
+export default function JsonToBadgeConverter({
+  autoSubmitParam,
+}: JsonToBadgeConverterProps) {
   // State for textarea input and base64 output
   const [jsonInput, setJsonInput] = useState("");
   const [base64Output, setBase64Output] = useState("");
@@ -44,7 +46,9 @@ export default function JsonToBadgeConverter({ autoSubmitParam }: JsonToBadgeCon
       setServerName(extractedServerName);
       // Convert to base64
       const base64 = btoa(JSON.stringify(obj));
-      setBase64Output(`<a href="${location.origin}/install-app?name=${extractedServerName}&config=${base64}">\n          <img src="https://img.shields.io/badge/mcp-linker-add-%F0%9F%94%8D%20Click%20Here-blue?logo=link&style=for-the-badge" alt="mcp-linker-add" />\n        </a>`);
+      setBase64Output(
+        `<a href="${location.origin}/install-app?name=${extractedServerName}&config=${base64}">\n          <img src="https://img.shields.io/badge/mcp-linker-add-%F0%9F%94%8D%20Click%20Here-blue?logo=link&style=for-the-badge" alt="mcp-linker-add" />\n        </a>`,
+      );
       setJsonError("");
     } catch (err) {
       setBase64Output("");
@@ -64,7 +68,7 @@ export default function JsonToBadgeConverter({ autoSubmitParam }: JsonToBadgeCon
           className="w-full font-mono text-sm border-gray-300 focus:border-blue-500 focus:ring-blue-500 rounded pr-10"
           placeholder="Enter JSON here"
           value={jsonInput}
-          onChange={e => {
+          onChange={(e) => {
             setJsonInput(e.target.value);
             handleJsonInputChange(e);
           }}
@@ -77,7 +81,9 @@ export default function JsonToBadgeConverter({ autoSubmitParam }: JsonToBadgeCon
             try {
               const text = await navigator.clipboard.readText();
               setJsonInput(text);
-              handleJsonInputChange({ target: { value: text } } as React.ChangeEvent<HTMLTextAreaElement>);
+              handleJsonInputChange({
+                target: { value: text },
+              } as React.ChangeEvent<HTMLTextAreaElement>);
             } catch (err) {
               // Clipboard API error
             }
@@ -87,9 +93,7 @@ export default function JsonToBadgeConverter({ autoSubmitParam }: JsonToBadgeCon
           <ClipboardPaste className="w-5 h-5 text-gray-500" />
         </button>
       </div>
-      {jsonError && (
-        <div className="text-red-600 font-medium">{jsonError}</div>
-      )}
+      {jsonError && <div className="text-red-600 font-medium">{jsonError}</div>}
       {base64Output && (
         <div className="mb-2 flex items-center gap-2">
           {/* Preview badge as image */}
@@ -129,4 +133,4 @@ export default function JsonToBadgeConverter({ autoSubmitParam }: JsonToBadgeCon
       )}
     </div>
   );
-} 
+}

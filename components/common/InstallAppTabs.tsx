@@ -19,20 +19,28 @@ export default function InstallAppTabs({
   decodeError,
 }: InstallAppTabsProps) {
   const searchParams = useSearchParams();
-  const serverName = searchParams.get("name") ?? ""
+  const serverName = searchParams.get("name") ?? "";
 
   return (
     <Tabs defaultValue="open" className="w-full">
       <TabsList className="flex gap-2">
-        <TabsTrigger className="w-full" value="open">Open</TabsTrigger>
-        <TabsTrigger className="w-full" value="make">Make</TabsTrigger>
+        <TabsTrigger className="w-full" value="open">
+          Open
+        </TabsTrigger>
+        <TabsTrigger className="w-full" value="make">
+          Make
+        </TabsTrigger>
       </TabsList>
       <TabsContent value="open">
         <div className="text-2xl font-bold text-gray-800">
           Add mcp server to selected mcp client
         </div>
         {/* Button to open deeplink in a new tab */}
-        <Button onClick={() => window.open(deeplink, '_blank', 'noopener,noreferrer')}>mcp-linker-add</Button>
+        <Button
+          onClick={() => window.open(deeplink, "_blank", "noopener,noreferrer")}
+        >
+          mcp-linker-add
+        </Button>
         <div className="mb-4">
           <a
             href={deeplink}
@@ -46,9 +54,7 @@ export default function InstallAppTabs({
         {/* Show decoded configParam as JSON if available */}
         {serverName && configParam && (
           <div className="bg-gray-100 rounded-lg p-4">
-            <h3 className="text-lg font-semibold mb-2">
-              Decoded configParam
-            </h3>
+            <h3 className="text-lg font-semibold mb-2">Decoded configParam</h3>
             {decodeError ? (
               <div className="text-red-600 font-medium">{decodeError}</div>
             ) : (
@@ -64,4 +70,4 @@ export default function InstallAppTabs({
       </TabsContent>
     </Tabs>
   );
-} 
+}

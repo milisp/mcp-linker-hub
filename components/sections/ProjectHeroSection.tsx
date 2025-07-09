@@ -1,7 +1,7 @@
 import { Download, Github } from "lucide-react";
 export function ProjectHeroSection() {
   return (
-    <section className="px-6 py-0 max-w-5xl mx-auto text-center">
+    <section className="px-6 py-2 max-w-5xl mx-auto text-center">
       <div className="bg-white/60 dark:bg-gray-900/60 backdrop-blur-sm rounded-2xl p-8 border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
         <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent mb-4">
           MCP Linker
