@@ -1,5 +1,7 @@
+import { useSupabase } from "@/components/providers/supabase-provider";
 import { Button } from "@/components/ui";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { logDeeplinkClick } from "@/lib/utils"; // Import shared logDeeplinkClick
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import BadgeMaker from "./BadgeMaker";
@@ -22,6 +24,7 @@ export default function InstallAppTabs({
   const searchParams = useSearchParams();
   const serverName = searchParams.get("name") ?? "";
   const [tab, setTab] = useState("open"); // Add state for tab value
+  const { supabase } = useSupabase();
 
   return (
     <Tabs
@@ -45,9 +48,19 @@ export default function InstallAppTabs({
         {/* Button to open deeplink in a new tab */}
         {deeplink ? (
           <Button
-            onClick={() =>
-              window.open(deeplink, "_blank", "noopener,noreferrer")
-            }
+            onClick={() => {
+              window.open(deeplink, "_blank", "noopener,noreferrer");
+              logDeeplinkClick({
+                supabase,
+                repo: undefined,
+                name: serverName,
+                config: configParam || undefined,
+                autoSubmit: autoSubmitParam === "&autoSubmit=true",
+                source: "manual",
+              }).catch((err) => {
+                console.error("Failed to log deeplink click:", err);
+              });
+            }}
           >
             mcp-linker-add
           </Button>
