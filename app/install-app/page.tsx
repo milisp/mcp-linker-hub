@@ -25,10 +25,12 @@ export default function InstallApp() {
   useEffect(() => {
     if (repo) {
       setDeeplink(`mcp-linker://install-app?repo=${repo}${autoSubmitParam}`);
-    } else {
+    } else if (serverName && configParam) {
       setDeeplink(
         `mcp-linker://install-app?name=${serverName}&config=${configParam}${autoSubmitParam}`,
       );
+      // Automatically open the deeplink after setting it
+      window.location.href = `mcp-linker://install-app?name=${serverName}&config=${configParam}${autoSubmitParam}`;
     }
   }, []);
 
@@ -136,7 +138,7 @@ export default function InstallApp() {
       <div className="w-full max-w-5xl bg-white shadow-lg rounded-xl p-8 space-y-8">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold text-gray-800">
-            MCP Linker Deeplink
+            MCP Linker Deeplink and badge maker
           </h1>
         </div>
         <InstallAppTabs

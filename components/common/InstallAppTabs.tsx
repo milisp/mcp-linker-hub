@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSearchParams } from "next/navigation";
-import JsonToBadgeConverter from "./JsonToBadgeConverter";
+import { useState } from "react";
+import BadgeMaker from "./BadgeMaker";
 
 interface InstallAppTabsProps {
   deeplink: string;
@@ -20,9 +21,15 @@ export default function InstallAppTabs({
 }: InstallAppTabsProps) {
   const searchParams = useSearchParams();
   const serverName = searchParams.get("name") ?? "";
+  const [tab, setTab] = useState("open"); // Add state for tab value
 
   return (
-    <Tabs defaultValue="open" className="w-full">
+    <Tabs
+      value={tab}
+      onValueChange={setTab}
+      defaultValue="open"
+      className="w-full"
+    >
       <TabsList className="flex gap-2">
         <TabsTrigger className="w-full" value="open">
           Open
@@ -36,11 +43,17 @@ export default function InstallAppTabs({
           Add mcp server to selected mcp client
         </div>
         {/* Button to open deeplink in a new tab */}
-        <Button
-          onClick={() => window.open(deeplink, "_blank", "noopener,noreferrer")}
-        >
-          mcp-linker-add
-        </Button>
+        {deeplink ? (
+          <Button
+            onClick={() =>
+              window.open(deeplink, "_blank", "noopener,noreferrer")
+            }
+          >
+            mcp-linker-add
+          </Button>
+        ) : (
+          <Button onClick={() => setTab("make")}>make my badge</Button>
+        )}
         <div className="mb-4">
           <a
             href={deeplink}
@@ -66,7 +79,7 @@ export default function InstallAppTabs({
         )}
       </TabsContent>
       <TabsContent value="make">
-        <JsonToBadgeConverter autoSubmitParam={autoSubmitParam} />
+        <BadgeMaker />
       </TabsContent>
     </Tabs>
   );

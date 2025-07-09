@@ -1,19 +1,18 @@
+"use client";
+
 import { Textarea } from "@/components/ui";
+import { Switch } from "@/components/ui/switch";
 import { ClipboardPaste, Copy } from "lucide-react";
 import { useState } from "react";
 
-interface JsonToBadgeConverterProps {
-  autoSubmitParam: string;
-}
-
-export default function JsonToBadgeConverter({
-  autoSubmitParam,
-}: JsonToBadgeConverterProps) {
+export default function JsonToBadgeConverter() {
   // State for textarea input and base64 output
   const [jsonInput, setJsonInput] = useState("");
   const [base64Output, setBase64Output] = useState("");
   const [jsonError, setJsonError] = useState("");
   const [serverName, setServerName] = useState<string>("");
+  // State for autoSubmit param
+  const [autoSubmit, setAutoSubmit] = useState(false);
 
   // Handle textarea change and JSON to badge conversion
   const handleJsonInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -46,8 +45,10 @@ export default function JsonToBadgeConverter({
       setServerName(extractedServerName);
       // Convert to base64
       const base64 = btoa(JSON.stringify(obj));
+      // Add autoSubmit param if enabled
+      const autoSubmitParam = autoSubmit ? "&autoSubmit=true" : "";
       setBase64Output(
-        `<a href="${location.origin}/install-app?name=${extractedServerName}&config=${base64}">\n          <img src="https://img.shields.io/badge/mcp-linker-add-%F0%9F%94%8D%20Click%20Here-blue?logo=link&style=for-the-badge" alt="mcp-linker-add" />\n        </a>`,
+        `<a href="${location.origin}/install-app?name=${extractedServerName}${autoSubmitParam}&config=${base64}">\n          <img src="https://img.shields.io/badge/mcp-linker-add-%F0%9F%94%8D%20Click%20Here-blue?logo=link&style=for-the-badge" alt="mcp-linker-add" />\n        </a>`,
       );
       setJsonError("");
     } catch (err) {
@@ -56,6 +57,26 @@ export default function JsonToBadgeConverter({
       setServerName("");
     }
   };
+
+  const example = `{
+  "mcpServers": {
+    "blender": {
+      "command": "uvx",
+      "args": [
+        "blender-mcp"
+      ]
+    }
+  }
+}`;
+  const example2 = `{
+  "sequential-thinking": {
+    "command": "npx"
+    "args": [
+      "-y",
+      "@modelcontextprotocol/server-sequential-thinking"
+    ]
+  }
+}`;
 
   return (
     <div className="bg-gray-100 rounded-lg p-4 flex flex-col gap-4">
@@ -66,7 +87,7 @@ export default function JsonToBadgeConverter({
         <Textarea
           rows={12}
           className="w-full font-mono text-sm border-gray-300 focus:border-blue-500 focus:ring-blue-500 rounded pr-10"
-          placeholder="Enter JSON here"
+          placeholder="Enter mcp config JSON here"
           value={jsonInput}
           onChange={(e) => {
             setJsonInput(e.target.value);
@@ -98,7 +119,7 @@ export default function JsonToBadgeConverter({
         <div className="mb-2 flex items-center gap-2">
           {/* Preview badge as image */}
           <a
-            href={`/install-app?name=${serverName}${autoSubmitParam}&config=${btoa(jsonInput)}`}
+            href={`/install-app?name=${serverName}${autoSubmit ? "&autoSubmit=true" : ""}&config=${btoa(jsonInput)}`}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -108,11 +129,21 @@ export default function JsonToBadgeConverter({
               className="h-8"
             />
           </a>
+          autoSubmit
+          {/* Switch to control autoSubmit param */}
+          <Switch checked={autoSubmit} onCheckedChange={setAutoSubmit} />
         </div>
       )}
       {base64Output && (
         <div className="relative w-full">
-          <Textarea rows={8} value={base64Output} readOnly className="pr-10" />
+          <Textarea
+            rows={8}
+            value={`<a href="${location.origin}/install-app?name=${serverName}${autoSubmit ? "&autoSubmit=true" : ""}&config=${btoa(jsonInput)}">
+          <img src="https://img.shields.io/badge/mcp-linker-add-%F0%9F%94%8D%20Click%20Here-blue?logo=link&style=for-the-badge" alt="mcp-linker-add" />
+        </a>`}
+            readOnly
+            className="pr-10"
+          />
           {/* Copy button for base64 output */}
           <button
             type="button"
@@ -131,6 +162,25 @@ export default function JsonToBadgeConverter({
           </button>
         </div>
       )}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <span className="text-sm font-medium text-gray-700">
+            Example mcp config
+          </span>
+          <pre className="bg-gray-50 rounded p-3 text-xs font-mono border border-gray-200 overflow-x-auto">
+            {example}
+          </pre>
+        </div>
+        <div>
+          <span className="text-sm font-medium text-gray-700">
+            Example2 mcp config
+          </span>
+          <pre className="bg-gray-50 rounded p-3 text-xs font-mono border border-gray-200 overflow-x-auto">
+            {example2}
+          </pre>
+        </div>
+      </div>
     </div>
   );
 }

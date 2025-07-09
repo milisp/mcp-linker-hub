@@ -6,6 +6,7 @@ import { NewsList } from "@/components/common/NewsList";
 import { EarlyAccessFeedBackForm } from "@/components/EarlyAccessFeedback";
 import { SubmitSection } from "@/components/features/submit-server";
 import { FeaturedServers } from "@/components/sections";
+import { BadgeMakerSection } from "@/components/sections/BadgeMakerSection";
 import { FeaturesSection } from "@/components/sections/FeaturesSection";
 import { ProjectHeroSection } from "@/components/sections/ProjectHeroSection";
 import { WhyMCPLinkerSection } from "@/components/sections/Why";
@@ -23,6 +24,7 @@ export default function Home() {
         {/* Hero Section - Project Introduction */}
         <ProjectHeroSection />
         <ImageCarousel />
+        <BadgeMakerSection />
 
         {/* Main CTA Section - Focus on Pro/Team */}
         <div className="flex justify-center flex-col items-center gap-8">
@@ -53,7 +55,6 @@ export default function Home() {
           <EarlyAccessFeedBackForm />
         </div>
         </div>
-
 
         <WhyMCPLinkerSection />
         <NewsList />

@@ -9,18 +9,27 @@ const FeedbackSchema = z.object({
   email: z.string().email(),
   usage: z.string().min(10, "Please provide more detailed feedback"),
   intent: z.enum(["solo", "team_pro", "enterprise"], {
-    errorMap: () => ({ message: "Please select how you plan to use MCP-Linker" }),
+    errorMap: () => ({
+      message: "Please select how you plan to use MCP-Linker",
+    }),
   }),
-  source: z.enum(["github", "reddit", "ai", "twitter", "search", "friend", "other"], {
-    errorMap: () => ({ message: "Please tell us where you heard about MCP-Linker" }),
-  }),
+  source: z.enum(
+    ["github", "reddit", "ai", "twitter", "search", "friend", "other"],
+    {
+      errorMap: () => ({
+        message: "Please tell us where you heard about MCP-Linker",
+      }),
+    },
+  ),
 });
 
 interface EarlyAccessFeedBackFormProps {
   onSuccess?: () => void;
 }
 
-export function EarlyAccessFeedBackForm({ onSuccess }: EarlyAccessFeedBackFormProps) {
+export function EarlyAccessFeedBackForm({
+  onSuccess,
+}: EarlyAccessFeedBackFormProps) {
   const { supabase } = useSupabase();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
@@ -80,7 +89,11 @@ export function EarlyAccessFeedBackForm({ onSuccess }: EarlyAccessFeedBackFormPr
     return (
       <div className="flex flex-col items-center justify-center py-6">
         <div className="text-2xl text-green-600 mb-2">🎉 Thank you!</div>
-        <div className="text-base text-gray-700 dark:text-gray-200">You're on the list!<br/>We'll notify you when new features are available.</div>
+        <div className="text-base text-gray-700 dark:text-gray-200">
+          You're on the list!
+          <br />
+          We'll notify you when new features are available.
+        </div>
       </div>
     );
   }
@@ -99,7 +112,9 @@ export function EarlyAccessFeedBackForm({ onSuccess }: EarlyAccessFeedBackFormPr
           <option value="enterprise">Enterprise or large team</option>
         </select>
         {errorMap.intent && (
-          <div className="text-red-600 text-xs -mt-3 mb-1">{errorMap.intent}</div>
+          <div className="text-red-600 text-xs -mt-3 mb-1">
+            {errorMap.intent}
+          </div>
         )}
         <select
           value={source}
@@ -116,7 +131,9 @@ export function EarlyAccessFeedBackForm({ onSuccess }: EarlyAccessFeedBackFormPr
           <option value="other">Other</option>
         </select>
         {errorMap.source && (
-          <div className="text-red-600 text-xs -mt-3 mb-1">{errorMap.source}</div>
+          <div className="text-red-600 text-xs -mt-3 mb-1">
+            {errorMap.source}
+          </div>
         )}
         <Textarea
           name="usage"
@@ -126,7 +143,9 @@ export function EarlyAccessFeedBackForm({ onSuccess }: EarlyAccessFeedBackFormPr
           className="resize-none min-h-[60px]"
         />
         {errorMap.usage && (
-          <div className="text-red-600 text-xs -mt-3 mb-1">{errorMap.usage}</div>
+          <div className="text-red-600 text-xs -mt-3 mb-1">
+            {errorMap.usage}
+          </div>
         )}
         <input
           type="email"
@@ -137,7 +156,9 @@ export function EarlyAccessFeedBackForm({ onSuccess }: EarlyAccessFeedBackFormPr
           className="border border-gray-300 dark:border-gray-700 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
         />
         {errorMap.email && (
-          <div className="text-red-600 text-xs -mt-3 mb-1">{errorMap.email}</div>
+          <div className="text-red-600 text-xs -mt-3 mb-1">
+            {errorMap.email}
+          </div>
         )}
         <button
           type="submit"
@@ -147,7 +168,9 @@ export function EarlyAccessFeedBackForm({ onSuccess }: EarlyAccessFeedBackFormPr
           {loading ? "Submitting..." : "Submit Feedback"}
         </button>
       </form>
-      {error && <div className="text-red-600 text-sm mt-4 text-center">❌ {error}</div>}
+      {error && (
+        <div className="text-red-600 text-sm mt-4 text-center">❌ {error}</div>
+      )}
     </div>
   );
 }
