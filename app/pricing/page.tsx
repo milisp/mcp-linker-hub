@@ -1,3 +1,5 @@
+"use client"
+
 import { CTA, Faq } from "@/components/tiers";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -8,17 +10,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { SUBSCRIPTION_PLANS } from "@/lib/plans";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ANNUAL_SUBSCRIPTION_PLANS, SUBSCRIPTION_PLANS } from "@/lib/plans";
 import { CheckCircle2 } from "lucide-react";
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Pricing Tiers - MCP Linker Hub",
-  description:
-    "Choose the perfect plan for your MCP server management needs. From free open-source to enterprise solutions.",
-};
+import { useState } from "react";
 
 export default function TiersPage() {
+  // State for tab selection
+  const [tab, setTab] = useState("monthly");
+
+  // Select plans based on tab
+  const plans = tab === "annual" ? ANNUAL_SUBSCRIPTION_PLANS : SUBSCRIPTION_PLANS;
+
   return (
     <main
       id="main-content"
@@ -41,9 +44,17 @@ export default function TiersPage() {
           </p>
         </div>
 
+        {/* Pricing Tabs */}
+        <Tabs value={tab} onValueChange={setTab} defaultValue="monthly" className="mb-8">
+          <TabsList className="flex justify-center gap-4">
+            <TabsTrigger value="monthly">Monthly</TabsTrigger>
+            <TabsTrigger value="annual">Annual (-20%)</TabsTrigger>
+          </TabsList>
+        </Tabs>
+
         {/* Pricing Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-          {SUBSCRIPTION_PLANS.map((tier, index) => (
+          {plans.map((tier, index) => (
             <Card
               key={tier.name}
               className={`relative transition-all duration-300 hover:shadow-xl ${
@@ -70,16 +81,16 @@ export default function TiersPage() {
                   <span className="text-4xl font-bold text-slate-900 dark:text-slate-50">
                     {tier.price}
                   </span>
+                  {tier.period && (
+                    <span className="text-slate-600 dark:text-slate-400 ml-1">
+                      {tier.period}
+                    </span>
+                  )}
                   {tier.originalPrice && (
                     <div className="text-sm text-slate-500 dark:text-slate-400 line-through">
                       {tier.originalPrice}
                       {tier.period}
                     </div>
-                  )}
-                  {tier.period && (
-                    <span className="text-slate-600 dark:text-slate-400 ml-1">
-                      {tier.period}
-                    </span>
                   )}
                 </div>
                 {tier.earlyAccess && (
@@ -100,12 +111,27 @@ export default function TiersPage() {
                     </li>
                   ))}
                 </ul>
-
+                {/* Show trial button for paid plans */}
+                {tier.name !== "Open Source" && 
+                  <a
+                    href="https://github.com/milisp/mcp-linker/releases"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Button
+                      className="w-full mb-2"
+                      variant={tier.ctaVariant}
+                    >
+                      Get 14-day free from App
+                    </Button>
+                  </a>
+                }
+                {/* CTA button logic remains the same */}
                 {tier.name === "Professional" ? (
                   <a
                     href={
                       process.env.NEXT_PUBLIC_POLAR_ENVIRONMENT === "production"
-                        ? "https://buy.polar.sh/polar_cl_PJb89mnkRzbGgJ1xpuvvUn3HU8kdrqhudvhYv110mOX"
+                        ? tab === "annual" ? "https://buy.polar.sh/polar_cl_VUbETUofhLdRWNV2yoNvp3RCQy5aewbCeC8bf1vD81G" : "https://buy.polar.sh/polar_cl_PJb89mnkRzbGgJ1xpuvvUn3HU8kdrqhudvhYv110mOX" 
                         : "https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_5QvMHlN5hLZsJxEZydKoVZUX1Tb8unnUUzAiZ1IdmcU/redirect"
                     }
                     target="_blank"
@@ -135,7 +161,7 @@ export default function TiersPage() {
                   </a>
                 ) : (
                   <a
-                    href="https://buy.polar.sh/polar_cl_Kp5TMFDbWfloIl45KlGuOHULyUJ24E8WXjf1b0C3O9D"
+                    href={tab === "annual" ? "https://buy.polar.sh/polar_cl_wzcIiFNw9qcGFQdI5Yxri6f7u1gTzdTTk2Ugd1cBgAI" :  "https://buy.polar.sh/polar_cl_Kp5TMFDbWfloIl45KlGuOHULyUJ24E8WXjf1b0C3O9D"}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
