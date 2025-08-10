@@ -6,9 +6,9 @@ import { z } from "zod";
 import { Textarea } from "./ui";
 
 const FeedbackSchema = z.object({
-  email: z.string().email(),
+  email: z.string().email().optional(),
   usage: z.string().min(10, "Please provide more detailed feedback"),
-  intent: z.enum(["solo", "team_pro", "enterprise"], {
+  intent: z.enum(["free", "solo", "team_pro", "enterprise"], {
     errorMap: () => ({
       message: "Please select how you plan to use MCP-Linker",
     }),
@@ -107,6 +107,7 @@ export function EarlyAccessFeedBackForm({
           className="border border-gray-300 dark:border-gray-700 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
         >
           <option value="">How do you plan to use MCP-Linker?</option>
+          <option value="free">Just for myself (free)</option>
           <option value="solo">Just for myself (Pro)</option>
           <option value="team_pro">For a team</option>
           <option value="enterprise">Enterprise or large team</option>
@@ -137,7 +138,7 @@ export function EarlyAccessFeedBackForm({
         )}
         <Textarea
           name="usage"
-          placeholder="What features do you want or what stops you from trying Pro/Team? (required)"
+          placeholder="features request or feedback (required)"
           value={formData}
           onChange={(e) => setFormData(e.target.value)}
           className="resize-none min-h-[60px]"
@@ -151,8 +152,7 @@ export function EarlyAccessFeedBackForm({
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
-          placeholder="Your email (required for feedback)"
+          placeholder="Your email (option for feedback)"
           className="border border-gray-300 dark:border-gray-700 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
         />
         {errorMap.email && (
