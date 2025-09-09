@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ANNUAL_SUBSCRIPTION_PLANS, SUBSCRIPTION_PLANS } from "@/lib/plans";
+import { ANNUAL_SUBSCRIPTION_PLANS, LIFETIME_PLANS, SUBSCRIPTION_PLANS, type Plan } from "@/lib/plans";
 import { CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 
@@ -20,7 +20,12 @@ export default function TiersPage() {
   const [tab, setTab] = useState("monthly");
 
   // Select plans based on tab
-  const plans = tab === "annual" ? ANNUAL_SUBSCRIPTION_PLANS : SUBSCRIPTION_PLANS;
+  const plans: Plan[] =
+    tab === "annual"
+      ? ANNUAL_SUBSCRIPTION_PLANS
+      : tab === "lifetime"
+      ? LIFETIME_PLANS
+      : SUBSCRIPTION_PLANS;
 
   return (
     <main
@@ -49,6 +54,7 @@ export default function TiersPage() {
           <TabsList className="flex justify-center gap-4">
             <TabsTrigger value="monthly">Monthly</TabsTrigger>
             <TabsTrigger value="annual">Annual (-20%)</TabsTrigger>
+            <TabsTrigger value="lifetime">Lifetime</TabsTrigger>
           </TabsList>
         </Tabs>
 
@@ -111,8 +117,8 @@ export default function TiersPage() {
                     </li>
                   ))}
                 </ul>
-                {/* Show trial button for paid plans */}
-                {tier.name !== "Open Source" && 
+                {/* Show trial button for paid plans (exclude Lifetime) */}
+                {tier.name !== "Open Source" && tier.name !== "Lifetime" && 
                   <a
                     href="https://github.com/milisp/mcp-linker/releases"
                     target="_blank"
@@ -127,13 +133,9 @@ export default function TiersPage() {
                   </a>
                 }
                 {/* CTA button logic remains the same */}
-                {tier.name === "Professional" ? (
+                {tier.name === "Lifetime" ? (
                   <a
-                    href={
-                      process.env.NEXT_PUBLIC_POLAR_ENVIRONMENT === "production"
-                        ? tab === "annual" ? "https://buy.polar.sh/polar_cl_VUbETUofhLdRWNV2yoNvp3RCQy5aewbCeC8bf1vD81G" : "https://buy.polar.sh/polar_cl_PJb89mnkRzbGgJ1xpuvvUn3HU8kdrqhudvhYv110mOX" 
-                        : "https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_5QvMHlN5hLZsJxEZydKoVZUX1Tb8unnUUzAiZ1IdmcU/redirect"
-                    }
+                    href="https://buy.polar.sh/polar_cl_7P6ZeE0DtWrLrlWLzljS3xqMgsRa7YGB4Ie650kBWM3"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -145,6 +147,24 @@ export default function TiersPage() {
                       {tier.ctaText}
                     </Button>
                   </a>
+                ) : tier.name === "Professional" ? (
+                  <a
+                    href={
+                      process.env.NEXT_PUBLIC_POLAR_ENVIRONMENT === "production"
+                        ? tab === "annual" ? "https://buy.polar.sh/polar_cl_VUbETUofhLdRWNV2yoNvp3RCQy5aewbCeC8bf1vD81G" : "https://buy.polar.sh/polar_cl_PJb89mnkRzbGgJ1xpuvvUn3HU8kdrqhudvhYv110mOX" 
+                        : "https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_5QvMHlN5hLZsJxEZydKoVZUX1Tb8unnUUzAiZ1IdmcU/redirect"
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button
+                    className="w-full"
+                    variant={tier.ctaVariant}
+                    size="lg"
+                  >
+                    {tier.ctaText}
+                  </Button>
+                </a>
                 ) : tier.name === "Open Source" ? (
                   <a
                     href="https://github.com/milisp/mcp-linker/releases/latest"

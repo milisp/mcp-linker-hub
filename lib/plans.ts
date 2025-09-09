@@ -1,4 +1,18 @@
-export const SUBSCRIPTION_PLANS = [
+export type Plan = {
+  name: string;
+  price: string;
+  icon: string;
+  description: string;
+  features: string[];
+  earlyAccess: boolean;
+  popular: boolean;
+  ctaText: string;
+  ctaVariant: "default" | "outline";
+  period?: string;
+  originalPrice?: string;
+};
+
+export const SUBSCRIPTION_PLANS: Plan[] = [
   {
     name: "Open Source",
     price: "Free",
@@ -59,9 +73,8 @@ export const SUBSCRIPTION_PLANS = [
   },
 ];
 
-export 
 // Add annual plans (hardcoded for now)
-const ANNUAL_SUBSCRIPTION_PLANS = [
+export const ANNUAL_SUBSCRIPTION_PLANS: Plan[] = [
   {
     name: "Open Source",
     price: "Free",
@@ -118,6 +131,31 @@ const ANNUAL_SUBSCRIPTION_PLANS = [
     earlyAccess: true,
     popular: false,
     ctaText: "Start Team paid Plan",
+    ctaVariant: "default" as const,
+  },
+];
+
+// Lifetime one-time purchase plan
+export const LIFETIME_PLANS: Plan[] = [
+  {
+    name: "Lifetime",
+    price: "$29",
+    icon: "♾️",
+    description:
+      "Unlock all advanced local features of MCP-Linker forever with a one-time license, verified via your GitHub or Google account:",
+    features: [
+      "Local MCP configuration management on your machine",
+      "Enable or disable servers instantly",
+      "Advanced server management for effortless control",
+      "One-click integration with Claude Code and Desktop, Cursor, Windsurf, VS Code, Cline, Neovim, and more",
+      "Recently Used server lists for quick access",
+      "Account-based verification (no license key needed)",
+      "Priority support",
+      "Advanced analytics",
+    ],
+    earlyAccess: false,
+    popular: false,
+    ctaText: "Buy Lifetime",
     ctaVariant: "default" as const,
   },
 ];
