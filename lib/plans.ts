@@ -12,20 +12,40 @@ export type Plan = {
   originalPrice?: string;
 };
 
+const planFeatures = {
+  free: [
+    "Only Client Claude Desktop",
+    "Basic configuration management",
+    "Local storage",
+    "Community support",
+    "Access to open-source code",
+  ],
+  pro: [
+    "Everything in free plan",
+    "Sync between Clients",
+    "Cloud encrypted backup",
+    "Multi-device synchronization",
+    "Priority support",
+  ],
+  team: [
+    "Everything in Pro plan",
+    "Team configuration sharing",
+    "Permission management",
+    "Team collaboration tools",
+    "Admin dashboard",
+    "24/7 priority support",
+    "Custom integrations",
+    "Advanced security features",
+  ]
+}
+
 export const SUBSCRIPTION_PLANS: Plan[] = [
   {
     name: "Open Source",
     price: "Free",
     icon: "🆓",
     description: "Perfect for individual developers getting started",
-    features: [
-      "Free for all local usage",
-      "Unlimited clients",
-      "Basic configuration management",
-      "Local storage",
-      "Community support",
-      "Access to open-source code",
-    ],
+    features: planFeatures.free,
     earlyAccess: false,
     popular: false,
     ctaText: "Get Started",
@@ -33,17 +53,12 @@ export const SUBSCRIPTION_PLANS: Plan[] = [
   },
   {
     name: "Professional",
-    price: "$4.9",
+    price: "$19.9",
     originalPrice: "$29",
     period: "/month",
     icon: "💼",
     description: "Enhanced features for professional developers",
-    features: [
-      "Everything in free plan",
-      "Cloud encrypted backup",
-      "Multi-device synchronization",
-      "Priority support",
-    ],
+    features: planFeatures.pro,
     earlyAccess: true,
     popular: true,
     ctaText: "Start Professional paid Plan",
@@ -56,16 +71,7 @@ export const SUBSCRIPTION_PLANS: Plan[] = [
     period: "/month",
     icon: "👥",
     description: "Collaboration tools for development teams",
-    features: [
-      "Everything in Pro plan",
-      "Team configuration sharing",
-      "Permission management",
-      "Team collaboration tools",
-      "Admin dashboard",
-      "24/7 priority support",
-      "Custom integrations",
-      "Advanced security features",
-    ],
+    features: planFeatures.team,
     earlyAccess: true,
     popular: false,
     ctaText: "Start Team paid Plan",
@@ -80,14 +86,7 @@ export const ANNUAL_SUBSCRIPTION_PLANS: Plan[] = [
     price: "Free",
     icon: "🆓",
     description: "Perfect for individual developers getting started",
-    features: [
-      "Free for all local usage",
-      "Unlimited clients",
-      "Basic configuration management",
-      "Local storage",
-      "Community support",
-      "Access to open-source code",
-    ],
+    features: planFeatures.free,
     earlyAccess: false,
     popular: false,
     ctaText: "Get Started",
@@ -95,17 +94,12 @@ export const ANNUAL_SUBSCRIPTION_PLANS: Plan[] = [
   },
   {
     name: "Professional",
-    price: "$47",
+    price: "$207",
     originalPrice: "$348",
     period: "/year",
     icon: "💼",
     description: "Enhanced features for professional developers",
-    features: [
-      "Everything in free plan",
-      "Cloud encrypted backup",
-      "Multi-device synchronization",
-      "Priority support",
-    ],
+    features: planFeatures.pro,
     earlyAccess: true,
     popular: true,
     ctaText: "Start Professional paid Plan",
@@ -113,21 +107,12 @@ export const ANNUAL_SUBSCRIPTION_PLANS: Plan[] = [
   },
   {
     name: "Team",
-    price: "$278",
+    price: "$888",
     originalPrice: "$1188",
     period: "/year",
     icon: "👥",
     description: "Collaboration tools for development teams",
-    features: [
-      "Everything in Pro plan",
-      "Team configuration sharing",
-      "Permission management",
-      "Team collaboration tools",
-      "Admin dashboard",
-      "24/7 priority support",
-      "Custom integrations",
-      "Advanced security features",
-    ],
+    features: planFeatures.team,
     earlyAccess: true,
     popular: false,
     ctaText: "Start Team paid Plan",
@@ -139,12 +124,13 @@ export const ANNUAL_SUBSCRIPTION_PLANS: Plan[] = [
 export const LIFETIME_PLANS: Plan[] = [
   {
     name: "Lifetime",
-    price: "$29",
+    price: "$299",
     icon: "♾️",
     description:
       "Unlock all advanced local features of MCP-Linker forever with a one-time license, verified via your GitHub or Google account:",
     features: [
       "Local MCP configuration management on your machine",
+      "Sync between Clients",
       "Enable or disable servers instantly",
       "Advanced server management for effortless control",
       "One-click integration with Claude Code and Desktop, Cursor, Windsurf, VS Code, Cline, Neovim, and more",

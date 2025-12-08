@@ -63,7 +63,7 @@ export default function TiersPage() {
         >
           <TabsList className="flex justify-center gap-4">
             <TabsTrigger value="monthly">Monthly</TabsTrigger>
-            <TabsTrigger value="annual">Annual (-20%)</TabsTrigger>
+            <TabsTrigger value="annual">Annual</TabsTrigger>
             <TabsTrigger value="lifetime">Lifetime</TabsTrigger>
           </TabsList>
         </Tabs>
