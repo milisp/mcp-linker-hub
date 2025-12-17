@@ -22,7 +22,7 @@ import { useState } from "react";
 
 export default function TiersPage() {
   // State for tab selection
-  const [tab, setTab] = useState("monthly");
+  const [tab, setTab] = useState("lifetime");
 
   // Select plans based on tab
   const plans: Plan[] =
@@ -58,13 +58,13 @@ export default function TiersPage() {
         <Tabs
           value={tab}
           onValueChange={setTab}
-          defaultValue="monthly"
+          defaultValue="lifetime"
           className="mb-8"
         >
           <TabsList className="flex justify-center gap-4">
+            <TabsTrigger value="lifetime">Lifetime</TabsTrigger>
             <TabsTrigger value="monthly">Monthly</TabsTrigger>
             <TabsTrigger value="annual">Annual</TabsTrigger>
-            <TabsTrigger value="lifetime">Lifetime</TabsTrigger>
           </TabsList>
         </Tabs>
 
@@ -127,8 +127,10 @@ export default function TiersPage() {
                     </li>
                   ))}
                 </ul>
-                {/* Show trial button for paid plans (exclude Lifetime) */}
-                {tier.name !== "Open Source" && tier.name !== "Lifetime" && (
+                {/* Show trial button for paid plans (exclude Lifetime plans) */}
+                {tier.name !== "Open Source" &&
+                 tier.name !== "Lifetime Basic" &&
+                 tier.name !== "Lifetime Pro" && (
                   <a
                     href="https://github.com/milisp/mcp-linker/releases"
                     target="_blank"
@@ -139,8 +141,26 @@ export default function TiersPage() {
                     </Button>
                   </a>
                 )}
-                {/* CTA button logic remains the same */}
-                {tier.name === "Lifetime" ? (
+                {/* CTA button logic for different plan types */}
+                {tier.name === "Lifetime Basic" ? (
+                  <a
+                    href={
+                      process.env.NEXT_PUBLIC_POLAR_ENVIRONMENT === "production"
+                        ? "https://buy.polar.sh/polar_cl_LIFETIME_BASIC_PROD_URL_HERE"
+                        : "https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_LIFETIME_BASIC_SANDBOX_URL_HERE/redirect"
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Button
+                      className="w-full"
+                      variant={tier.ctaVariant}
+                      size="lg"
+                    >
+                      {tier.ctaText}
+                    </Button>
+                  </a>
+                ) : tier.name === "Lifetime Pro" ? (
                   <a
                     href={
                       process.env.NEXT_PUBLIC_POLAR_ENVIRONMENT === "production"
