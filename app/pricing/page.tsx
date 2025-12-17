@@ -146,7 +146,7 @@ export default function TiersPage() {
                   <a
                     href={
                       process.env.NEXT_PUBLIC_POLAR_ENVIRONMENT === "production"
-                        ? "https://buy.polar.sh/polar_cl_LIFETIME_BASIC_PROD_URL_HERE"
+                        ? "https://buy.polar.sh/polar_cl_7P6ZeE0DtWrLrlWLzljS3xqMgsRa7YGB4Ie650kBWM3"
                         : "https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_LIFETIME_BASIC_SANDBOX_URL_HERE/redirect"
                     }
                     target="_blank"
@@ -164,8 +164,8 @@ export default function TiersPage() {
                   <a
                     href={
                       process.env.NEXT_PUBLIC_POLAR_ENVIRONMENT === "production"
-                        ? "https://buy.polar.sh/polar_cl_7P6ZeE0DtWrLrlWLzljS3xqMgsRa7YGB4Ie650kBWM3"
-                        : "https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_s6ISF00Z5EWhRsnowjMDQrsEWhv5tBgrrqotP1JzSc4/redirect"
+                        ? "https://buy.polar.sh/polar_cl_3lIXfxomFvmVvGKYjFzAUxrVvYKd06Z3Nza1d3QMqou"
+                        : "https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_1QzUF7EDhrtXdPMCZiyG4pyJ7PG1y666aPc6o0le60P/redirect"
                     }
                     target="_blank"
                     rel="noopener noreferrer"
