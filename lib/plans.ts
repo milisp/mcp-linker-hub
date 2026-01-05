@@ -154,8 +154,8 @@ export const LIFETIME_PLANS: Plan[] = [
   },
   {
     name: "Lifetime Basic",
-    price: "$19",
-    originalPrice: "$39",
+    price: "$99",
+    originalPrice: "$199",
     icon: "⚡",
     description: "One-time payment for all standard AI clients",
     features: planFeatures.lifetimeBasic,
@@ -166,8 +166,8 @@ export const LIFETIME_PLANS: Plan[] = [
   },
   {
     name: "Lifetime Pro",
-    price: "$49",
-    originalPrice: "$79",
+    price: "$199",
+    originalPrice: "$299",
     icon: "♾️",
     description: "One-time payment for ALL clients including advanced ones",
     features: planFeatures.lifetimePro,

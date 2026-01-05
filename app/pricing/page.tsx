@@ -68,6 +68,29 @@ export default function TiersPage() {
           </TabsList>
         </Tabs>
 
+        {/* Student Notice */}
+        <div className="mb-8 mx-auto max-w-3xl">
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950 dark:to-indigo-950 border-2 border-blue-200 dark:border-blue-800 rounded-lg p-6 text-center">
+            <div className="text-3xl mb-2">🎓</div>
+            <h3 className="text-xl font-bold text-slate-900 dark:text-slate-50 mb-2">
+              Students Get Free Access!
+            </h3>
+            <p className="text-slate-700 dark:text-slate-300">
+              Register with your <strong>.edu email</strong> to unlock all local features for free -
+              including all clients, advanced sync, and configuration management. No credit card required!
+            </p>
+            <a
+              href="https://github.com/milisp/mcp-linker/releases"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button className="w-full mb-2">
+                Signup with .edu email
+              </Button>
+            </a>
+          </div>
+        </div>
+
         {/* Pricing Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {plans.map((tier, index) => (
