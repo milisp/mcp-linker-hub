@@ -1,6 +1,7 @@
 "use client";
 
 import { CTA, Faq } from "@/components/tiers";
+import { useSupabase } from "@/components/providers/supabase-provider";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,11 +19,22 @@ import {
   type Plan,
 } from "@/lib/plans";
 import { CheckCircle2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function TiersPage() {
+  const { session } = useSupabase();
+  const router = useRouter();
   // State for tab selection
   const [tab, setTab] = useState("lifetime");
+
+  function handleCheckout(url: string) {
+    if (!session) {
+      router.push("/account/login?redirect=/pricing");
+      return;
+    }
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
 
   // Select plans based on tab
   const plans: Plan[] =
@@ -166,61 +178,52 @@ export default function TiersPage() {
                 )}
                 {/* CTA button logic for different plan types */}
                 {tier.name === "Lifetime Basic" ? (
-                  <a
-                    href={
-                      process.env.NEXT_PUBLIC_POLAR_ENVIRONMENT === "production"
-                        ? "https://buy.polar.sh/polar_cl_7P6ZeE0DtWrLrlWLzljS3xqMgsRa7YGB4Ie650kBWM3"
-                        : "https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_LIFETIME_BASIC_SANDBOX_URL_HERE/redirect"
+                  <Button
+                    className="w-full"
+                    variant={tier.ctaVariant}
+                    size="lg"
+                    onClick={() =>
+                      handleCheckout(
+                        process.env.NEXT_PUBLIC_POLAR_ENVIRONMENT === "production"
+                          ? "https://buy.polar.sh/polar_cl_7P6ZeE0DtWrLrlWLzljS3xqMgsRa7YGB4Ie650kBWM3"
+                          : "https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_LIFETIME_BASIC_SANDBOX_URL_HERE/redirect"
+                      )
                     }
-                    target="_blank"
-                    rel="noopener noreferrer"
                   >
-                    <Button
-                      className="w-full"
-                      variant={tier.ctaVariant}
-                      size="lg"
-                    >
-                      {tier.ctaText}
-                    </Button>
-                  </a>
+                    {tier.ctaText}
+                  </Button>
                 ) : tier.name === "Lifetime Pro" ? (
-                  <a
-                    href={
-                      process.env.NEXT_PUBLIC_POLAR_ENVIRONMENT === "production"
-                        ? "https://buy.polar.sh/polar_cl_3lIXfxomFvmVvGKYjFzAUxrVvYKd06Z3Nza1d3QMqou"
-                        : "https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_1QzUF7EDhrtXdPMCZiyG4pyJ7PG1y666aPc6o0le60P/redirect"
+                  <Button
+                    className="w-full"
+                    variant={tier.ctaVariant}
+                    size="lg"
+                    onClick={() =>
+                      handleCheckout(
+                        process.env.NEXT_PUBLIC_POLAR_ENVIRONMENT === "production"
+                          ? "https://buy.polar.sh/polar_cl_3lIXfxomFvmVvGKYjFzAUxrVvYKd06Z3Nza1d3QMqou"
+                          : "https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_1QzUF7EDhrtXdPMCZiyG4pyJ7PG1y666aPc6o0le60P/redirect"
+                      )
                     }
-                    target="_blank"
-                    rel="noopener noreferrer"
                   >
-                    <Button
-                      className="w-full"
-                      variant={tier.ctaVariant}
-                      size="lg"
-                    >
-                      {tier.ctaText}
-                    </Button>
-                  </a>
+                    {tier.ctaText}
+                  </Button>
                 ) : tier.name === "Professional" ? (
-                  <a
-                    href={
-                      process.env.NEXT_PUBLIC_POLAR_ENVIRONMENT === "production"
-                        ? tab === "annual"
-                          ? "https://buy.polar.sh/polar_cl_VUbETUofhLdRWNV2yoNvp3RCQy5aewbCeC8bf1vD81G"
-                          : "https://buy.polar.sh/polar_cl_PJb89mnkRzbGgJ1xpuvvUn3HU8kdrqhudvhYv110mOX"
-                        : "https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_5QvMHlN5hLZsJxEZydKoVZUX1Tb8unnUUzAiZ1IdmcU/redirect"
+                  <Button
+                    className="w-full"
+                    variant={tier.ctaVariant}
+                    size="lg"
+                    onClick={() =>
+                      handleCheckout(
+                        process.env.NEXT_PUBLIC_POLAR_ENVIRONMENT === "production"
+                          ? tab === "annual"
+                            ? "https://buy.polar.sh/polar_cl_VUbETUofhLdRWNV2yoNvp3RCQy5aewbCeC8bf1vD81G"
+                            : "https://buy.polar.sh/polar_cl_PJb89mnkRzbGgJ1xpuvvUn3HU8kdrqhudvhYv110mOX"
+                          : "https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_5QvMHlN5hLZsJxEZydKoVZUX1Tb8unnUUzAiZ1IdmcU/redirect"
+                      )
                     }
-                    target="_blank"
-                    rel="noopener noreferrer"
                   >
-                    <Button
-                      className="w-full"
-                      variant={tier.ctaVariant}
-                      size="lg"
-                    >
-                      {tier.ctaText}
-                    </Button>
-                  </a>
+                    {tier.ctaText}
+                  </Button>
                 ) : tier.name === "Open Source" ? (
                   <a
                     href="https://github.com/milisp/mcp-linker/releases/latest"
@@ -236,23 +239,20 @@ export default function TiersPage() {
                     </Button>
                   </a>
                 ) : (
-                  <a
-                    href={
-                      tab === "annual"
-                        ? "https://buy.polar.sh/polar_cl_wzcIiFNw9qcGFQdI5Yxri6f7u1gTzdTTk2Ugd1cBgAI"
-                        : "https://buy.polar.sh/polar_cl_Kp5TMFDbWfloIl45KlGuOHULyUJ24E8WXjf1b0C3O9D"
+                  <Button
+                    className="w-full"
+                    variant={tier.ctaVariant}
+                    size="lg"
+                    onClick={() =>
+                      handleCheckout(
+                        tab === "annual"
+                          ? "https://buy.polar.sh/polar_cl_wzcIiFNw9qcGFQdI5Yxri6f7u1gTzdTTk2Ugd1cBgAI"
+                          : "https://buy.polar.sh/polar_cl_Kp5TMFDbWfloIl45KlGuOHULyUJ24E8WXjf1b0C3O9D"
+                      )
                     }
-                    target="_blank"
-                    rel="noopener noreferrer"
                   >
-                    <Button
-                      className="w-full"
-                      variant={tier.ctaVariant}
-                      size="lg"
-                    >
-                      {tier.ctaText}
-                    </Button>
-                  </a>
+                    {tier.ctaText}
+                  </Button>
                 )}
               </CardContent>
             </Card>
