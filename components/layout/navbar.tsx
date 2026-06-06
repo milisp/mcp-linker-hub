@@ -27,19 +27,18 @@ const NavLink = ({
   const pathname = usePathname();
   const linkProps = external
     ? {
-        target: "_blank",
-        rel: "noopener noreferrer",
-      }
+      target: "_blank",
+      rel: "noopener noreferrer",
+    }
     : {};
 
   return (
     <Link
       href={href}
-      className={`rounded-md px-3 py-2 transition-colors ${
-        pathname === href
+      className={`rounded-md px-3 py-2 transition-colors ${pathname === href
           ? "text-primary bg-slate-200 dark:bg-slate-800"
           : "hover:text-primary hover:bg-slate-100 dark:hover:bg-slate-800/50"
-      } ${className}`}
+        } ${className}`}
       onClick={onClick}
       {...linkProps}
     >
@@ -61,7 +60,7 @@ export function Navbar() {
       label: "Download",
       external: true,
     },
-    { href: "https://api.mcp-linker.store/api/docs", label: "Docs" },
+    { href: "https://api.mcp-linker.dev/api/docs", label: "Docs" },
     { href: "/servers/submit", label: "Submit" },
     { href: "/pricing", label: "Pricing" },
   ];
