@@ -2,6 +2,7 @@ import { Footer, Navbar } from "@/components/layout";
 import { SupabaseProvider } from "@/components/providers/supabase-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
+import { SITE_URL } from "@/lib/site";
 import { Inter } from "next/font/google";
 import type React from "react";
 import "./globals.css";
@@ -9,7 +10,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  metadataBase: new URL("https://www.mcp-linker.store"),
+  metadataBase: new URL(SITE_URL),
+  alternates: { canonical: "./" },
   title: "MCP Linker Hub - MCP Servers Discovery Platform",
   icons: {
     icon: "/favicon.ico",
