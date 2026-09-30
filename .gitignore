@@ -27,3 +27,15 @@ yarn-error.log*
 next-env.d.ts
 
 /.vscode
+
+# Local persistent state and security reports
+/data/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+/security-reports/
+/.venv-mcp-security/
+/mcp-security-report.json
+__pycache__/
+*.pyc
+!.env.example

@@ -1,6 +1,7 @@
 "use client";
 
-import { useSupabase } from "@/components/providers/supabase-provider";
+import { authClient } from "@/lib/auth-client";
+import { useAuth } from "@/components/providers/auth-provider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,32 +11,17 @@ import React, { useEffect, useState } from "react";
 
 export default function ProfilePage() {
   const router = useRouter();
-  const { supabase } = useSupabase();
+  const { session } = useAuth();
   const { toast } = useToast();
   const [username, setUsername] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (user && user.user_metadata.user_name) {
-        // If user already has a username, redirect them away from profile page
-        router.push("/");
-      }
-    };
-    fetchUser();
-  }, [supabase, router]);
 
   const handleUsernameUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      const { data, error } = await supabase.auth.updateUser({
-        data: { user_name: username },
-      });
+      const { error } = await authClient.updateUser({ name: username });
 
       if (error) {
         throw error;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useSupabase } from "@/components/providers/supabase-provider";
+import { useAuth } from "@/components/providers/auth-provider";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,7 +18,7 @@ import { useEffect, useState } from "react";
 
 export default function MyMemberships() {
   const api = useAuthedApi();
-  const { session } = useSupabase();
+  const { session } = useAuth();
   const [memberships, setMemberships] = useState<
     TeamMembershipResponse["memberships"]
   >([]);
@@ -59,10 +59,10 @@ export default function MyMemberships() {
   };
 
   useEffect(() => {
-    if (session?.access_token) {
+    if (session?.user.id) {
       fetchMyMemberships();
     }
-  }, [session?.access_token]);
+  }, [session?.user.id]);
 
   return (
     <main className="bg-white rounded-t-3xl min-h-[60vh] py-8 mt-8">

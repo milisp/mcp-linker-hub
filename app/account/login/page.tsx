@@ -4,7 +4,7 @@ import type React from "react";
 
 import { OAuthButtons, handleOAuthLogin } from "@/components/auth";
 import { EmailPasswordForm } from "@/components/auth/email-password-form";
-import { useSupabase } from "@/components/providers/supabase-provider";
+import { authClient } from "@/lib/auth-client";
 import {
   Card,
   CardContent,
@@ -22,7 +22,6 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { supabase } = useSupabase();
   const { toast } = useToast();
   const router = useRouter();
 
@@ -31,63 +30,19 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) {
-        throw error;
-      }
-
-      toast({
-        title: "Login successful",
-        description: "You have been logged in successfully.",
-      });
-
-      router.push("/");
+      const { error } = await authClient.signIn.email({ email, password });
+      if (error) throw error;
+      const redirect = new URLSearchParams(window.location.search).get(
+        "redirect",
+      );
+      router.push(
+        redirect === "/hosting" || redirect === "/pricing" ? redirect : "/",
+      );
       router.refresh();
-      // Fetch user data after successful login
-      const { data: userData, error: userError } =
-        await supabase.auth.getUser();
-
-      if (userError) {
-        throw userError;
-      }
-
-      if (userData.user && !userData.user.user_metadata.username) {
-        toast({
-          title: "Profile incomplete",
-          description: "Please complete your profile information.",
-          variant: "default",
-        });
-        router.push("/account/complete-profile");
-      }
     } catch (error: any) {
-      let errorMessage = "Failed to log in. Please try again.";
-      let errorTitle = "Login failed";
-
-      // Handle specific error cases
-      if (error.message?.includes("Email not confirmed")) {
-        errorTitle = "Email verification required";
-        errorMessage =
-          "Please check your email and click the verification link before logging in.";
-      } else if (error.message?.includes("Invalid login credentials")) {
-        errorMessage =
-          "Invalid email or password. Please check your credentials and try again.";
-      } else if (error.message?.includes("Too many requests")) {
-        errorMessage =
-          "Too many login attempts. Please wait a moment before trying again.";
-      } else if (error.status === 400) {
-        // Generic 400 error - could be unverified email or other issues
-        errorTitle = "Account verification required";
-        errorMessage =
-          "Your account may need verification. Please check your email for verification instructions, or contact support if you continue having issues.";
-      }
-
       toast({
-        title: errorTitle,
-        description: errorMessage,
+        title: "Login failed",
+        description: error.message || "Unable to log in. Please try again.",
         variant: "destructive",
       });
     } finally {

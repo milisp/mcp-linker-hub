@@ -1,5 +1,5 @@
 import { Footer, Navbar } from "@/components/layout";
-import { SupabaseProvider } from "@/components/providers/supabase-provider";
+import { AuthProvider } from "@/components/providers/auth-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { SITE_URL } from "@/lib/site";
@@ -55,12 +55,23 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <SupabaseProvider>
+          <AuthProvider
+            socialProviders={[
+              ...(process.env.GITHUB_CLIENT_ID &&
+              process.env.GITHUB_CLIENT_SECRET
+                ? ["github"]
+                : []),
+              ...(process.env.GOOGLE_CLIENT_ID &&
+              process.env.GOOGLE_CLIENT_SECRET
+                ? ["google"]
+                : []),
+            ]}
+          >
             <Navbar />
             {children}
             <Footer />
             <Toaster />
-          </SupabaseProvider>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useSupabase } from "@/components/providers/supabase-provider";
+import { useAuth } from "@/components/providers/auth-provider";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
@@ -18,7 +18,7 @@ export default function TeamMembers({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
-  const { session } = useSupabase();
+  const { session } = useAuth();
   const api = useAuthedApi();
   const [members, setMembers] = useState<TeamMember[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -206,10 +206,10 @@ export default function TeamMembers({
   ];
 
   useEffect(() => {
-    if (session?.access_token) {
+    if (session?.user.id) {
       fetchTeamMembers();
     }
-  }, [session?.access_token]);
+  }, [session?.user.id]);
 
   return (
     <main className="bg-white rounded-t-3xl min-h-[60vh] py-8 mt-8">

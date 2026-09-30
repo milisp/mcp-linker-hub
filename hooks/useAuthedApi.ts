@@ -1,4 +1,3 @@
-import { useSupabase } from "@/components/providers/supabase-provider";
 import { api } from "@/lib/api";
 import { useCallback } from "react";
 
@@ -22,52 +21,34 @@ type ApiMethods = {
 };
 
 export function useAuthedApi(): ApiMethods {
-  const { getAccessToken } = useSupabase();
-
-  const get = useCallback(
-    async <T>(url: string, options?: RequestOptions) => {
-      const token = await getAccessToken();
-      if (!token) throw new Error("No access token available");
-      return api.get<T>(url, undefined, options, token);
-    },
-    [getAccessToken],
-  );
+  const get = useCallback(async <T>(url: string, options?: RequestOptions) => {
+    return api.get<T>(url, undefined, options);
+  }, []);
 
   const post = useCallback(
     async <T>(url: string, data?: any, options?: RequestOptions) => {
-      const token = await getAccessToken();
-      if (!token) throw new Error("No access token available");
-      return api.post<T>(url, data, options, token);
+      return api.post<T>(url, data, options);
     },
-    [getAccessToken],
+    [],
   );
 
   const put = useCallback(
     async <T>(url: string, data?: any, options?: RequestOptions) => {
-      const token = await getAccessToken();
-      if (!token) throw new Error("No access token available");
-      return api.put<T>(url, data, options, token);
+      return api.put<T>(url, data, options);
     },
-    [getAccessToken],
+    [],
   );
 
   const patch = useCallback(
     async <T>(url: string, data?: any, options?: RequestOptions) => {
-      const token = await getAccessToken();
-      if (!token) throw new Error("No access token available");
-      return api.patch<T>(url, data, options, token);
+      return api.patch<T>(url, data, options);
     },
-    [getAccessToken],
+    [],
   );
 
-  const del = useCallback(
-    async <T>(url: string, options?: RequestOptions) => {
-      const token = await getAccessToken();
-      if (!token) throw new Error("No access token available");
-      return api.delete<T>(url, undefined, options, token);
-    },
-    [getAccessToken],
-  );
+  const del = useCallback(async <T>(url: string, options?: RequestOptions) => {
+    return api.delete<T>(url, undefined, options);
+  }, []);
 
   return { get, post, put, patch, delete: del };
 }

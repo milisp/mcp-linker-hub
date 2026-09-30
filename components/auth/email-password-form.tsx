@@ -58,6 +58,8 @@ export function EmailPasswordForm({
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          minLength={isLogin ? undefined : 12}
+          autoComplete={isLogin ? "current-password" : "new-password"}
         />
       </div>
       <Button type="submit" className="w-full" disabled={isLoading}>

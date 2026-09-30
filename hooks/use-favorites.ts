@@ -1,4 +1,4 @@
-import { useSupabase } from "@/components/providers/supabase-provider";
+import { useAuth } from "@/components/providers/auth-provider";
 import { useToast } from "@/hooks/use-toast";
 import { api } from "@/lib/api";
 import { userApi } from "@/lib/api/user-api";
@@ -12,12 +12,11 @@ const favoriteStatusKey = (serverId: string) => `favorite-status-${serverId}`;
 
 // Custom SWR hook for favorites list
 export function useFavorites() {
-  const { session } = useSupabase();
+  const { session } = useAuth();
 
   const { data, error, isLoading } = useSWR(
-    session?.access_token ? [FAVORITES_KEY, session.access_token] : null,
-    ([_, token]) =>
-      api.get<ServerResponse[]>("/servers/favorites/", undefined, {}, token),
+    session ? [FAVORITES_KEY, session.user.id] : null,
+    () => api.get<ServerResponse[]>("/servers/favorites/", undefined, {}),
     {
       onSuccess: (data) => {
         // Sync with Zustand store
@@ -36,14 +35,14 @@ export function useFavorites() {
 
 // Custom SWR hook for checking favorite status
 export function useFavoriteStatus(serverId: string) {
-  const { getAccessToken } = useSupabase();
+  const { session } = useAuth();
 
   const { data, error, isLoading } = useSWR(
-    serverId ? [favoriteStatusKey(serverId), serverId] : null,
+    serverId ? [favoriteStatusKey(serverId), serverId, session?.user.id] : null,
     async ([_, id]) => {
-      const token = await getAccessToken();
+      const token = session?.user.id;
       if (!token) return { isFavorited: false };
-      return userApi.checkFavorite(id, token);
+      return userApi.checkFavorite(id);
     },
   );
 
@@ -56,7 +55,7 @@ export function useFavoriteStatus(serverId: string) {
 
 // Custom hook for favorite mutations
 export function useFavoriteMutations() {
-  const { getAccessToken } = useSupabase();
+  const { session } = useAuth();
   const { toast } = useToast();
   const { addFavorite, removeFavorite } = useFavoriteStore();
 
@@ -65,7 +64,7 @@ export function useFavoriteMutations() {
     currentStatus: boolean,
   ) => {
     try {
-      const token = await getAccessToken();
+      const token = session?.user.id;
       if (!token) {
         toast({
           title: "Authentication required",
@@ -76,7 +75,11 @@ export function useFavoriteMutations() {
       }
 
       // Use the same key format as in useFavoriteStatus (array key)
-      const statusKey = [favoriteStatusKey(server.id), server.id];
+      const statusKey = [
+        favoriteStatusKey(server.id),
+        server.id,
+        session?.user.id,
+      ];
       const newStatus = !currentStatus;
 
       // Optimistic update
@@ -84,7 +87,7 @@ export function useFavoriteMutations() {
 
       if (currentStatus) {
         // Remove from favorites
-        const result = await userApi.removeFavorite(server.id, token);
+        const result = await userApi.removeFavorite(server.id);
         removeFavorite(server.id);
 
         toast({
@@ -99,7 +102,7 @@ export function useFavoriteMutations() {
         return result.isFavorited;
       } else {
         // Add to favorites
-        const result = await userApi.addFavorite(server.id, token);
+        const result = await userApi.addFavorite(server.id);
         addFavorite(server);
 
         toast({
@@ -115,7 +118,7 @@ export function useFavoriteMutations() {
       }
     } catch (error) {
       // Revert optimistic update on error
-      mutate([favoriteStatusKey(server.id), server.id]);
+      mutate([favoriteStatusKey(server.id), server.id, session?.user.id]);
 
       toast({
         title: "Error",

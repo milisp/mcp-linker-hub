@@ -1,6 +1,6 @@
 "use client";
 
-import { useSupabase } from "@/components/providers/supabase-provider";
+import { useAuth } from "@/components/providers/auth-provider";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { useToast } from "@/hooks/use-toast";
@@ -12,7 +12,7 @@ import { useTeamColumns } from "./components/TeamColumns";
 import { TeamForm } from "./components/TeamForm";
 
 export default function Teams() {
-  const { session } = useSupabase();
+  const { session } = useAuth();
   const api = useAuthedApi();
   const [teams, setTeams] = useState<TeamResponse[]>([]);
   const [isLoading, setIsLoading] = useState(true);

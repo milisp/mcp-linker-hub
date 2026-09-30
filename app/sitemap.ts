@@ -1,4 +1,4 @@
-import { fetchMinimalServers } from "@/lib/api/servers";
+import { fetchServers } from "@/lib/server/catalog";
 import { SITE_URL } from "@/lib/site";
 import type { MetadataRoute } from "next";
 
@@ -30,7 +30,7 @@ async function collectServers(): Promise<MetadataRoute.Sitemap> {
   const entries: MetadataRoute.Sitemap = [];
 
   for (let page = 1; page <= MAX_PAGES; page++) {
-    const data = (await fetchMinimalServers({
+    const data = (await fetchServers({
       page,
       pageSize: PAGE_SIZE,
     })) as MinimalResponse;

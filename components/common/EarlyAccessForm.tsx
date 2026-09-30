@@ -1,6 +1,5 @@
 "use client";
 
-import { useSupabase } from "@/components/providers/supabase-provider";
 import { useState } from "react";
 
 interface EarlyAccessFormProps {
@@ -8,7 +7,6 @@ interface EarlyAccessFormProps {
 }
 
 export function EarlyAccessForm({ onSuccess }: EarlyAccessFormProps) {
-  const { supabase } = useSupabase();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -19,10 +17,12 @@ export function EarlyAccessForm({ onSuccess }: EarlyAccessFormProps) {
     setLoading(true);
     setError(null);
     try {
-      const { error } = await supabase
-        .from("early_access_emails")
-        .insert([{ email }]);
-      if (error) throw error;
+      const response = await fetch("/api/early-access", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      if (!response.ok) throw new Error("Unable to submit. Please try again.");
       setSuccess(true);
       setEmail("");
       if (onSuccess) onSuccess();

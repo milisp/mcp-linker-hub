@@ -13,14 +13,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Heart, LogOut, Settings, Star, User, Users } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useSupabase } from "../providers/supabase-provider";
+import { authClient } from "@/lib/auth-client";
+import { useAuth } from "../providers/auth-provider";
 
 export function UserNav() {
-  const { session, supabase } = useSupabase();
+  const { session } = useAuth();
   const router = useRouter();
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
+    await authClient.signOut();
     router.refresh();
   };
 
@@ -63,10 +64,7 @@ export function UserNav() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
-            <AvatarImage
-              src={user.user_metadata?.avatar_url || ""}
-              alt={user.email || ""}
-            />
+            <AvatarImage src={user.image || ""} alt={user.email || ""} />
             <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
         </Button>
@@ -75,7 +73,7 @@ export function UserNav() {
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">
-              {user.user_metadata?.full_name || user.email}
+              {user.name || user.email}
             </p>
             <p className="text-xs leading-none text-muted-foreground">
               {user.email}

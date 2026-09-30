@@ -2,7 +2,7 @@ import { Mail } from "lucide-react";
 import Link from "next/link";
 
 export function Footer() {
-  const doc_url = "https://api.mcp-linker.dev/api/docs";
+  const doc_url = "https://github.com/milisp/mcp-linker-hub";
 
   function get_url(link: string) {
     if (link === "Contact") {

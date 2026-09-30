@@ -1,13 +1,13 @@
-import { fetchServers } from "@/lib/api/servers";
+import { fetchServers } from "@/lib/server/catalog";
 import type { ServerListResponse } from "../../types";
 import { ServersClient } from "./servers-client";
+
+export const dynamic = "force-dynamic";
 
 async function getInitialServers(): Promise<ServerListResponse> {
   try {
     const response = await fetchServers({
       pageSize: 20,
-      needTotal: false,
-      includeRelations: true,
     });
     return response;
   } catch (error) {

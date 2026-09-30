@@ -1,6 +1,5 @@
 "use client";
 
-import { useSupabase } from "@/components/providers/supabase-provider";
 import { useState } from "react";
 import { z } from "zod";
 import { Textarea } from "./ui";
@@ -8,7 +7,9 @@ import { Textarea } from "./ui";
 const FeedbackSchema = z.object({
   email: z.string().email().optional(),
   usage: z.string().min(10, "Please provide more detailed feedback"),
-  intent: z.enum(["free", "solo", "team_pro", "enterprise"], { message: "Please select how you plan to use MCP-Linker" }),
+  intent: z.enum(["free", "solo", "team_pro", "enterprise"], {
+    message: "Please select how you plan to use MCP-Linker",
+  }),
   source: z.enum(
     ["github", "reddit", "ai", "twitter", "search", "friend", "other"],
     { message: "Please tell us where you heard about MCP-Linker" },
@@ -22,7 +23,6 @@ interface EarlyAccessFeedBackFormProps {
 export function EarlyAccessFeedBackForm({
   onSuccess,
 }: EarlyAccessFeedBackFormProps) {
-  const { supabase } = useSupabase();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -58,15 +58,12 @@ export function EarlyAccessFeedBackForm({
       return;
     }
     try {
-      const { error } = await supabase.from("early_access_feedback").insert([
-        {
-          email,
-          usage: formData,
-          intent,
-          source,
-        },
-      ]);
-      if (error) throw error;
+      const response = await fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, usage: formData, intent, source }),
+      });
+      if (!response.ok) throw new Error("Unable to submit. Please try again.");
       setSuccess(true);
       setEmail("");
       if (onSuccess) onSuccess();

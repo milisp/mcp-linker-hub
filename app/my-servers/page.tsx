@@ -2,13 +2,13 @@
 
 import { ServerGridSkeleton } from "@/components/common";
 import { ServerGrid } from "@/components/features";
-import { useSupabase } from "@/components/providers/supabase-provider";
+import { useAuth } from "@/components/providers/auth-provider";
 import { api } from "@/lib/api";
 import { useEffect, useState } from "react";
 import type { ServerListResponse, ServerResponse } from "../../types";
 
 export default function MyServers() {
-  const { session } = useSupabase();
+  const { session } = useAuth();
 
   const [servers, setServers] = useState<ServerResponse[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -16,12 +16,10 @@ export default function MyServers() {
   useEffect(() => {
     const fetchMyServers = async () => {
       try {
-        console.log(session?.access_token);
         const data = await api.get<ServerListResponse>(
           "/servers/my",
           undefined,
           {},
-          session?.access_token,
         );
         setServers(data.servers);
       } catch (error) {
@@ -33,7 +31,7 @@ export default function MyServers() {
     };
 
     fetchMyServers();
-  }, [session?.access_token]);
+  }, [session?.user.id]);
 
   return (
     <main className="bg-white rounded-t-3xl min-h-[60vh] py-8 mt-8">

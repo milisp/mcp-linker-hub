@@ -1,48 +1,26 @@
-"use client";
-
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-
-export default function SuccessPage() {
-  const searchParams = useSearchParams();
-  const checkoutId = searchParams.get("checkout_id");
-  const [status, setStatus] = useState<"loading" | "success" | "error">(
-    "loading",
-  );
-
-  useEffect(() => {
-    if (!checkoutId) return;
-
-    // Call your backend API to confirm the checkout
-    // fetch(`/api/checkout/${checkoutId}`)
-    //   .then(res => {
-    //     if (!res.ok) throw new Error('Failed to verify checkout')
-    //     return res.json()
-    //   })
-    //   .then(data => {
-    //     if (data.status === 'confirmed') {
-    //       setStatus('success')
-    //     } else {
-    //       setStatus('error')
-    //     }
-    //   })
-    //   .catch(() => {
-    //     setStatus('error')
-    //   })
-    console.log(checkoutId);
-    setStatus("success");
-  }, [checkoutId]);
-
+import Link from "next/link";
+import { getCurrentUser } from "@/lib/server/auth";
+import { getBillingStatus } from "@/lib/server/billing";
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+export default async function SuccessPage() {
+  const user = await getCurrentUser();
+  const billing = user ? getBillingStatus(user.id) : null;
   return (
-    <div className="max-w-md mx-auto mt-10 text-center">
-      <h1 className="text-2xl font-bold">Payment Result</h1>
-      {status === "loading" && <p>Verifying your payment...</p>}
-      {status === "success" && (
-        <p className="text-green-600">✅ Payment confirmed! Thank you.</p>
-      )}
-      {status === "error" && (
-        <p className="text-red-600">❌ Payment verification failed.</p>
-      )}
-    </div>
+    <main className="container mx-auto max-w-xl px-6 py-16 space-y-4">
+      <h1 className="text-3xl font-bold">
+        {billing?.active ? "Your plan is active" : "Confirming your purchase"}
+      </h1>
+      <p>
+        {billing?.active
+          ? `Your account includes up to ${billing.dailyRequestLimit} hosted requests per day.`
+          : user
+            ? "Access appears after Polar confirms payment through a verified webhook. If you just paid, refresh this page shortly."
+            : "Sign in to check your account's access."}
+      </p>
+      <Link href={user ? "/hosting" : "/account/login"} className="underline">
+        {user ? "Open hosted tools" : "Sign in"}
+      </Link>
+    </main>
   );
 }

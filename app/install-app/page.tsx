@@ -1,12 +1,11 @@
 "use client";
 
 import InstallAppTabs from "@/components/common/InstallAppTabs";
-import { useSupabase } from "@/components/providers/supabase-provider";
 import { logDeeplinkClick } from "@/lib/utils"; // Import shared logDeeplinkClick
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
-export default function InstallApp() {
+function InstallAppContent() {
   const searchParams = useSearchParams();
   const autoSubmitParam =
     searchParams.get("autoSubmit") === "true" ? "&autoSubmit=true" : "";
@@ -14,13 +13,11 @@ export default function InstallApp() {
   const repo = searchParams.get("repo") ?? "";
   const serverName = searchParams.get("name") ?? "";
   const [deeplink, setDeeplink] = useState("");
-  const { supabase } = useSupabase();
 
   useEffect(() => {
     if (repo) {
       setDeeplink(`mcp-linker://install-app?repo=${repo}${autoSubmitParam}`);
       logDeeplinkClick({
-        supabase,
         repo,
         name: serverName,
         config: configParam || undefined,
@@ -35,14 +32,12 @@ export default function InstallApp() {
       window.location.href = `mcp-linker://install-app?name=${serverName}&config=${configParam}${autoSubmitParam}`;
 
       logDeeplinkClick({
-        supabase,
         repo,
         name: serverName,
         config: configParam || undefined,
         autoSubmit: autoSubmitParam === "&autoSubmit=true",
         source: "auto",
       });
-      
     }
   }, []);
 
@@ -76,5 +71,13 @@ export default function InstallApp() {
         />
       </div>
     </div>
+  );
+}
+
+export default function InstallApp() {
+  return (
+    <Suspense fallback={<p>Loading installation settings...</p>}>
+      <InstallAppContent />
+    </Suspense>
   );
 }

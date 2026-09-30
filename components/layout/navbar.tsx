@@ -9,7 +9,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ModeToggle } from "../common/mode-toggle";
-import { useSupabase } from "../providers/supabase-provider";
+import { useAuth } from "../providers/auth-provider";
 import { UserNav } from "./user-nav";
 
 const NavLink = ({
@@ -28,18 +28,19 @@ const NavLink = ({
   const pathname = usePathname();
   const linkProps = external
     ? {
-      target: "_blank",
-      rel: "noopener noreferrer",
-    }
+        target: "_blank",
+        rel: "noopener noreferrer",
+      }
     : {};
 
   return (
     <Link
       href={href}
-      className={`rounded-md px-3 py-2 transition-colors ${pathname === href
+      className={`rounded-md px-3 py-2 transition-colors ${
+        pathname === href
           ? "text-primary bg-slate-200 dark:bg-slate-800"
           : "hover:text-primary hover:bg-slate-100 dark:hover:bg-slate-800/50"
-        } ${className}`}
+      } ${className}`}
       onClick={onClick}
       {...linkProps}
     >
@@ -49,7 +50,7 @@ const NavLink = ({
 };
 
 export function Navbar() {
-  const { session } = useSupabase();
+  const { session } = useAuth();
   const isMobile = useIsMobile();
   const [isOpen, setIsOpen] = useState(false);
   const [starCount, setStarCount] = useState<number | null>(null);
@@ -61,7 +62,7 @@ export function Navbar() {
       label: "Download",
       external: true,
     },
-    { href: "https://api.mcp-linker.dev/api/docs", label: "Docs" },
+    { href: "/hosting", label: "Hosting" },
     { href: "/servers/submit", label: "Submit" },
     { href: "/pricing", label: "Pricing" },
   ];

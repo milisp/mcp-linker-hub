@@ -16,7 +16,7 @@ export { ServerGrid } from "./features/server-grid";
 export { SubmitSection } from "./features/submit-server";
 
 // Provider components
-export { SupabaseProvider } from "./providers/supabase-provider";
+export { AuthProvider } from "./providers/auth-provider";
 export { ThemeProvider } from "./providers/theme-provider";
 
 // Common components

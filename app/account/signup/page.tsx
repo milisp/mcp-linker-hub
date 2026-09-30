@@ -4,7 +4,7 @@ import type React from "react";
 
 import { OAuthButtons, handleOAuthLogin } from "@/components/auth";
 import { EmailPasswordForm } from "@/components/auth/email-password-form";
-import { useSupabase } from "@/components/providers/supabase-provider";
+import { authClient } from "@/lib/auth-client";
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -14,7 +14,6 @@ export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { supabase } = useSupabase();
   const { toast } = useToast();
   const router = useRouter();
 
@@ -23,47 +22,14 @@ export default function SignupPage() {
     setIsLoading(true);
 
     try {
-      const { data, error } = await supabase.auth.signUp({
+      const { error } = await authClient.signUp.email({
         email,
         password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
-        },
+        name: email.split("@")[0],
       });
-
-      if (error) {
-        throw error;
-      }
-
-      // Check if session exists after signup
-      if (data.session) {
-        // User is directly logged in (email confirmation might be off or already confirmed)
-        // Fetch user data after successful signup
-        const { data: userData, error: userError } =
-          await supabase.auth.getUser();
-
-        if (userError) {
-          throw userError;
-        }
-
-        if (userData.user && !userData.user.user_metadata.user_name) {
-          toast({
-            title: "Profile incomplete",
-            description: "Please complete your profile information.",
-            variant: "default",
-          });
-          router.push("/account/complete-profile");
-        } else {
-          router.push("/account/login");
-        }
-      } else {
-        // Session is null, meaning email verification is required
-        toast({
-          title: "Verification email sent",
-          description: "Please check your email to verify your account.",
-        });
-        router.push("/account/login");
-      }
+      if (error) throw error;
+      router.push("/");
+      router.refresh();
     } catch (error: any) {
       toast({
         title: "Signup failed",

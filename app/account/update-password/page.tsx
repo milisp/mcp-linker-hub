@@ -1,6 +1,6 @@
 "use client";
 
-import { useSupabase } from "@/components/providers/supabase-provider";
+import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function UpdatePasswordPage() {
-  const { supabase } = useSupabase();
+  const [currentPassword, setCurrentPassword] = useState("");
   const { toast } = useToast();
   const router = useRouter();
   const [password, setPassword] = useState("");
@@ -33,8 +33,11 @@ export default function UpdatePasswordPage() {
       return;
     }
     try {
-      // Update the user's password using Supabase
-      const { error } = await supabase.auth.updateUser({ password });
+      const { error } = await authClient.changePassword({
+        currentPassword,
+        newPassword: password,
+        revokeOtherSessions: true,
+      });
       if (error) throw error;
       setSuccess(true);
       toast({
@@ -42,9 +45,7 @@ export default function UpdatePasswordPage() {
         description: "Your password has been successfully updated.",
       });
       // Optionally redirect to login page after a short delay
-      setTimeout(() => {
-        router.push("/account/login");
-      }, 2000);
+      router.refresh();
     } catch (error: any) {
       toast({
         title: "Update failed",
@@ -65,6 +66,15 @@ export default function UpdatePasswordPage() {
             <p>Enter your new password below.</p>
           </div>
           <form onSubmit={handleUpdate} className="space-y-4">
+            <Label htmlFor="current-password">Current password</Label>
+            <Input
+              id="current-password"
+              type="password"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              required
+              autoComplete="current-password"
+            />
             <div className="space-y-2">
               <Label htmlFor="password">New Password</Label>
               <Input

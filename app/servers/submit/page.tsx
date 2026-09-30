@@ -1,6 +1,6 @@
 "use client";
 
-import { useSupabase } from "@/components/providers/supabase-provider";
+import { useAuth } from "@/components/providers/auth-provider";
 import { BasicInfoSection } from "@/components/submit/BasicInfoSection";
 import { MCPConfigSection } from "@/components/submit/MCPConfigSection";
 import { ProjectInfoSection } from "@/components/submit/ProjectInfoSection";
@@ -41,7 +41,7 @@ const FORM_STORAGE_KEY = "mcp-submit-form-data";
 
 export default function SubmitPage() {
   const { toast } = useToast();
-  const { session } = useSupabase();
+  const { session } = useAuth();
   const defaultValues: SubmitFormData = {
     name: "",
     developer: "",
@@ -101,7 +101,7 @@ export default function SubmitPage() {
 
   const onSubmit = async (data: SubmitFormData) => {
     try {
-      if (!session?.access_token) {
+      if (!session?.user.id) {
         toast({
           title: "Authentication required",
           description: "Please log in to submit a server",
@@ -120,11 +120,9 @@ export default function SubmitPage() {
         tags: data.tags,
         configs: buildConfigs(data.mcpServers),
       };
-      console.log("Submitting:", requestData);
 
       await axios.post(`${API_V1_URL}/servers/`, requestData, {
         headers: {
-          Authorization: `Bearer ${session.access_token}`,
           "Content-Type": "application/json",
         },
       });
