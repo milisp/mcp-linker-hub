@@ -9,7 +9,7 @@ export const SseConfigSchema = z.object({
 export const StdioServerConfigSchema = z.object({
   command: z.string(),
   args: z.array(z.string()),
-  env: z.record(z.any()).optional(),
+  env: z.record(z.string(), z.any()).optional(),
 });
 
 export const ServerConfigSchema = z.union([
@@ -17,7 +17,7 @@ export const ServerConfigSchema = z.union([
   StdioServerConfigSchema,
 ]);
 
-export const McpServersSchema = z.record(ServerConfigSchema).refine(
+export const McpServersSchema = z.record(z.string(), ServerConfigSchema).refine(
   (data) => {
     // Ensure at least one server is configured
     if (Object.keys(data).length === 0) {

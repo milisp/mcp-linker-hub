@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import type { AuthType } from "@/types";
 import { createPagesBrowserClient } from "@supabase/auth-helpers-nextjs";
-import { Github } from "lucide-react";
+import { FaGithub as Github } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 
 export async function handleOAuthLogin(

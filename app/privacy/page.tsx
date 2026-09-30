@@ -1,4 +1,5 @@
-import { Database, Eye, Github, Lock, Shield, Trash2 } from "lucide-react";
+import { Database, Eye, Lock, Shield, Trash2 } from "lucide-react";
+import { FaGithub as Github } from "react-icons/fa";
 
 export default function Privacy() {
   return (

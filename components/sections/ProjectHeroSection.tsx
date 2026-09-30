@@ -1,4 +1,5 @@
-import { Download, Github } from "lucide-react";
+import { Download } from "lucide-react";
+import { FaGithub as Github } from "react-icons/fa";
 export function ProjectHeroSection() {
   return (
     <section className="px-6 py-2 max-w-5xl mx-auto text-center">

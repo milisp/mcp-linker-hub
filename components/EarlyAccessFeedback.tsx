@@ -8,18 +8,10 @@ import { Textarea } from "./ui";
 const FeedbackSchema = z.object({
   email: z.string().email().optional(),
   usage: z.string().min(10, "Please provide more detailed feedback"),
-  intent: z.enum(["free", "solo", "team_pro", "enterprise"], {
-    errorMap: () => ({
-      message: "Please select how you plan to use MCP-Linker",
-    }),
-  }),
+  intent: z.enum(["free", "solo", "team_pro", "enterprise"], { message: "Please select how you plan to use MCP-Linker" }),
   source: z.enum(
     ["github", "reddit", "ai", "twitter", "search", "friend", "other"],
-    {
-      errorMap: () => ({
-        message: "Please tell us where you heard about MCP-Linker",
-      }),
-    },
+    { message: "Please tell us where you heard about MCP-Linker" },
   ),
 });
 
@@ -56,9 +48,9 @@ export function EarlyAccessFeedBackForm({
     if (!parseResult.success) {
       // Map errors to fields
       const newErrorMap: { [key: string]: string } = {};
-      parseResult.error.errors.forEach((err) => {
+      parseResult.error.issues.forEach((err) => {
         if (err.path && err.path[0]) {
-          newErrorMap[err.path[0]] = err.message;
+          newErrorMap[String(err.path[0])] = err.message;
         }
       });
       setErrorMap(newErrorMap);

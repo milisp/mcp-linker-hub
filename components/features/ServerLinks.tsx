@@ -2,7 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { ServerResponse } from "@/types";
-import { Download, ExternalLink, Github } from "lucide-react";
+import { Download, ExternalLink } from "lucide-react";
+import { FaGithub as Github } from "react-icons/fa";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
