@@ -4,6 +4,22 @@ import Base from "../layouts/Base.astro";
 import { getCatalog } from "../lib/catalog";
 import { CLIENTS, FEATURES } from "../lib/pricing";
 import { DOWNLOAD_URL, GITHUB_URL } from "../lib/site";
+import claudeCode from "../assets/clients/claudecode-color.svg?raw";
+import codex from "../assets/clients/codex-color.svg?raw";
+import claudeDesktop from "../assets/clients/claude-color.svg?raw";
+import cursor from "../assets/clients/cursor.svg?raw";
+import cline from "../assets/clients/cline.svg?raw";
+import copilot from "../assets/clients/github-copilot.svg?raw";
+
+// Clients without an entry here render as text only.
+const clientIcons: Record<string, string> = {
+  "Claude Code": claudeCode,
+  Codex: codex,
+  "Claude Desktop": claudeDesktop,
+  Cursor: cursor,
+  Cline: cline,
+  "GitHub Copilot": copilot,
+};
 
 const { collections, servers } = await getCatalog();
 const featured = servers.filter((server) => server.featured);
@@ -55,7 +71,12 @@ const screenshots = [
     >
       {
         CLIENTS.map((client) => (
-          <li class="rounded-full border border-line px-3 py-1">{client}</li>
+          <li class="flex items-center gap-2 rounded-full border border-line px-3 py-1">
+            {clientIcons[client] && (
+              <span class="flex text-base text-ink" aria-hidden="true" set:html={clientIcons[client]} />
+            )}
+            {client}
+          </li>
         ))
       }
     </ul>
