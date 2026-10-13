@@ -35,6 +35,8 @@ const transportLabel: Record<string, string> = {
   "streamable-http": "Remote (HTTP)",
   sse: "Remote (SSE)",
 };
+const site = Astro.site;
+if (!site) throw new Error("`site` is not set in astro.config.mjs");
 ---
 
 <Base
@@ -140,7 +142,7 @@ const transportLabel: Record<string, string> = {
       <summary class="cursor-pointer text-muted hover:text-ink">
         Maintain this server? Add a badge to your README
       </summary>
-      <pre class="card mt-3 overflow-x-auto p-4 font-mono text-xs"><code>{badgeMarkdown(Astro.site!, server)}</code></pre>
+      <pre class="card mt-3 overflow-x-auto p-4 font-mono text-xs"><code>{badgeMarkdown(site, server)}</code></pre>
     </details>
 
     {

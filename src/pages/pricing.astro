@@ -60,8 +60,8 @@ const faqs = [
                   ${sale ? plan.earlyBirdPrice : plan.price}
                 </span>
                 {sale && (
-                  <s class="text-muted" aria-label={`was $${plan.price}`}>
-                    ${plan.price}
+                  <s class="text-muted">
+                    <span class="sr-only">was </span>${plan.price}
                   </s>
                 )}
                 {plan.price > 0 && (

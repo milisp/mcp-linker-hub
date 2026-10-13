@@ -16,8 +16,10 @@ import Base from "../layouts/Base.astro";
         confirm there.
       </p>
       <div class="mt-6 flex flex-wrap gap-2">
-        <a id="open" href="#" class="btn-primary">Open in MCP Linker</a>
-        <a id="repo" href="#" class="btn-secondary" hidden>View repository</a>
+        <!-- biome-ignore lint/a11y/useValidAnchor: href is set from the URL query by the script below -->
+        <a id="open" class="btn-primary">Open in MCP Linker</a>
+        <!-- biome-ignore lint/a11y/useValidAnchor: href is set from the URL query by the script below -->
+        <a id="repo" class="btn-secondary" hidden>View repository</a>
       </div>
       <p class="mt-4 text-sm text-muted">
         No app yet? <a href="/pricing" class="text-brand hover:underline"

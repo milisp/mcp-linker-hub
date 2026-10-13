@@ -20,19 +20,6 @@
       "preset": "recommended"
     }
   },
-  "overrides": [
-    {
-      "includes": ["**/*.astro"],
-      "linter": {
-        "rules": {
-          "correctness": {
-            "noUnusedImports": "off",
-            "noUnusedVariables": "off"
-          }
-        }
-      }
-    }
-  ],
   "css": {
     "parser": { "tailwindDirectives": true }
   },
@@ -41,5 +28,8 @@
       "quoteStyle": "double",
       "semicolons": "always"
     }
+  },
+  "html": {
+    "experimentalFullSupportEnabled": true
   }
 }
