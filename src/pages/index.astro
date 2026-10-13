@@ -1,16 +1,16 @@
 ---
+import claudeDesktop from "../assets/clients/claude-color.svg?raw";
+import claudeCode from "../assets/clients/claudecode-color.svg?raw";
+import cline from "../assets/clients/cline.svg?raw";
+import codex from "../assets/clients/codex-color.svg?raw";
+import cursor from "../assets/clients/cursor.svg?raw";
+import copilot from "../assets/clients/github-copilot.svg?raw";
+import neovim from "../assets/clients/neovim.svg?raw";
 import ServerCard from "../components/ServerCard.astro";
 import Base from "../layouts/Base.astro";
 import { getCatalog } from "../lib/catalog";
 import { CLIENTS, FEATURES } from "../lib/pricing";
 import { DOWNLOAD_URL, GITHUB_URL } from "../lib/site";
-import claudeCode from "../assets/clients/claudecode-color.svg?raw";
-import codex from "../assets/clients/codex-color.svg?raw";
-import claudeDesktop from "../assets/clients/claude-color.svg?raw";
-import cursor from "../assets/clients/cursor.svg?raw";
-import cline from "../assets/clients/cline.svg?raw";
-import copilot from "../assets/clients/github-copilot.svg?raw";
-import neovim from "../assets/clients/neovim.svg?raw";
 
 const clientIcons: Record<string, string> = {
   "Claude Code": claudeCode,
@@ -39,7 +39,10 @@ const steps = [
   },
 ];
 const screenshots = [
-  { src: "/images/mcp-linker-home.webp", alt: "Discover servers in MCP Linker" },
+  {
+    src: "/images/mcp-linker-home.webp",
+    alt: "Discover servers in MCP Linker",
+  },
   {
     src: "/images/mcp-linker-add-server.webp",
     alt: "Choosing where to add a server",

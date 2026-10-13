@@ -39,7 +39,9 @@ const mailto = `mailto:${CONTACT_EMAIL}?${new URLSearchParams({
     "Category:",
     "",
   ].join("\n"),
-}).toString().replaceAll("+", "%20")}`;
+})
+  .toString()
+  .replaceAll("+", "%20")}`;
 ---
 
 <Base

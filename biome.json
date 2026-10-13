@@ -7,7 +7,7 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": ["src/**", "tests/**/*.ts", "astro.config.mjs", "!**/*.astro"]
+    "includes": ["src/**", "tests/**/*.ts", "astro.config.mjs"]
   },
   "formatter": {
     "enabled": true,
@@ -20,6 +20,19 @@
       "preset": "recommended"
     }
   },
+  "overrides": [
+    {
+      "includes": ["**/*.astro"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedImports": "off",
+            "noUnusedVariables": "off"
+          }
+        }
+      }
+    }
+  ],
   "css": {
     "parser": { "tailwindDirectives": true }
   },
