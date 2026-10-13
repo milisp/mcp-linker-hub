@@ -1,0 +1,99 @@
+---
+import Base from "../layouts/Base.astro";
+import { CATALOG_REPO_URL } from "../lib/catalog";
+import { CONTACT_EMAIL, REGISTRY_URL } from "../lib/site";
+
+const template = {
+  $schema:
+    "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  name: "io.github.milisp.mcp-linker/my-server",
+  title: "my-server",
+  description: "What it does, in at most 100 characters",
+  version: "1.0.0",
+  icons: [
+    {
+      src: "https://cdn.jsdelivr.net/gh/milisp/mcp-servers@main/icons/my-server.svg",
+      mimeType: "image/svg+xml",
+      sizes: ["any"],
+    },
+  ],
+  websiteUrl: "https://example.com",
+  remotes: [{ type: "streamable-http", url: "https://example.com/mcp" }],
+  _meta: {
+    "io.modelcontextprotocol.registry/publisher-provided": {
+      "io.github.milisp.mcp-linker": { category: "Development & Testing" },
+    },
+  },
+};
+const newFileUrl = `${CATALOG_REPO_URL}/new/main/servers?${new URLSearchParams({
+  filename: "my-server.json",
+  value: `${JSON.stringify(template, null, 2)}\n`,
+})}`;
+const mailto = `mailto:${CONTACT_EMAIL}?${new URLSearchParams({
+  subject: "MCP server submission",
+  body: [
+    "Server name:",
+    "Endpoint URL or package (npm / PyPI / Docker):",
+    "Required keys or settings:",
+    "Documentation link:",
+    "Category:",
+    "",
+  ].join("\n"),
+}).toString().replaceAll("+", "%20")}`;
+---
+
+<Base
+  title="Submit a server"
+  description="Add an MCP server to the MCP Linker catalog."
+>
+  <div class="mx-auto max-w-3xl px-4 py-12">
+    <h1 class="text-3xl font-bold">Submit a server</h1>
+    <p class="mt-3 text-muted">
+      The catalog is a public GitHub repository. Each server is one JSON file in
+      the official <code class="font-mono">server.json</code> format and one SVG
+      icon. Every submission is reviewed before it ships.
+    </p>
+
+    <ol class="mt-10 space-y-8">
+      <li class="card p-6">
+        <h2 class="text-lg font-semibold">With a GitHub account</h2>
+        <p class="mt-2 text-sm text-muted">
+          GitHub opens a new file with a template already filled in. Edit it,
+          and GitHub forks the repository and opens the pull request for you. No
+          clone needed. Then add the icon to <code class="font-mono">icons/</code>
+          and the id to <code class="font-mono">index.json</code> in the same
+          pull request.
+        </p>
+        <div class="mt-4 flex flex-wrap gap-2">
+          <a href={newFileUrl} class="btn-primary">Create the server file</a>
+          <a href={`${CATALOG_REPO_URL}#adding-a-server`} class="btn-secondary"
+            >Read the guide</a
+          >
+        </div>
+      </li>
+
+      <li class="card p-6">
+        <h2 class="text-lg font-semibold">Without a GitHub account</h2>
+        <p class="mt-2 text-sm text-muted">
+          Email the details and we'll add the entry for you.
+        </p>
+        <a href={mailto} class="btn-secondary mt-4">Email {CONTACT_EMAIL}</a>
+      </li>
+    </ol>
+
+    <section class="mt-10 text-sm text-muted">
+      <h2 class="font-semibold text-ink">What gets accepted</h2>
+      <ul class="mt-3 list-disc space-y-1 pl-5">
+        <li>The endpoint or package is the vendor's official one.</li>
+        <li>Remote endpoints use HTTPS.</li>
+        <li>No tokens or personal data in the file. Users enter their own keys.</li>
+      </ul>
+      <p class="mt-4">
+        Want to be listed everywhere, not only here? Publish to the <a
+          href={REGISTRY_URL}
+          class="text-brand hover:underline">official MCP Registry</a
+        >. MCP Linker browses it too.
+      </p>
+    </section>
+  </div>
+</Base>

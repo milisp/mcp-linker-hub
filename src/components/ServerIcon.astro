@@ -1,0 +1,35 @@
+---
+import type { CatalogServer } from "../lib/catalog";
+
+interface Props {
+  server: Pick<CatalogServer, "iconUrl" | "title">;
+  size?: "sm" | "lg";
+}
+
+const { server, size = "sm" } = Astro.props;
+const box = size === "lg" ? "size-16 p-2.5" : "size-10 p-1.5";
+---
+
+<!-- A light tile keeps single-color marks legible in dark mode. -->
+<span
+  class:list={[
+    "inline-flex shrink-0 items-center justify-center rounded-lg border border-line bg-white",
+    box,
+  ]}
+>
+  {
+    server.iconUrl ? (
+      <img
+        src={server.iconUrl}
+        alt=""
+        loading="lazy"
+        decoding="async"
+        class="size-full object-contain"
+      />
+    ) : (
+      <span class="font-semibold text-neutral-700 uppercase">
+        {server.title.slice(0, 1)}
+      </span>
+    )
+  }
+</span>

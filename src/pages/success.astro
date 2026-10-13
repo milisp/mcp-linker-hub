@@ -1,0 +1,39 @@
+---
+import Base from "../layouts/Base.astro";
+import { CONTACT_EMAIL, DOWNLOAD_URL } from "../lib/site";
+---
+
+<Base title="Thank you" noindex>
+  <div class="mx-auto max-w-2xl px-4 py-16">
+    <h1 class="text-3xl font-bold">Thank you for your purchase</h1>
+    <p class="mt-3 text-muted">
+      Your order went through Polar. This page does not unlock anything by
+      itself; your license key is what does.
+    </p>
+
+    <ol class="mt-8 list-decimal space-y-3 pl-5">
+      <li>
+        <strong>Find your license key.</strong> Polar emails it to the address you
+        bought with. It is also in your Polar customer portal.
+      </li>
+      <li>
+        <strong>Install MCP Linker.</strong> Already have it? Update to the latest
+        version.
+        <div class="mt-2">
+          <a href={DOWNLOAD_URL} class="btn-primary">Download MCP Linker</a>
+        </div>
+      </li>
+      <li>
+        <strong>Activate.</strong> Paste the license key into MCP Linker. Activation
+        is between the app and Polar.
+      </li>
+    </ol>
+
+    <p class="mt-10 text-sm text-muted">
+      No email after a few minutes? Check spam, then write to <a
+        href={`mailto:${CONTACT_EMAIL}`}
+        class="text-brand hover:underline">{CONTACT_EMAIL}</a
+      >.
+    </p>
+  </div>
+</Base>

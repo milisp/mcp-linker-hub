@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+
+  --color-page: light-dark(#ffffff, #0b0d12);
+  --color-surface: light-dark(#f6f7f9, #141821);
+  --color-line: light-dark(#e3e6eb, #262b36);
+  --color-ink: light-dark(#14171f, #e8eaef);
+  --color-muted: light-dark(#5b6170, #9aa1b0);
+  --color-brand: light-dark(#4f46e5, #8b8cff);
+  --color-brand-ink: #ffffff;
+}
+
+@layer base {
+  :root {
+    color-scheme: light dark;
+  }
+
+  body {
+    @apply bg-page text-ink font-sans antialiased;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand;
+  }
+}
+
+@utility card {
+  @apply rounded-xl border border-line bg-surface;
+}
+
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors;
+}
+
+@utility btn-primary {
+  @apply btn bg-brand text-brand-ink hover:opacity-90;
+}
+
+@utility btn-secondary {
+  @apply btn border border-line bg-page text-ink hover:bg-surface;
+}

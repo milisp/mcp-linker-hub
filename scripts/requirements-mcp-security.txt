@@ -1,2 +1,0 @@
-# Verified against PyPI on 2026-09-30. Review updates before changing this pin.
-cisco-ai-mcp-scanner==4.8.4

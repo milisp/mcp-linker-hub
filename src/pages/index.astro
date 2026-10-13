@@ -1,0 +1,170 @@
+---
+import ServerCard from "../components/ServerCard.astro";
+import Base from "../layouts/Base.astro";
+import { getCatalog } from "../lib/catalog";
+import { CLIENTS, FEATURES } from "../lib/pricing";
+import { DOWNLOAD_URL, GITHUB_URL } from "../lib/site";
+
+const { collections, servers } = await getCatalog();
+const featured = servers.filter((server) => server.featured);
+const steps = [
+  {
+    title: "Pick a server",
+    body: "From the curated catalog or the official MCP Registry.",
+  },
+  {
+    title: "Choose a target",
+    body: "The client, and for Claude Code the scope and project.",
+  },
+  {
+    title: "Add it",
+    body: "MCP Linker writes the config. Fill in any keys it asks for.",
+  },
+];
+const screenshots = [
+  { src: "/images/mcp-linker-home.webp", alt: "Discover servers in MCP Linker" },
+  {
+    src: "/images/mcp-linker-add-server.webp",
+    alt: "Choosing where to add a server",
+  },
+  { src: "/images/mcp-linker-manage.webp", alt: "Managing installed servers" },
+];
+---
+
+<Base>
+  <section class="mx-auto max-w-4xl px-4 pt-16 pb-12 text-center">
+    <h1 class="text-4xl font-bold tracking-tight sm:text-5xl">
+      Add MCP servers without editing config files
+    </h1>
+    <p class="mx-auto mt-5 max-w-2xl text-lg text-muted">
+      MCP Linker is a desktop app for macOS, Windows, and Linux. Find a server,
+      choose where it goes, and add it to {CLIENTS.slice(0, 3).join(", ")}, and
+      more.
+    </p>
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <a href={DOWNLOAD_URL} class="btn-primary px-6 py-3 text-base"
+        >Download</a
+      >
+      <a href={GITHUB_URL} class="btn-secondary px-6 py-3 text-base"
+        >View on GitHub</a
+      >
+    </div>
+    <ul
+      class="mt-10 flex flex-wrap justify-center gap-2 text-sm text-muted"
+      aria-label="Supported clients"
+    >
+      {
+        CLIENTS.map((client) => (
+          <li class="rounded-full border border-line px-3 py-1">{client}</li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 pb-16" aria-label="Screenshots">
+    <div class="grid gap-4 md:grid-cols-3">
+      {
+        screenshots.map((shot) => (
+          <img
+            src={shot.src}
+            alt={shot.alt}
+            width="1176"
+            height="880"
+            loading="lazy"
+            class="card w-full object-cover"
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="border-y border-line bg-surface">
+    <div class="mx-auto max-w-6xl px-4 py-16">
+      <h2 class="text-2xl font-semibold">How it works</h2>
+      <ol class="mt-8 grid gap-6 md:grid-cols-3">
+        {
+          steps.map((step, i) => (
+            <li class="flex gap-4">
+              <span class="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand text-sm font-semibold text-brand-ink">
+                {i + 1}
+              </span>
+              <span>
+                <span class="block font-medium">{step.title}</span>
+                <span class="mt-1 block text-sm text-muted">{step.body}</span>
+              </span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 py-16">
+    <h2 class="text-2xl font-semibold">Features</h2>
+    <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        FEATURES.map((feature) => (
+          <div class="card p-5">
+            <h3 class="flex items-center justify-between gap-2 font-medium">
+              {feature.title}
+              {feature.paid && (
+                <span class="rounded-full border border-line px-2 py-0.5 text-xs font-normal text-muted">
+                  Personal & Pro
+                </span>
+              )}
+            </h3>
+            <p class="mt-2 text-sm text-muted">{feature.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 pb-16">
+    <div class="flex items-end justify-between gap-4">
+      <h2 class="text-2xl font-semibold">Featured servers</h2>
+      <a href="/servers" class="text-sm text-brand hover:underline"
+        >All {servers.length} servers →</a
+      >
+    </div>
+    <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {featured.map((server) => <ServerCard server={server} />)}
+    </div>
+  </section>
+
+  {
+    collections.length > 0 && (
+      <section class="mx-auto max-w-6xl px-4 pb-16">
+        <h2 class="text-2xl font-semibold">Collections</h2>
+        <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {collections.map((collection) => (
+            <a
+              href={`/collections/${collection.id}`}
+              class="card block p-5 transition-colors hover:border-brand"
+            >
+              <span class="block font-medium">{collection.title}</span>
+              <span class="mt-2 line-clamp-2 block text-sm text-muted">
+                {collection.description}
+              </span>
+              <span class="mt-4 block text-xs text-muted">
+                {collection.servers.map((server) => server.title).join(" · ")}
+              </span>
+            </a>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <section class="border-t border-line">
+    <div class="mx-auto max-w-4xl px-4 py-16 text-center">
+      <h2 class="text-2xl font-semibold">Free to start, pay once for more</h2>
+      <p class="mx-auto mt-3 max-w-xl text-muted">
+        Managing servers in most clients is free. Personal and Pro add Claude
+        Code, Codex, copying between projects, sync, batch actions, and tool
+        inspection for a one-time price. No subscription.
+      </p>
+      <a href="/pricing" class="btn-primary mt-6">See pricing</a>
+    </div>
+  </section>
+</Base>

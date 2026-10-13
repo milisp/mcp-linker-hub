@@ -1,0 +1,159 @@
+---
+import ServerCard from "../../components/ServerCard.astro";
+import ServerIcon from "../../components/ServerIcon.astro";
+import Base from "../../layouts/Base.astro";
+import {
+  appDeepLink,
+  badgeMarkdown,
+  type CatalogServer,
+  configSnippet,
+  getCatalog,
+} from "../../lib/catalog";
+import { DOWNLOAD_URL } from "../../lib/site";
+
+export async function getStaticPaths() {
+  const { servers } = await getCatalog();
+  return servers.map((server) => ({
+    params: { id: server.id },
+    props: {
+      server,
+      related: servers
+        .filter((s) => s.category === server.category && s.id !== server.id)
+        .slice(0, 3),
+    },
+  }));
+}
+
+interface Props {
+  server: CatalogServer;
+  related: CatalogServer[];
+}
+
+const { server, related } = Astro.props;
+const transportLabel: Record<string, string> = {
+  stdio: "Local (stdio)",
+  "streamable-http": "Remote (HTTP)",
+  sse: "Remote (SSE)",
+};
+---
+
+<Base
+  title={`${server.title} MCP server`}
+  description={`Add the ${server.title} MCP server to Claude Code, Codex, Cursor, and more. ${server.description}`}
+>
+  <div class="mx-auto max-w-4xl px-4 py-12">
+    <a href="/servers" class="text-sm text-muted hover:text-ink">← All servers</a>
+
+    <div class="mt-6 flex flex-col gap-5 sm:flex-row sm:items-start">
+      <ServerIcon server={server} size="lg" />
+      <div class="min-w-0 flex-1">
+        <h1 class="text-3xl font-bold capitalize">{server.title}</h1>
+        <p class="mt-2 text-muted">{server.description}</p>
+        <ul class="mt-4 flex flex-wrap gap-2 text-xs">
+          <li class="rounded-full border border-line px-2.5 py-1">
+            {server.category}
+          </li>
+          {
+            server.transports.map((t) => (
+              <li class="rounded-full border border-line px-2.5 py-1">
+                {transportLabel[t] ?? t}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+
+    <div class="card mt-8 flex flex-col gap-4 p-5 sm:flex-row sm:items-center">
+      <div class="flex-1">
+        <p class="font-medium">Add with MCP Linker</p>
+        <p class="mt-1 text-sm text-muted">
+          Opens this server in the app, where you choose the client and scope.
+        </p>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <a href={appDeepLink(server)} class="btn-primary">Open in MCP Linker</a>
+        <a href={DOWNLOAD_URL} class="btn-secondary">Get the app</a>
+      </div>
+    </div>
+
+    {
+      server.inputs.length > 0 && (
+        <section class="mt-10">
+          <h2 class="text-lg font-semibold">What you'll need</h2>
+          <ul class="mt-4 divide-y divide-line rounded-xl border border-line">
+            {server.inputs.map((input) => (
+              <li class="flex flex-wrap items-center gap-x-3 gap-y-1 px-4 py-3">
+                <code class="font-mono text-sm">{input.name}</code>
+                {input.isSecret && (
+                  <span class="text-xs text-muted">secret</span>
+                )}
+                {!input.isRequired && (
+                  <span class="text-xs text-muted">optional</span>
+                )}
+                {input.description && (
+                  <span class="w-full text-sm text-muted">
+                    {input.description}
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <section class="mt-10">
+      <h2 class="text-lg font-semibold">Manual configuration</h2>
+      <p class="mt-2 text-sm text-muted">
+        For clients that read an <code class="font-mono">mcpServers</code> JSON
+        file. Replace values in angle brackets.
+      </p>
+      {
+        server.configs.map((config) => (
+          <pre class="card mt-4 overflow-x-auto p-4 font-mono text-sm"><code>{configSnippet(server, config)}</code></pre>
+        ))
+      }
+    </section>
+
+    <section class="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-sm">
+      {
+        server.websiteUrl && (
+          <a href={server.websiteUrl} class="text-brand hover:underline">
+            Website
+          </a>
+        )
+      }
+      {
+        server.repositoryUrl && (
+          <a href={server.repositoryUrl} class="text-brand hover:underline">
+            Source
+          </a>
+        )
+      }
+      <a href={server.sourceUrl} class="text-brand hover:underline"
+        >Edit this entry</a
+      >
+    </section>
+
+    <details class="mt-10 text-sm">
+      <summary class="cursor-pointer text-muted hover:text-ink">
+        Maintain this server? Add a badge to your README
+      </summary>
+      <pre class="card mt-3 overflow-x-auto p-4 font-mono text-xs"><code>{badgeMarkdown(Astro.site!, server)}</code></pre>
+    </details>
+
+    {
+      related.length > 0 && (
+        <section class="mt-14">
+          <h2 class="text-lg font-semibold">More in {server.category}</h2>
+          <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {related.map((s) => (
+              <ServerCard server={s} />
+            ))}
+          </div>
+        </section>
+      )
+    }
+  </div>
+</Base>

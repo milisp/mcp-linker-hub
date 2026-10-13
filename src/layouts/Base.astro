@@ -1,0 +1,104 @@
+---
+import "../styles/global.css";
+import {
+  CONTACT_EMAIL,
+  DOWNLOAD_URL,
+  GITHUB_URL,
+  SITE_NAME,
+} from "../lib/site";
+import { CATALOG_REPO_URL } from "../lib/catalog";
+
+interface Props {
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = "Add MCP servers to Claude Code, Codex, Claude Desktop, Cursor, and more, without editing config files.",
+  noindex = false,
+} = Astro.props;
+const fullTitle = title ? `${title} · ${SITE_NAME}` : SITE_NAME;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL("/images/mcp-linker-home.png", Astro.site);
+const nav = [
+  { href: "/servers", label: "Servers" },
+  { href: "/pricing", label: "Pricing" },
+  { href: GITHUB_URL, label: "GitHub" },
+];
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body class="flex min-h-screen flex-col">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:m-2 focus:rounded focus:bg-page focus:p-2"
+      >Skip to content</a
+    >
+    <header class="border-b border-line">
+      <div
+        class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3"
+      >
+        <a href="/" class="flex items-center gap-2 font-semibold">
+          <img src="/icon.png" alt="" width="28" height="28" class="rounded-md" />
+          {SITE_NAME}
+        </a>
+        <nav class="flex items-center gap-1 text-sm sm:gap-4">
+          {
+            nav.map((item) => (
+              <a
+                href={item.href}
+                class="rounded px-2 py-1 text-muted hover:text-ink"
+                aria-current={
+                  Astro.url.pathname.startsWith(item.href) ? "page" : undefined
+                }
+              >
+                {item.label}
+              </a>
+            ))
+          }
+          <a href={DOWNLOAD_URL} class="btn-primary hidden sm:inline-flex"
+            >Download</a
+          >
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+
+    <footer class="border-t border-line text-sm text-muted">
+      <div
+        class="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-6 sm:flex-row sm:items-center sm:justify-between"
+      >
+        <p>© {year} {SITE_NAME}. Source under AGPL-3.0.</p>
+        <nav class="flex flex-wrap gap-4">
+          <a href="/submit" class="hover:text-ink">Submit a server</a>
+          <a href={CATALOG_REPO_URL} class="hover:text-ink">Catalog</a>
+          <a href="/privacy" class="hover:text-ink">Privacy</a>
+          <a href={`mailto:${CONTACT_EMAIL}`} class="hover:text-ink">Contact</a>
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>

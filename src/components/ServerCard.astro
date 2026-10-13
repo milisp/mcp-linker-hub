@@ -1,0 +1,28 @@
+---
+import type { CatalogServer } from "../lib/catalog";
+import ServerIcon from "./ServerIcon.astro";
+
+interface Props {
+  server: CatalogServer;
+}
+
+const { server } = Astro.props;
+const search = [server.title, server.description, server.category]
+  .join(" ")
+  .toLowerCase();
+---
+
+<a
+  href={`/servers/${server.id}`}
+  class="card flex gap-3 p-4 transition-colors hover:border-brand"
+  data-server-card
+  data-search={search}
+>
+  <ServerIcon server={server} />
+  <span class="min-w-0">
+    <span class="block font-medium capitalize">{server.title}</span>
+    <span class="mt-1 line-clamp-2 block text-sm text-muted"
+      >{server.description}</span
+    >
+  </span>
+</a>

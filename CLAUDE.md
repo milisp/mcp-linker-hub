@@ -4,25 +4,28 @@ Use English for code and documentation, except localization content.
 
 ## Commands
 
-- `bun run dev`: Next.js local development.
-- `bun run build`: production build; `--webpack` is available for compiler restrictions.
-- `bun run lint`: Biome check (repository-wide legacy warnings exist).
-- `bunx tsc --noEmit`: TypeScript validation.
-- `bun test --conditions=react-server tests/billing.test.mjs`: isolated SQLite billing and access tests.
+Bun only. Never use npm, npx, or node.
+
+- `bun install`: install dependencies.
+- `MCP_SERVERS_DIR=../mcp-servers bun run dev`: local development against a catalog checkout.
+- `bun run build`: static build into `dist/`.
+- `bunx tsc --noEmit` (or `bun run typecheck`): TypeScript 7 check of `src/**/*.ts` and `tests/**/*.ts` only. `astro check` does not support TS 7, so keep logic in `.ts` files and keep `.astro` files mostly templates.
+- `bun test`: unit tests. Set `MCP_SERVERS_DIR` to run the catalog loading test.
+- `bun run lint`: Biome check.
 
 ## Architecture
 
-Next.js App Router is both frontend and backend. SQLite lives in `lib/server/db.ts`;
-Better Auth manages cookie sessions in `lib/server/auth.ts`. API clients use
-same-origin `/api/v1`; SSR catalog reads use `lib/server/catalog.ts` directly.
-Server-only modules must never enter client bundles.
+Astro static site (`output: "static"`), Tailwind v4. No server code, no
+backend, no accounts, no database, no cookies, no analytics. Do not add them.
 
-Polar uses authenticated server-side checkout and verified webhooks. Local
-entitlements are a cache, not a replacement for Polar payment records. Never
-grant access from client-supplied identities, emails, checkout redirects, or
-unsigned events. Hosting access keys are hashed and revocable, while operator
-upstream credentials remain server-side. Only configured stateless endpoints
-are supported. All writes must enforce ownership and appropriate origin checks.
+The server catalog is owned by `milisp/mcp-servers` and fetched at build time
+(`src/lib/catalog.ts`). Never add server data to this repository.
 
-Read README.md and .env.example for configuration, deployment limits, and
-features still unavailable. Do not restore the retired Supabase or FastAPI paths.
+The pricing page lists only shipped features. Purchases go through Polar
+checkout links only; never grant or unlock anything client-side. The desktop
+app activates license keys with Polar directly.
+
+Keep `src/lib/registry.ts` in sync with MCP Linker's
+`src/lib/registry/toConfigs.ts`.
+
+Read README.md and `.env.example` for configuration.

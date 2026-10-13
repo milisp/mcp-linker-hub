@@ -1,0 +1,139 @@
+---
+import Base from "../layouts/Base.astro";
+import { EARLY_BIRD, FEATURES, PLANS, REFUND_DAYS } from "../lib/pricing";
+import { CONTACT_EMAIL, DOWNLOAD_URL, GITHUB_URL } from "../lib/site";
+
+const faqs = [
+  {
+    q: "Is this a subscription?",
+    a: "No. Personal and Pro are one-time purchases.",
+  },
+  {
+    q: "How do I get my license key?",
+    a: "Polar emails it right after checkout. You can also find it in your Polar customer portal. Paste it into MCP Linker to activate.",
+  },
+  {
+    q: "Can I get a refund?",
+    a: `Yes, within ${REFUND_DAYS} days of purchase. Email ${CONTACT_EMAIL}.`,
+  },
+  {
+    q: "I bought MCP Linker before license keys existed.",
+    a: `You keep the tier you bought. Email ${CONTACT_EMAIL} from the address you purchased with and we'll send your key.`,
+  },
+  {
+    q: "What does the free version include?",
+    a: "Managing servers in Claude Desktop, Cursor, Cline, GitHub Copilot, and the other clients, viewing your Claude Code and Codex servers, and Discover. The full source is AGPL-3.0.",
+  },
+];
+---
+
+<Base
+  title="Pricing"
+  description="MCP Linker is free and open source. Personal and Pro are one-time purchases with a license key."
+>
+  <div class="mx-auto max-w-6xl px-4 py-12">
+    <div class="mx-auto max-w-2xl text-center">
+      <h1 class="text-3xl font-bold sm:text-4xl">Pay once. Keep it.</h1>
+      <p class="mt-3 text-muted">
+        No subscription. {REFUND_DAYS}-day refund.
+        {EARLY_BIRD && " Early-bird prices for a limited time."}
+      </p>
+    </div>
+
+    <div class="mt-12 grid gap-6 lg:grid-cols-3">
+      {
+        PLANS.map((plan) => {
+          const sale = EARLY_BIRD && plan.earlyBirdPrice !== undefined;
+          const href =
+            plan.id === "free" ? DOWNLOAD_URL : plan.checkoutUrl;
+          return (
+            <div
+              class:list={[
+                "card flex flex-col p-6",
+                plan.highlighted && "border-brand ring-1 ring-brand",
+              ]}
+            >
+              <h2 class="text-lg font-semibold">{plan.name}</h2>
+              <p class="mt-1 text-sm text-muted">{plan.summary}</p>
+              <p class="mt-6 flex items-baseline gap-2">
+                <span class="text-4xl font-bold">
+                  ${sale ? plan.earlyBirdPrice : plan.price}
+                </span>
+                {sale && (
+                  <s class="text-muted" aria-label={`was $${plan.price}`}>
+                    ${plan.price}
+                  </s>
+                )}
+                {plan.price > 0 && (
+                  <span class="text-sm text-muted">one-time</span>
+                )}
+              </p>
+              <ul class="mt-6 flex-1 space-y-2 text-sm">
+                {plan.features.map((feature) => (
+                  <li class="flex gap-2">
+                    <span class="text-brand" aria-hidden="true">
+                      ✓
+                    </span>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              {href ? (
+                <a
+                  href={href}
+                  class:list={[
+                    "mt-8",
+                    plan.highlighted ? "btn-primary" : "btn-secondary",
+                  ]}
+                >
+                  {plan.cta}
+                </a>
+              ) : (
+                <span
+                  class="btn-secondary mt-8 cursor-not-allowed opacity-60"
+                  aria-disabled="true"
+                >
+                  Available soon
+                </span>
+              )}
+            </div>
+          );
+        })
+      }
+    </div>
+
+    <section class="mt-20">
+      <h2 class="text-2xl font-semibold">What a license unlocks</h2>
+      <div class="mt-6 grid gap-4 sm:grid-cols-2">
+        {
+          FEATURES.filter((feature) => feature.paid).map((feature) => (
+            <div class="card p-5">
+              <h3 class="font-medium">{feature.title}</h3>
+              <p class="mt-2 text-sm text-muted">{feature.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="mx-auto mt-20 max-w-3xl">
+      <h2 class="text-2xl font-semibold">Questions</h2>
+      <dl class="mt-6 divide-y divide-line">
+        {
+          faqs.map((faq) => (
+            <div class="py-4">
+              <dt class="font-medium">{faq.q}</dt>
+              <dd class="mt-1 text-sm text-muted">{faq.a}</dd>
+            </div>
+          ))
+        }
+      </dl>
+      <p class="mt-6 text-sm text-muted">
+        Prefer to build it yourself? The source is on <a
+          href={GITHUB_URL}
+          class="text-brand hover:underline">GitHub</a
+        >.
+      </p>
+    </section>
+  </div>
+</Base>
