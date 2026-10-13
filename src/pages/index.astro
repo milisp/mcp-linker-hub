@@ -10,8 +10,8 @@ import claudeDesktop from "../assets/clients/claude-color.svg?raw";
 import cursor from "../assets/clients/cursor.svg?raw";
 import cline from "../assets/clients/cline.svg?raw";
 import copilot from "../assets/clients/github-copilot.svg?raw";
+import neovim from "../assets/clients/neovim.svg?raw";
 
-// Clients without an entry here render as text only.
 const clientIcons: Record<string, string> = {
   "Claude Code": claudeCode,
   Codex: codex,
@@ -19,6 +19,7 @@ const clientIcons: Record<string, string> = {
   Cursor: cursor,
   Cline: cline,
   "GitHub Copilot": copilot,
+  "mcphub.nvim": neovim,
 };
 
 const { collections, servers } = await getCatalog();
