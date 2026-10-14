@@ -42,12 +42,35 @@ const screenshots = [
   {
     src: "/images/mcp-linker-home.webp",
     alt: "Discover servers in MCP Linker",
+    title: "Discover servers",
+    body: "Browse the curated catalog or the official MCP Registry.",
   },
   {
     src: "/images/mcp-linker-add-server.webp",
     alt: "Choosing where to add a server",
+    title: "Pick where it goes",
+    body: "Choose the client, and for Claude Code the scope and project.",
   },
-  { src: "/images/mcp-linker-manage.webp", alt: "Managing installed servers" },
+  {
+    src: "/images/mcp-linker-manage.webp",
+    alt: "Managing installed servers",
+    title: "Manage installed servers",
+    body: "See what is installed and turn servers on or off.",
+  },
+  {
+    src: "/images/mcp-linker-sync-claude-code-projects.webp",
+    alt: "Copying missing servers between Claude Code projects",
+    title: "Copy between projects",
+    body: "Copy servers that a project is missing from another project.",
+    paid: true,
+  },
+  {
+    src: "/images/mcp-linker-sync-claude-code-to-codex.webp",
+    alt: "Syncing Claude Code servers to Codex",
+    title: "Sync to Codex",
+    body: "Bring your Claude Code servers over to Codex.",
+    paid: true,
+  },
 ];
 ---
 
@@ -90,14 +113,27 @@ const screenshots = [
     <div class="grid gap-4 md:grid-cols-3">
       {
         screenshots.map((shot) => (
-          <img
-            src={shot.src}
-            alt={shot.alt}
-            width="1176"
-            height="880"
-            loading="lazy"
-            class="card w-full object-cover"
-          />
+          <figure class="flex flex-col gap-3">
+            <img
+              src={shot.src}
+              alt={shot.alt}
+              width="1176"
+              height="880"
+              loading="lazy"
+              class="card w-full object-cover"
+            />
+            <figcaption class="px-1">
+              <span class="flex items-center gap-2 font-medium">
+                {shot.title}
+                {shot.paid && (
+                  <span class="rounded-full bg-brand px-2 py-0.5 text-xs font-normal text-brand-ink">
+                    Paid
+                  </span>
+                )}
+              </span>
+              <span class="mt-1 block text-sm text-muted">{shot.body}</span>
+            </figcaption>
+          </figure>
         ))
       }
     </div>
