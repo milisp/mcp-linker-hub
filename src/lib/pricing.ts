@@ -7,7 +7,7 @@ export const EARLY_BIRD = import.meta.env.PUBLIC_EARLY_BIRD !== "false";
 export const REFUND_DAYS = 14;
 
 export interface Plan {
-  id: "free" | "personal" | "commercial";
+  id: "free" | "personal" | "pro";
   name: string;
   price: number;
   earlyBirdPrice?: number;
@@ -54,8 +54,8 @@ export const PLANS: Plan[] = [
     highlighted: true,
   },
   {
-    id: "commercial",
-    name: "Commercial",
+    id: "pro",
+    name: "Pro",
     price: 199,
     earlyBirdPrice: 149,
     summary:
@@ -66,12 +66,13 @@ export const PLANS: Plan[] = [
       "Commercial use license",
       "Priority support",
     ],
+    // Env var keeps its old name (COMMERCIAL); the deployed site config uses it.
     checkoutUrl: import.meta.env.PUBLIC_POLAR_CHECKOUT_COMMERCIAL,
-    cta: "Buy Commercial",
+    cta: "Buy Pro",
   },
 ];
 
-/** `paid` marks features that need a Personal or Commercial license. */
+/** `paid` marks features that need a Personal or Pro license. */
 export const FEATURES = [
   {
     title: "Every major client",
