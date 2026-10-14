@@ -6,7 +6,15 @@ import { CONTACT_EMAIL, DOWNLOAD_URL, GITHUB_URL } from "../lib/site";
 const faqs = [
   {
     q: "Is this a subscription?",
-    a: "No. Personal and Commercial are one-time purchases.",
+    a: "No. Personal and Commercial are one-time purchases. Personal includes 1 year of updates and keeps working forever. Commercial includes lifetime updates.",
+  },
+  {
+    q: "What happens when Personal's year of updates ends?",
+    a: `The app keeps working, paid features included, with every version released before that date. Newer versions run as the free version until you renew. To renew, buy Personal again at 50% off; email ${CONTACT_EMAIL} for the code.`,
+  },
+  {
+    q: "Buying for a team?",
+    a: `Licenses are per person, and each one activates on up to 3 devices. A pack of 5 Commercial licenses is $799. For 10 or more, email ${CONTACT_EMAIL}.`,
   },
   {
     q: "How do I get my license key?",
@@ -18,11 +26,11 @@ const faqs = [
   },
   {
     q: "I bought MCP Linker before license keys existed.",
-    a: `You keep the tier you bought: Lifetime becomes Personal, and Lifetime Pro becomes Commercial. Email ${CONTACT_EMAIL} from the address you purchased with and we'll send your key.`,
+    a: `You keep what you bought, with lifetime updates: Lifetime becomes Personal, and Lifetime Pro becomes Commercial. Email ${CONTACT_EMAIL} from the address you purchased with and we'll send your key.`,
   },
   {
     q: "What does the free version include?",
-    a: "Managing servers in Claude Desktop, Cursor, Cline, GitHub Copilot, and the other clients, viewing your Claude Code and Codex servers, and Discover. The full source is AGPL-3.0.",
+    a: "Adding, editing, enabling, disabling, and removing servers one at a time in every client, including Claude Code (Local scope), Codex, Cursor, and Claude Desktop. Seeing servers in every client and Discover are free too. A license adds what built-in client settings can't do: Claude Code Project and User scope, copying between projects, sync between clients, batch actions, and live tool inspection. The full source is AGPL-3.0.",
   },
 ];
 ---
@@ -35,7 +43,7 @@ const faqs = [
     <div class="mx-auto max-w-2xl text-center">
       <h1 class="text-3xl font-bold sm:text-4xl">Pay once. Keep it.</h1>
       <p class="mt-3 text-muted">
-        No subscription. {REFUND_DAYS}-day refund.
+        Managing servers is free. Linking them is paid. No subscription. {REFUND_DAYS}-day refund.
         {EARLY_BIRD && " Early-bird prices for a limited time."}
       </p>
     </div>
