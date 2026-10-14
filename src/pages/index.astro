@@ -6,6 +6,8 @@ import codex from "../assets/clients/codex-color.svg?raw";
 import cursor from "../assets/clients/cursor.svg?raw";
 import copilot from "../assets/clients/github-copilot.svg?raw";
 import neovim from "../assets/clients/neovim.svg?raw";
+import checkIcon from "../assets/icons/check.svg?raw";
+import copyIcon from "../assets/icons/copy.svg?raw";
 import ServerCard from "../components/ServerCard.astro";
 import Base from "../layouts/Base.astro";
 import { getCatalog } from "../lib/catalog";
@@ -91,6 +93,34 @@ const screenshots = [
       <a href={GITHUB_URL} class="btn-secondary px-6 py-3 text-base"
         >View on GitHub</a
       >
+    </div>
+    <div class="mx-auto mt-6 max-w-sm">
+      <p class="mb-2 text-sm text-muted">Or install with Homebrew</p>
+      <div
+        class="flex items-center gap-2 rounded-lg border border-line bg-surface px-3 py-2 font-mono text-sm"
+      >
+        <span class="text-muted" aria-hidden="true">$</span>
+        <code class="flex-1 text-left text-ink">brew install mcplinker</code>
+        <button
+          type="button"
+          data-copy="brew install mcplinker"
+          class="ml-auto text-muted hover:text-ink"
+          aria-label="Copy install command"
+        >
+          <span
+            data-copy-icon
+            class="flex"
+            aria-hidden="true"
+            set:html={copyIcon}
+          />
+          <span
+            data-check-icon
+            class="hidden text-brand"
+            aria-hidden="true"
+            set:html={checkIcon}
+          />
+        </button>
+      </div>
     </div>
     <ul
       class="mt-10 flex flex-wrap justify-center gap-2 text-sm text-muted"
@@ -228,4 +258,24 @@ const screenshots = [
       <a href="/pricing" class="btn-primary mt-6">See pricing</a>
     </div>
   </section>
+
+  <script>
+    for (const button of document.querySelectorAll<HTMLButtonElement>("[data-copy]")) {
+      const copyIcon = button.querySelector("[data-copy-icon]");
+      const checkIcon = button.querySelector("[data-check-icon]");
+      button.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(button.dataset.copy ?? "");
+          copyIcon?.classList.add("hidden");
+          checkIcon?.classList.remove("hidden");
+          setTimeout(() => {
+            copyIcon?.classList.remove("hidden");
+            checkIcon?.classList.add("hidden");
+          }, 1500);
+        } catch {
+          // Clipboard unavailable; the command stays visible on the page.
+        }
+      });
+    }
+  </script>
 </Base>
