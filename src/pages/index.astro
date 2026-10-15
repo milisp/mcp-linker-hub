@@ -5,7 +5,10 @@ import cline from "../assets/clients/cline.svg?raw";
 import codex from "../assets/clients/codex-color.svg?raw";
 import cursor from "../assets/clients/cursor.svg?raw";
 import copilot from "../assets/clients/github-copilot.svg?raw";
+import hermesAgent from "../assets/clients/hermesagent.svg?raw";
 import neovim from "../assets/clients/neovim.svg?raw";
+import opencode from "../assets/clients/opencode.svg?raw";
+import pi from "../assets/clients/pi.svg?raw";
 import checkIcon from "../assets/icons/check.svg?raw";
 import copyIcon from "../assets/icons/copy.svg?raw";
 import ServerCard from "../components/ServerCard.astro";
@@ -22,6 +25,9 @@ const clientIcons: Record<string, string> = {
   Cline: cline,
   "GitHub Copilot": copilot,
   "mcphub.nvim": neovim,
+  OpenCode: opencode,
+  Pi: pi,
+  "Hermes Agent": hermesAgent,
 };
 
 const { collections, servers } = await getCatalog();
