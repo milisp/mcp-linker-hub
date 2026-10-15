@@ -2,8 +2,15 @@ import { GITHUB_URL } from "./site";
 
 export { formatStars } from "./stars-format";
 
-/** Star count, fetched once at build time. Null when GitHub is unreachable. */
-export async function getStarCount(): Promise<number | null> {
+let cached: Promise<number | null> | undefined;
+
+/** Star count, fetched once per build and shared by every page. Null when GitHub is unreachable. */
+export function getStarCount(): Promise<number | null> {
+  cached ??= fetchStarCount();
+  return cached;
+}
+
+async function fetchStarCount(): Promise<number | null> {
   try {
     const repo = new URL(GITHUB_URL).pathname.slice(1);
     const res = await fetch(`https://api.github.com/repos/${repo}`, {
