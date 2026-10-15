@@ -127,4 +127,7 @@ export const CLIENTS = [
   "Cline",
   "GitHub Copilot",
   "mcphub.nvim",
+  "OpenCode",
+  "Pi",
+  "Hermes Agent",
 ];
