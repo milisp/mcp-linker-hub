@@ -1,12 +1,12 @@
 {
   "id": "producthunt-launch-2026-10",
   "message": {
-    "en": "🚀 MCP Linker is live on Product Hunt — 50% off a license for launch week!",
-    "zh": "🚀 MCP Linker 已登上 Product Hunt，发布周购买授权享 5 折！",
-    "tc": "🚀 MCP Linker 已登上 Product Hunt，發布週購買授權享 5 折！",
-    "ja": "🚀 MCP Linker が Product Hunt に登場！ローンチ週はライセンスが 50% オフ",
-    "de": "🚀 MCP Linker ist live auf Product Hunt – 50 % Rabatt auf Lizenzen in der Launch-Woche!",
-    "es": "🚀 MCP Linker ya está en Product Hunt: ¡50 % de descuento en licencias durante la semana de lanzamiento!"
+    "en": "🚀 MCP Linker is live on Product Hunt — 50% off a license with code PRODUCTHUNT until Oct 23!",
+    "zh": "🚀 MCP Linker 已登上 Product Hunt，10 月 23 日前使用优惠码 PRODUCTHUNT 购买授权享 5 折！",
+    "tc": "🚀 MCP Linker 已登上 Product Hunt，10 月 23 日前使用優惠碼 PRODUCTHUNT 購買授權享 5 折！",
+    "ja": "🚀 MCP Linker が Product Hunt に登場！10月23日までコード PRODUCTHUNT でライセンスが 50% オフ",
+    "de": "🚀 MCP Linker ist live auf Product Hunt – 50 % Rabatt auf Lizenzen mit dem Code PRODUCTHUNT bis 23. Okt.!",
+    "es": "🚀 MCP Linker ya está en Product Hunt: ¡50 % de descuento en licencias con el código PRODUCTHUNT hasta el 23 de oct.!"
   },
   "url": "https://mcp-linker.milisp.dev/pricing",
   "linkLabel": {
@@ -17,5 +17,5 @@
     "de": "50 % sparen",
     "es": "Obtener 50 % de descuento"
   },
-  "expiresAt": "2026-10-23T07:00:00Z"
+  "expiresAt": "2026-10-23T06:59:59Z"
 }
