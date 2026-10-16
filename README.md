@@ -32,7 +32,7 @@ See `.env.example`.
 | `SITE_URL` | Public site URL for the sitemap and canonical links |
 | `MCP_SERVERS_DIR` | Local catalog checkout; otherwise fetched from GitHub |
 | `MCP_SERVERS_REF` | Catalog branch, tag, or commit to fetch |
-| `PUBLIC_POLAR_CHECKOUT_PERSONAL` | Polar checkout link for Personal |
+| `PUBLIC_POLAR_CHECKOUT_PERSONAL` | Polar checkout link for Plus (formerly Personal) |
 | `PUBLIC_POLAR_CHECKOUT_COMMERCIAL` | Polar checkout link for Pro (variable keeps its old name) |
 | `PUBLIC_EARLY_BIRD` | `false` shows regular prices |
 
@@ -44,7 +44,7 @@ The catalog is fetched at build time from the latest `mcp-servers` commit, so th
 
 ## Polar setup
 
-1. Create Personal and Pro one-time products with the License Key benefit.
+1. Create Plus and Pro one-time products with the License Key benefit.
 2. Create a checkout link for each and set the environment variables above.
 3. Set each checkout's success URL to `<site>/success`.
 

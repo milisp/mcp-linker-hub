@@ -2,13 +2,14 @@
 // Polar is the source of truth; this site only links to its checkout.
 // Only list features that have shipped (see CHANGELOG 2.3.0 / 2.4.0).
 // Viewing every client is free; changing servers is free in Claude Desktop and Cursor.
-// A license unlocks every other client (Claude Code included), copy, batch, and inspection.
+// Plus unlocks every other client except Claude Code and Codex, which need Pro.
+// Both include a year of updates; the version you have keeps working forever.
 
 export const EARLY_BIRD = import.meta.env.PUBLIC_EARLY_BIRD !== "false";
 export const REFUND_DAYS = 14;
 
 export interface Plan {
-  id: "free" | "personal" | "pro";
+  id: "free" | "plus" | "pro";
   name: string;
   price: number;
   earlyBirdPrice?: number;
@@ -35,45 +36,46 @@ export const PLANS: Plan[] = [
     cta: "Download",
   },
   {
-    id: "personal",
-    name: "Personal",
+    id: "plus",
+    name: "Plus",
     price: 79,
     earlyBirdPrice: 59,
     summary:
-      "Every client, sync, batch actions, and tool inspection, for personal and internal use.",
+      "Every client except Claude Code and Codex, with sync, batch actions, and tool inspection.",
     features: [
       "Everything in Free",
-      "Manage every client: Claude Code (every scope), Codex, GitHub Copilot, OpenCode, Augment, Cline, and more",
+      "Manage GitHub Copilot, Copilot CLI, OpenCode, Augment, Cline, Pi, Hermes Agent, mcphub.nvim, and custom clients",
       "Sync between all of them",
-      "Copy servers between Claude Code projects",
       "Batch actions",
       "Live tool inspection",
       "1 year of updates, then keep your version forever",
     ],
+    // Env var keeps its old name (PERSONAL); the deployed site config uses it.
     checkoutUrl: import.meta.env.PUBLIC_POLAR_CHECKOUT_PERSONAL,
-    cta: "Buy Personal",
-    highlighted: true,
+    cta: "Buy Plus",
   },
   {
     id: "pro",
     name: "Pro",
-    price: 199,
-    earlyBirdPrice: 149,
-    summary:
-      "Everything in Personal, with lifetime updates and commercial use.",
+    price: 149,
+    earlyBirdPrice: 99,
+    summary: "Everything in Plus, plus Claude Code and Codex.",
     features: [
-      "Everything in Personal",
-      "Lifetime updates",
-      "Commercial use license",
+      "Everything in Plus",
+      "Claude Code in every scope: Local, Project, and User",
+      "Codex, including which tools each server exposes",
+      "Copy servers between Claude Code projects",
       "Priority support",
+      "1 year of updates, then keep your version forever",
     ],
     // Env var keeps its old name (COMMERCIAL); the deployed site config uses it.
     checkoutUrl: import.meta.env.PUBLIC_POLAR_CHECKOUT_COMMERCIAL,
     cta: "Buy Pro",
+    highlighted: true,
   },
 ];
 
-/** `paid` marks features that need a Personal or Pro license. */
+/** `paid` marks features that need a Plus or Pro license. */
 export const FEATURES = [
   {
     title: "Claude Desktop and Cursor",
@@ -90,17 +92,17 @@ export const FEATURES = [
   },
   {
     title: "Every other client",
-    body: "Claude Code in every scope, Codex, GitHub Copilot and Copilot CLI, OpenCode, Augment, Cline, Pi, Hermes Agent, mcphub.nvim, and custom clients.",
+    body: "GitHub Copilot and Copilot CLI, OpenCode, Augment, Cline, Pi, Hermes Agent, mcphub.nvim, and custom clients with Plus. Claude Code in every scope and Codex with Pro.",
     paid: true,
   },
   {
     title: "Codex",
-    body: "Add, edit, enable, and remove Codex servers, and choose which tools each server exposes.",
+    body: "Add, edit, enable, and remove Codex servers, and choose which tools each server exposes. Needs Pro.",
     paid: true,
   },
   {
     title: "Copy between projects",
-    body: "Copy a Claude Code server, headers and auth settings included, to another project or scope in two clicks.",
+    body: "Copy a Claude Code server, headers and auth settings included, to another project or scope in two clicks. Needs Pro.",
     paid: true,
   },
   {
