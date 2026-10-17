@@ -57,7 +57,7 @@ const year = new Date().getFullYear();
       class="sr-only focus:not-sr-only focus:absolute focus:m-2 focus:rounded focus:bg-page focus:p-2"
       >Skip to content</a
     >
-    <header class="border-b border-line">
+    <header class="sticky top-0 z-10 border-b border-line bg-page/90 backdrop-blur">
       <div
         class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3"
       >
@@ -97,8 +97,10 @@ const year = new Date().getFullYear();
               <span data-stars-count>{stars !== null && formatStars(stars)}</span>
             </span>
           </a>
-          <a href={DOWNLOAD_URL} class="btn-primary hidden sm:inline-flex"
-            >Download</a
+          <a
+            href={DOWNLOAD_URL}
+            data-nav-download
+            class="btn-primary hidden sm:inline-flex">Download</a
           >
         </nav>
       </div>
@@ -121,6 +123,18 @@ const year = new Date().getFullYear();
         </nav>
       </div>
     </footer>
+    <script>
+      // Pages with a hero Download button keep the nav one hidden until the
+      // hero one scrolls out of view.
+      const hero = document.querySelector("[data-hero-download]");
+      const navDownload = document.querySelector<HTMLElement>("[data-nav-download]");
+      if (hero && navDownload) {
+        navDownload.style.visibility = "hidden";
+        new IntersectionObserver(([entry]) => {
+          navDownload.style.visibility = entry.isIntersecting ? "hidden" : "";
+        }).observe(hero);
+      }
+    </script>
     <script>
       import { formatStars } from "../lib/stars-format";
 

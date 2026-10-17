@@ -1,4 +1,5 @@
 ---
+import augment from "../assets/clients/augment.svg?raw";
 import claudeDesktop from "../assets/clients/claude-color.svg?raw";
 import claudeCode from "../assets/clients/claudecode-color.svg?raw";
 import cline from "../assets/clients/cline.svg?raw";
@@ -28,6 +29,7 @@ const clientIcons: Record<string, string> = {
   OpenCode: opencode,
   Pi: pi,
   "Hermes Agent": hermesAgent,
+  Augment: augment,
 };
 
 const { collections, servers } = await getCatalog();
@@ -84,25 +86,6 @@ const screenshots = [
 
 <Base>
   <section class="mx-auto max-w-4xl px-4 pt-16 pb-12 text-center">
-    <a
-      href="https://www.producthunt.com/products/mcp-linker?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-mcp-linker"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="mb-8 inline-block"
-    >
-      <picture>
-        <source
-          media="(prefers-color-scheme: dark)"
-          srcset="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1281069&theme=dark"
-        />
-        <img
-          alt="MCP Linker - Sync MCP servers between Claude Code, Codex, Cursor & more | Product Hunt"
-          width="250"
-          height="54"
-          src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1281069&theme=light"
-        />
-      </picture>
-    </a>
     <h1 class="text-4xl font-bold tracking-tight sm:text-5xl">
       Add MCP servers without editing config files
     </h1>
@@ -112,8 +95,10 @@ const screenshots = [
       more.
     </p>
     <div class="mt-8 flex flex-wrap justify-center gap-3">
-      <a href={DOWNLOAD_URL} class="btn-primary px-6 py-3 text-base"
-        >Download</a
+      <a
+        href={DOWNLOAD_URL}
+        data-hero-download
+        class="btn-primary px-6 py-3 text-base">Download</a
       >
       <a href={GITHUB_URL} class="btn-secondary px-6 py-3 text-base"
         >View on GitHub</a
